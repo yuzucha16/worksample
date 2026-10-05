@@ -44,6 +44,7 @@ exmem:
 
 ### 2026-10-05
 
+- 「ナレッジ化して」を、範囲を限定して実行した（ユーザーの指示: dotfiles の Linux 対応の WSL での試験の部分だけ。スレッド全体は、この後に実行する予定）。版 `2026-10-05.5`。`exmem/inbox/2026-10-05-wsl-shell-script-testing-patterns.md` を作った（【汎用】と【この件】に分けた。Decisions は「なし」。コミット `workbase` の `[exmem] inbox: WSL shell-script testing patterns…`）。スレッド全体の実行のときは、このメモを同日の既存メモとして扱い、話題を重複させない。
 - ユーザーが、`workbase` と トップの push、旧 `notes` の GitHub 側アーカイブ化を完了した。ghq の位置にあった `workbase` の clone（`C:\vault\repos\github.com\yuzucha16\workbase`。ユーザーが作成）は、ユーザーが削除した（`resources/` の clone だけが残る）。雛形 `templates/AGENTS.md` と見本の「`notes` が無いPCなど」を「`workbase` を clone していないPCなど」に直した（ユーザーの承認。`workbase` の `f4ed4be`。版は上げない）。
 - Linux を dotfiles で対応した（ユーザーの指示。dotfiles の `dab1507`、`ef5989b`。詳細は dotfiles の `docs/log.md`）。WSL の実機で、一時ディレクトリと偽の HOME を使って35項目を試験し、すべて合格した。ネイティブ Linux の実機は未確認。kit の `setup-hook.md` の既定値の表に、「`C:\vault\notes` は Windows と WSL の標準の場所。ネイティブ Linux では対象を言葉で指定する」を足した（`workbase` の `ec79112`）。
 - ディレクトリ構造の変更を検討し、方針を決めた（ユーザーの選択。判断は `docs/decisions.md` の「Vault のトップを PC ローカルのリポジトリにし…」）。きっかけは、会社 PC で `_local` の作業もコミットしたいこと。検討した案: 現状維持、`company/` の入れ子、トップ非リポジトリ、重ね git、exmem・kit の単独化。決定: トップを PC ローカルのリポジトリにし、共有部分を `workbase` として `resources/` に直接 clone する。`.obsidian` は dotfiles へ戻す。fonts・wallpapers・`_archive/obsolete`（履歴ごと）は破棄、`office/` は dotfiles へ。ジャンクション越しは Grep / Glob が辿らないことを実測した。`git filter-repo` 2.47.0 を導入した。リポジトリ、ファイルの移動、dotfiles はまだ変更していない（文書の記録のみ）。
