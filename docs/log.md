@@ -44,6 +44,7 @@ exmem:
 
 ### 2026-10-05
 
+- 3点を実施した（ユーザーの指示。判断は `docs/decisions.md`）。① Linux 側の試験スクリプトを dotfiles の `tests/linux/test_scripts.sh` に保存した（36項目、WSL で合格。dotfiles の `afa9211` `7fe015f`）。② 「ナレッジ化して」で作った inbox のメモは、コミットしないことにした（全体）。③ 「ナレッジ化して」の改善2点（範囲を限定された実行、【汎用】【この件】のラベル）を採用した。②③は kit の版 `2026-10-05.7`（`.6` は欠番）で、`workbase` の `ba96753`。モバイル用プロンプトと見本の `kit:` を合わせた。直前にコミットしていた WSL の試験のメモ（`9df9903`、未 push）は、そのまま残っている。
 - 「ナレッジ化して」を、範囲を限定して実行した（ユーザーの指示: dotfiles の Linux 対応の WSL での試験の部分だけ。スレッド全体は、この後に実行する予定）。版 `2026-10-05.5`。`exmem/inbox/2026-10-05-wsl-shell-script-testing-patterns.md` を作った（【汎用】と【この件】に分けた。Decisions は「なし」。コミット `workbase` の `[exmem] inbox: WSL shell-script testing patterns…`）。スレッド全体の実行のときは、このメモを同日の既存メモとして扱い、話題を重複させない。
 - ユーザーが、`workbase` と トップの push、旧 `notes` の GitHub 側アーカイブ化を完了した。ghq の位置にあった `workbase` の clone（`C:\vault\repos\github.com\yuzucha16\workbase`。ユーザーが作成）は、ユーザーが削除した（`resources/` の clone だけが残る）。雛形 `templates/AGENTS.md` と見本の「`notes` が無いPCなど」を「`workbase` を clone していないPCなど」に直した（ユーザーの承認。`workbase` の `f4ed4be`。版は上げない）。
 - Linux を dotfiles で対応した（ユーザーの指示。dotfiles の `dab1507`、`ef5989b`。詳細は dotfiles の `docs/log.md`）。WSL の実機で、一時ディレクトリと偽の HOME を使って35項目を試験し、すべて合格した。ネイティブ Linux の実機は未確認。kit の `setup-hook.md` の既定値の表に、「`C:\vault\notes` は Windows と WSL の標準の場所。ネイティブ Linux では対象を言葉で指定する」を足した（`workbase` の `ec79112`）。
