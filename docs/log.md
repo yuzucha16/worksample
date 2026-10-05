@@ -37,7 +37,6 @@ exmem:
 ## Open Questions
 
 - 提案（未承認）: `AGENTS.md` の固定パス（`C:\vault\notes\...`）を `$NOTES_DIR` に置き換える（Linux での値は未確認）。
-- 新しい PC のトップに `AGENTS.md` が無く、「workflowを導入して」と言うだけでは `setup-hook.md` に行き着けない。入口を決める（候補: Claude 用スキル、ユーザーの `CLAUDE.md`、dotfiles が `NOTES_DIR` に置くブートストラップ用の `AGENTS.md`）。
 - `workbase` の公開範囲（最初は非公開で作る。公開するときは exmem に会社固有の情報が無いか確認する）。
 - 決定の記録の書式に、状態（提案／決定）と出典（ユーザーの発言／AI の提案）の欄を持つべきか。部分的な指示の範囲確認の手順を、共通機能に足すか。
 
@@ -58,6 +57,7 @@ exmem:
 - コミットの権限をエージェントに移した（ユーザーの指示。全体に適用。判断は `docs/decisions.md`）。共通ルール `docs-rules.md` に「コミットと push」を足し、`setup-hook.md`（項目 5 は初回コミットまで。入力 7）、`knowledge-hook.md`、kit の `AGENTS.md` を合わせた。kit の版を `2026-10-05.4` にした。使い捨ての一時ディレクトリで3回試験して（空のトップ、既存の中身あり、中止条件3種）、曖昧さ3点を直した。この規則で、`workbase` に初めて自分でコミットした（`71d1d7c`。パス指定、事前の確認つき）。push はしていない。
 - 「workflowを導入して」だけでワークスペースを作れるようにした（ユーザーの指示。判断は `docs/decisions.md`）。`workbase` の中で、対象の指定なしに言うと項目 5 になり、既定値（`C:\vault\notes`、業務用、remote なし、初回コミットする）で作る。報告に「条件」（既定値か指定か）を必ず書く。`pre-push` を雛形にした。kit の版を `2026-10-05.5` にして、一時ディレクトリで試験した（`workbase` に1コミット）。push は未実施（ユーザー）。
 - 項目 5 の既定の対象を、固定パスから、Claude を開いたディレクトリ（cwd）に変えた（ユーザーの指示。判断は `docs/decisions.md`）。cwd の直下に `workbase` の clone があるときだけ項目 5。`workbase` の中では作らず止まる。雛形の共通ルールの置き場を相対にした。kit の版を `2026-10-05.6` にして、5つの場面の判定を試験した（`workbase` に1コミット `a1abf33`）。この変更で、新しい PC のトップに入口（`AGENTS.md`）が無い問題が見えたので、Open Questions に残した。
+- 上の「cwd を対象にする」変更を取り消した（ユーザーの指示）。理由: 呼び出し元は `workbase` の中という前提を見落としていた。参照先の中から呼ぶのが自然で、ワークスペースの中から呼ぶ必要はない。`git revert` で kit を版 `2026-10-05.5` に戻した（`workbase` の `f7b054a`。取り消しの記録は、kit の `README.md` の変更履歴と `improvements.md`）。既定の対象は `C:\vault\notes` に戻り、入口がない問題（Open Questions）も、この前提では起きないので消した。判断は `docs/decisions.md`（撤回済みの注記）。
 - エクスプローラーのアイコンと配色を確定し、コミットした（`file-explorer-compact.css`。ユーザーの指示）。内容: ファイルの種類ごとのアイコン色（ノート=blue、`.base`=green、コード・設定=orange、画像=purple、`.pdf`=red）、開いているフォルダ=yellow・閉じているフォルダ=`#A7B85A`（見出しと同じ緑）、アクティブなタブの文字とウィンドウ右上のボタンを本文色（`--text-normal`）に。プラグインは入れず CSS のみ。判断は `docs/decisions.md`。見た目と起動・処理の軽さは、ユーザーが実機で確認しながら調整した（数値の計測はしていない）。
 - 次の調整は見送った。階層ごとのインデントを狭める（エクスプローラーとアウトライン）: Obsidian が各行に `padding-inline-start` と `margin-inline-start` を `!important` のインラインで付け（1階層17px）、CSS では変えられない。余白の変数や `.nav-folder-children` への直接指定は、効かないか、位置がずれた（確認: 開発者ツールのDOM）。`.md` の表示（Obsidian は `.md` だけ隠す）、ファイル名とタグペインのタグ名を緑にすることも、取りやめた。
 
