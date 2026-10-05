@@ -9,9 +9,9 @@
 構造変更（`docs/decisions.md` の「Vault のトップを PC ローカルのリポジトリにし…」）。段階1〜4は実施済み（2026-10-05）。残り:
 - **Obsidian の実機確認（ユーザー）**: `C:\vault\notes` を Vault として開き直し、検索、バックリンク、`.base`、テーマと CSS スニペット、`colored-tags` の色が、新しいトップ（実ディレクトリ + `resources/` の入れ子 + `.obsidian` のジャンクション）で動くか。`workspace.json` は新規になる（開いていたタブは消える）。
 - **コミットと push（ユーザー）**: `workbase`（`C:\vault\notes\resources`。`origin/main` より2コミット先: kit の `2026-10-05.1` と `.2`）。dotfiles（未コミットの差分: `windows/obsidian/` `windows/office/` の追加、`links.map` `10_env.bat` `50_repos.bat` `.gitignore` `README.md` `AGENTS.md` `docs/log.md`）。新しいトップ（`C:\vault\notes`。初回コミットは未実施。remote は `worksample`（非公開）を設定済みで、push はしていない）。
-- 段階5の残り: 旧 `notes` のリポジトリ（`C:\vault\repos\github.com\yuzucha16\notes`。clean、`origin/main` と同期）の GitHub 側アーカイブ化（外向きの操作。`gh` が未ログインなので、ユーザーが GitHub の Settings から行う）と、ローカルの扱い（バックアップ: `C:\vault\backup\notes-before-restructure-20261005`。しばらく残す）。ほかに、`workflow-kit/templates/AGENTS.md` の「`notes` が無いPCなど」の文言は、`notes` が共有リポジトリでなくなったので、`workbase` に直すか検討する（雛形の項目は変えない規則があるので、`improvements.md` に理由を残す）。
+- 段階5の残り: 旧 `notes` のローカルのリポジトリ（`C:\vault\repos\github.com\yuzucha16\notes`。GitHub 側はアーカイブ化済み）の扱いと、バックアップ（`C:\vault\backup\notes-before-restructure-20261005`）の保管期間を決める（しばらく残す）。
 - `projects/link-management` は、ユーザーが退避した（2026-10-05、ユーザーの回答）。バックアップ（`C:\vault\backup\notes-before-restructure-20261005\projects\link-management`）にも残っている。
-- Linux（WSL / ネイティブ）: `50_repos.sh` の `workbase` の clone、`.obsidian` の扱い、`NOTES_DIR` の値は TODO（dotfiles）。
+- ネイティブ Linux の実機で、dotfiles の `30_link.sh`（`.obsidian` の symlink）、`50_repos.sh`（`workbase` の clone）、`NOTES_DIR` の既定値（`~/vault/notes`）を通して確認する（WSL は一時ディレクトリで試験済み）。ワークスペース生成フックの既定の対象 `C:\vault\notes` は、ネイティブ Linux では使えないので、対象を言葉で指定する。
 - 後で見直す: `cheatsheets/` と `handson/` を `workbase` に置くこと。
 
 導入と共通機能（workflow-kit）:
@@ -44,6 +44,8 @@ exmem:
 
 ### 2026-10-05
 
+- ユーザーが、`workbase` と トップの push、旧 `notes` の GitHub 側アーカイブ化を完了した。ghq の位置にあった `workbase` の clone（`C:\vault\repos\github.com\yuzucha16\workbase`。ユーザーが作成）は、ユーザーが削除した（`resources/` の clone だけが残る）。雛形 `templates/AGENTS.md` と見本の「`notes` が無いPCなど」を「`workbase` を clone していないPCなど」に直した（ユーザーの承認。`workbase` の `f4ed4be`。版は上げない）。
+- Linux を dotfiles で対応した（ユーザーの指示。dotfiles の `dab1507`、`ef5989b`。詳細は dotfiles の `docs/log.md`）。WSL の実機で、一時ディレクトリと偽の HOME を使って35項目を試験し、すべて合格した。ネイティブ Linux の実機は未確認。kit の `setup-hook.md` の既定値の表に、「`C:\vault\notes` は Windows と WSL の標準の場所。ネイティブ Linux では対象を言葉で指定する」を足した（`workbase` の `ec79112`）。
 - ディレクトリ構造の変更を検討し、方針を決めた（ユーザーの選択。判断は `docs/decisions.md` の「Vault のトップを PC ローカルのリポジトリにし…」）。きっかけは、会社 PC で `_local` の作業もコミットしたいこと。検討した案: 現状維持、`company/` の入れ子、トップ非リポジトリ、重ね git、exmem・kit の単独化。決定: トップを PC ローカルのリポジトリにし、共有部分を `workbase` として `resources/` に直接 clone する。`.obsidian` は dotfiles へ戻す。fonts・wallpapers・`_archive/obsolete`（履歴ごと）は破棄、`office/` は dotfiles へ。ジャンクション越しは Grep / Glob が辿らないことを実測した。`git filter-repo` 2.47.0 を導入した。リポジトリ、ファイルの移動、dotfiles はまだ変更していない（文書の記録のみ）。
 - 段階1を実施した（ユーザーの指示）。`notes` を一時ディレクトリへ clone し、`git filter-repo` で `fonts` `wallpapers` `_archive` `office` `_local/.gitkeep` と、トップのファイル（`.obsidian` `AGENTS.md` ほか）を履歴ごと除き、`resources/` をルートにした。結果: 58 → 30 コミット、139 → 68 ファイル（`exmem` 42、`workflow-kit` 11、`cheatsheets` 10、`handson` 5）。ルートに `AGENTS.md`、`CLAUDE.md`、`.gitattributes`（LFS なし）、`.gitignore` を足して1コミットにした。確認: 除外したパスの履歴の漏れ0、LFS 0、remote なし、改行は全ファイル LF、単独 clone した状態での wikilink 340件のうち未解決は8件（すべて規約の説明文にある書式の例で、実際の切れではない）。旧構成の記述（`_local`、`notes` がルート）が `workbase` 内の文書に残っている（修正は段階5）。実施中に、2026-10-04 の `.obsidian` の置き場の決定との食い違いを見つけて報告した。
 - `.obsidian` を dotfiles へ戻す（A）を、10-04 の決定と根拠を示した上で、ユーザーが改めて選んだ。経緯と撤回の理由は `docs/decisions.md`（「`.obsidian` を dotfiles へ戻す」）。`workbase` 側の `obsidian-vault.md` と `app-config-placement.md` に、撤回済みを記録した（2コミット）。
