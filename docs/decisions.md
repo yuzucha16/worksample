@@ -1,0 +1,164 @@
+# 判断の記録（decisions）
+
+なぜそうしたか（Why）、却下案、遭遇した詰まり、実機で確認した事実を残す。現在の状態と次にやることは `docs/log.md`。
+
+`.obsidian/` に関する 2026-10-04 以前の項目は、git 履歴と、`exmem/knowledge/` の記述から復元したもの。根拠と却下案が履歴に残っていないものは、Facts に事実として書く（判断の理由は推測で補わない）。
+
+## Principles
+
+- 作業ログは `exmem` に置かず、作業ディレクトリ側の `docs/` に置く。理由: `exmem` は知識・経験・ルールの置き場で、作業ログは将来、日報・仕様書・手順書などの文書の入力にするため。
+- 小さく一過性のディレクトリには、専用の `docs/` を置かない。親の作業ディレクトリの `docs/` に含める。理由: 小さな作業のために、`docs/` 一式を持つのは適正でない（ユーザーの判断）。
+- アプリが自動で書き換えるファイルを追跡するかは、次の5項目で決める。理由: 「自動で書き換わるものは追跡しない」だけでは、見た目の再現に要る設定まで外れてしまう（`colored-tags` の `data.json` で判断に迷った）。
+  1. 再現したい設定か（見た目や動作が、他の端末でも同じになる必要があるか）。
+  2. 共有ノートから決まる内容か（端末ごとの内容に依存しないか）。
+  3. 差分が、作業の意図と対応するか（作業のたびに無関係な差分が出ないか）。
+  4. 共有して問題ない内容か（機密や、ローカル専用ノートの内容を含まないか）。
+  5. 外したとき、再生成できるか（再生成できても内容が変わるなら、外す理由にならない）。
+  1〜4がすべて「はい」なら追跡する。端末ごとの状態（`workspace.json`）は 1 と 2 が「いいえ」なので追跡しない。
+- Obsidian の設定は、使っているものだけに絞る。理由: 使っていないプラグインと旧設定の削除を、実際に行っている（`82953b7`）。
+- 記録する決定は、ユーザーが明示したものだけにする。AI の提案は「提案」と書き、承認の確認が取れるまで決定として書かない。理由: 提案が決定として残ると、以後の判断が、承認されていない前提に乗る（実際に起きた）。
+
+## Decisions
+
+### Vault のトップを PC ローカルのリポジトリにし、共有部分を `workbase` として入れ子で clone する（2026-10-05）
+
+- 決めたこと:
+  - 共有部分（今の `resources/`）を、新しい GitHub リポジトリ `workbase` に切り出す。vault 内には `C:\vault\notes\resources` へ**直接 `git clone`** する（ジャンクションにしない。ghq の管理外）。固定パス `C:\vault\notes\resources\{exmem,workflow-kit}` は変わらない。
+  - `C:\vault\notes`（トップ）は、PC ローカルのリポジトリにする（会社 PC は remote なし、個人 PC はローカルか非公開 GitHub）。`projects/` `areas/` `archives/`、`docs/`、トップの `AGENTS.md` を持つ。`resources/` はトップの `.gitignore` で除外する。
+  - 共有側の `_local/` は廃止する。
+  - `.obsidian/` は dotfiles へ戻す（10-03 の「`notes` へ移す」決定の撤回。dotfiles への配置はジャンクション。実績あり）。
+  - 切り出しで、`fonts/` と `wallpapers/` は履歴ごと削除（LFS も不要になる）。`_archive/obsolete/` は、履歴も含めて破棄する。`office/` は dotfiles へ移す。`cheatsheets/` と `handson/` は `workbase` に入れる（後で見直す）。
+  - 既存の GitHub リポジトリ `yuzucha16/notes` は、アーカイブとして残す。
+  - exmem と workflow-kit の単独リポジトリ化（B）は、今回は行わない。
+- 根拠:
+  - 会社 PC で `_local` の作業もコミットしたい。ローカルリポジトリと GitHub 共有を同じ作業ツリーに混ぜられない（1つのリポジトリの作業ツリーは連続している必要があり、入れ子の `.git` の中は外側から追跡できない）。
+  - 共有側がローカルの存在を知らない（一方向の依存）構成にして、共有側を単独で clone しても自己完結させる（汎用ナレッジとして育てるため）。
+  - 境界の数は、公開範囲の種類の数に合わせる（共有 / PC ローカル / 設定）。
+  - ジャンクション越しは、Claude Code の Grep / Glob が辿らない（下の Facts）。
+- 却下案:
+  - 1つの作業ツリーに2つの git を重ねる（bare リポジトリ方式。ルートの `.gitignore` が両方に効き、会社側に `git add -f` が必要になる。`.git` を持つ片方しか、普通の `git` や AI から見えない）。
+  - 共有リポジトリをトップに置いて `company/` を入れ子にする（共有側がローカルの存在を知る。逆向きの知識が残る）。
+  - トップをリポジトリにしない（`AGENTS.md` と `docs/` の持ち主が無い）。
+  - 共有部分を ghq の位置に置いてジャンクションで vault に出す（Grep / Glob で見えなくなる）。
+- 確認済み（2026-10-05）: 上の決定は、ユーザーが選択肢から選んだ（公開範囲は未定のまま。最初は非公開で作る）。
+
+### トップのワークスペースを kit の導入フックで生成する（2026-10-05）
+
+- 決めたこと（ユーザーの承認）: `setup-hook.md` に導入項目 5「ワークスペース（Vault のトップ）の生成」を足す。入力は、PC の役割と remote の方針（通常の4項目に追加）。生成物は、`.gitignore`、`.ignore`、ワークスペース用の `AGENTS.md`、PARA の3フォルダ、`git init`。雛形は `workflow-kit/templates/workspace/`。新しい PC では、`workbase` を clone し、その中で「workflowを導入して」と言う。決まった配置（`resources/` の clone、`.obsidian` のリンク）は dotfiles（`50_repos`、`30_link`）が担う。
+- 根拠: 骨組みを生成物にすれば、PC ごとの違いを中身（PARA、`docs/`、固有ルール）に限れる。トップが PC ごとに別のリポジトリになる問題（共有側を汎用ナレッジとして育てたい）への対応。出力のブレを抑えるため、既存の導入フックと同じ型（入力・手順・自己点検・報告の型）にそろえた。
+- 却下案: スクリプトにする（既存の決定。固有ルールを埋められず、保守が増える）。
+- 確認済み（2026-10-05）: この PC のトップを、この手順で生成した（自己点検を通した）。実測で `.ignore` の不足を見つけて、kit に足した（Facts）。
+
+### `.obsidian` を dotfiles へ戻す（2026-10-05。2026-10-03 と 2026-10-04 の決定を撤回）
+
+- 決めたこと（ユーザー）: `.obsidian` の実体を dotfiles の `windows/obsidian/.obsidian` に置き、Vault のトップの `.obsidian` へジャンクションで張る（`links.map`）。`workspace*.json` は dotfiles の `.gitignore` で除外する。
+- 撤回する決定:
+  1. 2026-10-03「`.obsidian` を dotfiles から `notes` リポジトリへ移した」（根拠: git の管理境界を減らしたい）。
+  2. 2026-10-04「`.obsidian` は `notes` に置き続け、dotfiles には戻さない」（`exmem/knowledge/app-config-placement.md`。根拠: Obsidian は Vault 直下を読むのでジャンクションが必須になる、設定の中身が Vault と連動する、dotfiles → `notes` の片方向の依存を保てる、dotfiles の履歴が重くなる。却下案: dotfiles に戻してリンクする）。
+- 撤回の理由: Vault のトップを PC ローカルのリポジトリ（会社 PC は remote なし）にして、共有部分を別リポジトリ `workbase` に分けた。トップは PC 間で共有されないので、`.obsidian` をトップに置くと設定が PC ごとに別管理になる。dotfiles は全 PC に clone するので、設定を共有できる。10-04 の判断基準のうち「③ 依存の向き」と「④ 全 PC への到達性」の前提が変わった。境界の数は、公開範囲の種類（共有 / PC ローカル / 設定）に合わせる、という方針とも合う。
+- 経緯: 最初の提案では、10-04 の決定を示さず、10-03 の決定との関係だけを説明していた。実施中に 10-04 の決定の存在を見つけて報告し、決定と根拠を示した上で、ユーザーが改めて「dotfiles へ戻す（A）」を選んだ。
+- 引き受ける負担（10-04 の決定の根拠にあったもの）: ジャンクション越しの運用。リンクの前に Obsidian を開くと実ディレクトリが先にでき、`30_link.bat` が `[ERR]` で止まる（手で退避して再実行）。設定の変更が dotfiles のコミットになる（`[obsidian]` の接頭辞は dotfiles 側に移る）。
+- 却下案: トップのリポジトリで管理する（PC 間で共有されない）。
+- 反映（2026-10-05）: dotfiles に `.obsidian`（15ファイル）と `office/` をコピーし、`links.map` `10_env.bat` `50_repos.bat` `.gitignore` `README.md` `AGENTS.md` を更新した（未コミット。リンクを有効にするのは、トップの切り替え時）。`exmem/knowledge/obsidian-vault.md` と `app-config-placement.md` に、撤回済みを記録した（`workbase` 側の1コミット）。
+
+### `notes/` を作業ディレクトリとし、`docs/` を `notes/docs/` に置く（2026-10-04）
+
+- 決めたこと: Obsidian の設定管理（`.obsidian/`）を含め、`notes/` 全体を1つの作業ディレクトリとし、作業ログと判断記録を `notes/docs/` に置く。直前に決めた「`.obsidian/docs/` に暫定で置く」は取り消した。
+- 根拠: `.obsidian/` は小さく一過性のディレクトリで、専用の `docs/` を置くのは適正でないと、ユーザーが判断した。作業ログを `exmem` に置かない方針は維持する。
+- 却下案: `.obsidian/docs/` に置く（小さく一過性のディレクトリに置くのは適正でない）、`exmem/contexts/` に記録する（作業ログを `exmem` に置かない方針に反する）。
+- 確認済み（2026-10-04、根拠: `git status`）: `.obsidian/` の `AGENTS.md`、`CLAUDE.md`、`docs/` は、当日作成の未コミットのファイルだった。内容をこの `docs/` に移して削除した。
+
+### `notes/docs/` はローカル専用のままにする（2026-10-04）
+
+- 決めたこと: `notes/docs/` を共有（Git 管理）しない。`.gitignore` は変更しない。
+- 根拠: 作業ログに、会社固有の情報が入る可能性がある。`notes` リポジトリが公開か非公開かは未確認（`exmem/knowledge/obsidian-vault.md`）。ユーザーが承認した。
+- 却下案: `.gitignore` に `!/docs/` を足して共有する（会社固有の情報が共有側に出るリスク）。
+- 影響: `docs/` は他のPCに届かない。日報などの入力にするのは、そのPCの中になる。
+
+### 共通機能の導入手順を、「workflowを導入して」の導入フックにする（2026-10-04）
+
+- 決めたこと: `workflow-kit/setup-hook.md` を新設し、トリガーは「workflowを導入して」にする。導入項目は一覧の表で管理し、docs 以外の機能も足せるようにする。履歴からの復元は任意の項目にする。Claude 用スキルは、次回以降に作る（TODO）。試験導入先は `notes/`。
+- 根拠: 「ナレッジ化して」と同じ構成（手順・入力の型・自己点検・報告の型・改善フック）にそろえると、出力のブレを抑えられ、同じ育成と改善の枠に乗る。トリガーを `docs` でなく `workflow` にすると、docs 以外の機能の追加に対応しやすい。復元は、ほぼ使わないので任意でよい（ユーザーの判断）。
+- 却下案: 手順書だけにする（埋め方が揃わない）、導入スクリプトにする（固有ルールを埋められず、保守が増える）。スキルを同時に作る（次回以降に持ち越す）。
+
+### `contexts/` を「`notes` から見えない場所の引継ぎコンテキスト」にする（2026-10-04）
+
+- 決めたこと: `exmem/contexts/` は、モバイルや他環境での壁打ちの内容を引き継ぐためのコンテキストとし、作業ログの置き場にしない。消化の手段は未定。
+- 根拠: `exmem` は知識・経験・ルールの置き場で、作業ログは置かない（ユーザーの定義）。
+- 却下案: 作業ディレクトリが無い作業のログを `contexts/` に置く（役割が、引継ぎから作業ログへ広がる）。
+
+### `.obsidian/` を dotfiles から `notes` リポジトリへ移した（2026-10-03）
+
+- 決めたこと: `.obsidian/` を、dotfiles の `windows/obsidian/.obsidian` から `notes` リポジトリ直下へ移し、`notes` で管理する。`workspace.json` は追跡しない。
+- 根拠: Git の管理境界を減らしたい（`exmem/knowledge/obsidian-vault.md` の記述。決定日は 2026-10-02）。
+- 却下案: 履歴を引き継いでの移管（履歴なしのコピーで行った。確認: `exmem/knowledge/obsidian-vault.md`）。
+- 確認済み（2026-10-04、根拠: `git log`）: `notes` の `cee0c82` と、dotfiles の `bbb294b`。
+
+### 改行コードを LF に統一する（2026-10-03）
+
+- 決めたこと: `.gitattributes` に `* text=auto eol=lf` を書く。
+- 根拠: `.gitattributes` のコメントに「Obsidian・AI・WSL/Linux の出力が LF のため」とある。
+- 却下案: 約17分前の `76d3fec` で、設定ファイルを CRLF に戻していた（「Obsidian の出力に合わせて」）。この方針は、`df2d261` で LF に切り替えて置き換えた。理由は、履歴から不明。
+- 確認済み（2026-10-04、根拠: Obsidian が当日書き換えた `workspace.json`・`app.json`・`appearance.json`・`core-plugins.json`・`data.json` のバイト列に CR が無い）: Obsidian は設定ファイルを LF で書く。追跡中の15ファイルは、インデックスも作業ツリーも LF（`git ls-files --eol`）。他のPCでの出力は、未確認。
+
+### `colored-tags` の `data.json` は追跡する（2026-10-04）
+
+- 決めたこと: 既存の決定（`exmem/knowledge/obsidian-vault.md`。色の割り当てを固定するため追跡する）を、上の5項目で確認し、維持する。運用として、新しいタグを使い始めたコミットに、`data.json` の追記分を含める。
+- 根拠（5項目の確認）:
+  1. 再現したい設定か: 色の割り当ては、全端末で同じにしたい（`knowledge/obsidian-vault.md` の決定の根拠）。
+  2. 共有ノートから決まるか: 78タグのうち74件は、追跡対象の共有ノート（`.md`）の本文に文字列として出てくる。残る4件（`dashboard`、`report`、`monthly`、`weekly`）は見つからなかった（確認: 2026-10-04、根拠: 追跡対象の `resources/` の `.md` の部分一致検索。短いタグは過大に一致するので、74件は多めの数。日本語名の6ファイルは、パス処理の都合で検索できなかった）。`auto_ota` や `your_project` のような固有名も、共有側の `_archive/` のノートに出てくるので、ローカル専用ノートからの漏れではない。
+  3. 差分が作業の意図と対応するか: 新しいタグが増えたときだけ末尾に追記される（確認: 2026-10-04、根拠: `git diff`。当日6件が追記された）。
+  4. 共有して問題ないか: タグ名だけで、機密はない。共有ノートに見つからない4件は、一般的な語。
+  5. 外したとき再生成できるか: Obsidian が再発見すれば再生成できる。ただし、色は発見順の連番なので、clone ごとに変わる可能性がある（仮説。`knowledge/obsidian-vault.md` の記述より）。
+- 却下案: 追跡しない（clone 後に色が変わる）、CSS スニペットで色を固定する（タグが増えて必要になったら移る）。
+- 補足: `palette` の設定値は、`selected: adaptive-soft`、`mixColors: true`、`transition: true`（確認: 2026-10-04、根拠: `data.json`）。
+
+### `types.json` で `created` と `updated` を日付型にする（2026-10-03）
+
+- 決めたこと: `created` と `updated` のプロパティを `date` 型にする（`e81182c`）。
+- 根拠: Bases での並べ替えや日付フィルタが正しく動く（`exmem/knowledge/obsidian-vault.md` の Proposals の記述）。
+- 却下案: 履歴から不明。
+
+### ファイルアイコンは CSS のみで種類ごとに色分けする（2026-10-04）
+
+- 決めたこと: `file-explorer-compact.css` に、種類ごとの色を足す。目標は、アイコンの適用と、起動・処理が重くならない確認まで（ユーザーの指示）。
+- 根拠: 単一色（`--text-faint`）で見分けにくい。色の変更だけなら、既存の形状（マスク）を流用でき、追加の処理は、静的な属性セレクタだけで済む。色は `--color-*` を使い、テーマとライト・ダークに追従させる。
+- 却下案: アイコン用プラグイン（`obsidian-icon-folder` は 2026-10-03 に、使わないとして削除済み。「設定は使っているものだけに絞る」にも反する）。
+- 配色（ユーザーの指示）: 開いているフォルダ=yellow、閉じているフォルダ=`#A7B85A`（`material-gruvbox-bold.css` の見出し色と同じ値を直接書いている。見出しの色を変えるときは両方直す）。アクティブなタブの文字とウィンドウ右上のボタンは、テーマの赤・黄を `--text-normal` に上書きした。
+- 見送り: 階層ごとのインデントを狭める。Obsidian が各行にインラインの `!important` で位置を付け（1階層17px）、CSS からは変えられない。`.nav-folder-children` の余白を変えると、行の位置と食い違ってずれた（確認: 2026-10-05、根拠: 開発者ツールで取った DOM）。
+- 確認済み: ユーザーが実機で見た目を確認しながら調整した。起動・処理の軽さは、計測していない（CSS のルール追加のみで、スクリプトは無い）。
+
+### 本文の幅をフォントサイズに比例させる（2026-10-04）
+
+- 決めたこと: `--file-line-width: 58em` にし、`readableLineLength` を有効にする（`0fdd679`）。
+- 根拠: 拡大しても、1行の文字数が保たれる（`readable-width.css` のコメント）。
+- 却下案: 既定の固定幅 700px（拡大すると1行の文字数が減る）。
+
+## Facts
+
+- ripgrep（Claude Code の Grep を含む）は `.gitignore` を尊重する。トップの `.gitignore` が `resources/`（別リポジトリの clone）を除外すると、トップから Grep しても `resources/` の中が、エラーも警告も無く結果から抜ける。トップの `.ignore` に `!/resources/` を置くと、検索に含まれる（確認: 2026-10-05、根拠: `setup-hook` の Grep が `.ignore` の前は3件、後は8件以上で `resources/` 配下が出た）。`.gitignore` はこの PC のトップだけでなく、新しい PC でも同じなので、雛形 `templates/workspace/ignore.template` で生成する。Glob への影響は未確認（`resources/workflow-kit/*.md` の Glob は、`.ignore` の後に通った）。
+- `docs/` は、トップのリポジトリで追跡する（共有の `workbase` には載らない）。2026-10-04 の「`notes/docs/` はローカル専用のままにする」の趣旨（共有リポジトリに載せない）は保たれる。個人用 PC では、非公開 remote（`worksample`）へ push するかは、ユーザーが決める。
+- ジャンクション越しのディレクトリは、Claude Code の Grep / Glob、`rg`（既定）、PowerShell の `Get-ChildItem -Recurse` が辿らない。エラーも警告も出ず、結果から黙って抜ける。ジャンクション自体をパスに指定すると検索できる（結果は実体のパス）。`rg --follow` なら辿る（確認: 2026-10-05、根拠: 使い捨ての一時ディレクトリで実測。Windows 11、pwsh 7、rg は scoop 版）。Obsidian のジャンクション越しの動作は未検証。
+- `_archive/obsolete/` は、プロジェクト管理の旧雛形27ファイル（プレースホルダ `your_project` など）で、作成は 2026-10-02 の1コミットだけ。使われた形跡は、コミットからは見つからなかった（確認: 2026-10-05、根拠: `git log -- resources/_archive`）。
+- `git filter-repo` 2.47.0 を scoop で導入した（2026-10-05。ユーザーの承認）。
+
+- `notes` のルートに作った `docs/` は、`.gitignore` のホワイトリスト（`/*`）により、既定でローカル専用になる（確認: 2026-10-04、根拠: `git check-ignore -v docs/log.md` が `.gitignore:3:/*` を返した）。共有するには、`.gitignore` に `!/docs/` を足す必要がある。
+- `notes` の `AGENTS.md` と `CLAUDE.md` は、導入フックの実行前から存在した。`CLAUDE.md` は `@AGENTS.md` の1行（確認: 2026-10-04、根拠: ファイルの読み取り）。
+- テーマは Material Gruvbox。以前は Obsidian gruvbox と Everforest で、`78e3975`（2026-10-03）で変更した。変更の理由は、履歴から不明。Zed の自作テーマ（Material Gruvbox Dark）と同じ名前だが、そろえる意図があったかは未確認（仮説）。
+- フォントは PlemolJP Console NF（UI・本文・等幅とも）。以前は Noto Sans JP、BIZ UDPゴシック、HackGen Console NF 系で、`1d75fce`（2026-10-03）で変更した。変更の理由は、履歴から不明。
+- 現在の Obsidian の設定（確認: 2026-10-04、根拠: `.obsidian/*.json` の読み取り）:
+  - 新規ノートの保存先は現在のフォルダ（`newFileLocation: current`）、添付は `./`、行番号を表示、削除の確認あり、タブ幅 2、検索から除外するフィルターは `.tmp.` `_archive/` `.claude/`。
+  - コミュニティプラグインは `colored-tags` だけ。有効なスニペットは `material-gruvbox-bold`、`file-explorer-compact`、`readable-width`。
+  - 有効なコアプラグインは、`file-explorer` `global-search` `switcher` `backlink` `outgoing-link` `tag-pane` `properties` `page-preview` `command-palette` `editor-status` `bookmarks` `outline` `word-count` `file-recovery` `sync` `bases`。
+- 食い違い: `exmem/knowledge/obsidian-vault.md` の「設定」節（2026-10-01 時点の記述）は、現在の設定と違う。同ノートはコアプラグインの有効に `Templates`、`Graph`、`Daily notes`、`Canvas` を、コミュニティプラグインに `calendar` と `obsidian-icon-folder` を挙げ、新規ノートの保存先を `0_inbox` と書いている。現在は、いずれもオフまたは削除済み（確認: 2026-10-04、根拠: `core-plugins.json` と `community-plugins.json`）。同ノートの `0_inbox` は、Vault に存在しないフォルダだった。
+- 2025-09-22 に、9つのコミュニティプラグインを追加し（`44054b5`）、翌日に取り消した（`dcbe209`）。
+- dotfiles 側の 2026-10-02 より前の履歴は、履歴の作り直しで残っていない（確認: 2026-10-04、根拠: `git log --all -- windows/obsidian` の結果が、初期コミットと `bbb294b` だけ）。
+
+## Gotchas
+
+- 状況: `colored-tags` の `data.json` を、追跡する・しないが2回切り替わった
+  - 原因: 不明（コミットメッセージには「端末ごとのタグ色のキャッシュ」とだけある）
+  - 解決: 2026-10-04 に、判断基準5項目で追跡と決めた（Decisions を参照）。新しいタグを使い始めたコミットに、追記分を含める
+- 状況: AI が提案した記録先を「決定済み」と書いて進め、ユーザーに指摘された
+  - 原因: ユーザーの回答が「疑問はその通り」までなのに、AI が記録先まで補って決定として扱った
+  - 解決: 「ユーザーが明示した決定」と「AI が追加した内容」を表に分けて確認し、追加分を削除・書き換えた
