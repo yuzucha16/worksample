@@ -4,15 +4,25 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 ## Next Actions
 
-- 判断 E（strict aliasing。E1 `-fno-strict-aliasing` を推奨）を、ユーザーが承認する。承認後に、`docs/coding-rules.md` の節 5 を、`docs/design.md` の「実装の初期値」で置き換える。
-- `src/pool.h` `src/pool.c` と `tests/test_pool.c` を実装する（設計は `docs/design.md`。テストの観点は同書の 6 節）。`make size`（フットプリントの表示）を足す。
-- ARM 向けのフットプリントを測るために、`arm-none-eabi-gcc` を dotfiles に足すか、ユーザーに確認する（提案。いまは未導入。導入すれば Cortex-M 向けの `.text` `.data` `.bss` を実測できる）。
+- ユーザーが、WSL に `gcc-arm-none-eabi` を導入する（`docs/dotfiles-additions.md` のコマンド）。導入後に `make check-arm` と `make size-arm` を実行し、`pool_free` の除算が Cortex-M0 で未定義シンボルを出すか確認する（`docs/design.md` の 5 節のリスク）。出たら対処案（2 のべき乗に制限、除算なしの検査、M0 を対象外）を、ユーザーに相談する。
+- `docs/design.md` の 5 節「実装の初期値」を、ユーザーがレビューする（未承認）。承認後に、`docs/coding-rules.md` の節 5 をそちらで置き換える。
+- 実装のレビューを受ける。完了条件（`alloc`/`free` の単体テストと、ASan・UBSan の警告 0 の実行が通る）は、いまの時点で満たしている（`make check`）。Project を閉じる前に、見直し日（2026-10-20）までに、ARM の実測と、制約の再検討（暫定の見直し）を行う。
 - 設計に沿って、`src/pool.c` と `tests/test_pool.c` を実装する（完了条件: 単体テストと、ASan・UBSan の警告 0）。
 - WSL の開発ツールが足りなければ、dotfiles に足す（ユーザーの方針。2026-10-06。`gdb` `valgrind` `clang` `cmake` は、いまは無い。必要になってから）。
 
 ## Open Questions
 
 ## Log
+
+### 2026-10-06（セッション `2026-10-06-s4`。実装）
+
+- ユーザーが、判断 E1（`-fno-strict-aliasing`）と `arm-none-eabi-gcc` の導入を承認した。`docs/coding-rules.md` の `.data` の制約から、「起動を楽にする」の記述を削除した（ユーザーの指示）。
+- アロケータを実装した: `src/pool.h` `src/pool.c`（固定長ブロック、全ブロックを連結、侵入型の単方向リスト、`pool_init` `pool_alloc` `pool_free` `pool_check`。設計は `docs/design.md`）。テスト `tests/test_pool.c`（引数の検証、不変条件、整列（align 8〜64、先頭を 0〜7 バイトずらす）、枯渇と LIFO の再利用、重ならないこと、不正な `free`、未初期化のプール、リストの破壊の検出、固定シードのモデル検査 2万回）と、`tests/check.h`。`Makefile` に、`test-o2`（`-O2`）、`check-arm`、`size`、`size-arm`、`-fno-strict-aliasing` を足した。
+- 確認（2026-10-06、gcc 13.3、WSL）: `make check` が通った（`format-check`、`analyze`、`check-rules`（変数・`.data`・`malloc`・libc 依存・改行・文字コード）、`test`（ASan・UBSan）、`test-o2`、`probe`）。`check-arm` は `arm-none-eabi-gcc` 未導入で SKIP。フットプリント（ホスト x86-64、`-Os`）: `.text` 633、`.data` 0、`.bss` 0（バイト）。
+- E1 の対照実験: `-fno-strict-aliasing` を外しても、`-O1` `-O2` `-O3` のどれでもテストは通った（strict aliasing の問題は再現していない。E1 は予防）。
+- 作業中に、テストの未定義動作を1件直した（配列の外へのポインタ演算 `b - n` を、整数で作る形に）。
+- リスク（未確認）: `pool_free` の `locate` の除算・剰余は、Cortex-M0 では libgcc の補助関数を呼び、libc 非依存の検査に引っかかる可能性がある。`arm-none-eabi-gcc` の導入後に `make check-arm` で確認する（`docs/design.md` の 5 節。対処案 3 つ）。
+- dotfiles に `gcc-arm-none-eabi` を追記した（dotfiles の `08df993`。約 490MB）。実機への導入は、ユーザーが行う（`docs/dotfiles-additions.md`）。
 
 ### 2026-10-06（セッション `2026-10-06-s3`。組込み前提の設計）
 

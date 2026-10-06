@@ -16,8 +16,8 @@ C の低レイヤー（メモリ配置、ポインタ、アライメント、未
 
 ## 成果物
 
-- `src/`: 実装（アロケータ）
-- `tests/`: 単体テスト（`test_*.c`）と、サニタイザが効いていることの確認（`probe/`）
+- `src/`: 実装（`pool.h` `pool.c`。設計は `docs/design.md`）
+- `tests/`: 単体テスト（`test_*.c`）と、サニタイザ・検査が効いていることの確認（`probe/`）
 - `Makefile`: `make check`（全チェック）、`make test`（ASan・UBSan つきで実行）、`make probe`（意図したバグ・違反を検出することの確認）。WSL（Ubuntu 24.04）の gcc と make で動かす
 - `tools/check-rules.sh`、`.clang-format`: コーディングルールの機械検査と整形の設定（内容と根拠は `docs/coding-rules.md`）
 - `docs/`: 経緯（`log.md`）と判断（`decisions.md`）。複数セッションにまたがるため置く

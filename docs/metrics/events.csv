@@ -105,3 +105,6 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s3,learning,learn-c-pool-allocator,開発（設計）,approval,2026-10-06-s3-q06,判断 D（ターゲットの前提）,adhoc,choice,1,1,0,1,0,,live
 2026-10-06,2026-10-06-s3,learning,learn-c-pool-allocator,開発（設計）,gap,2026-10-06-s3-g02,設計の優先順位（安全性と起動速度のどちらを取るか）が聞かれず、AI の推奨が逆になった,adhoc,free,1,1,0,1,0,,live
 2026-10-06,2026-10-06-s3,-,-,開始インタビュー,improvement,2026-10-06-s3-i02,開発の差分項目に「設計の優先順位（安全性・速度・フットプリントの順）」を足す,hook,choice,0,,,,,,live
+2026-10-06,2026-10-06-s4,learning,learn-c-pool-allocator,開発（実装）,approval,2026-10-06-s4-q01,「起動を楽にする」の削除範囲（AI は design.md だけを直し、coding-rules.md に残した）,adhoc,choice,1,1,1,0,0,,live
+2026-10-06,2026-10-06-s4,learning,learn-c-pool-allocator,開発（実装）,approval,2026-10-06-s4-q02,判断 E（strict aliasing。E1 を推奨）,adhoc,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s4,learning,learn-c-pool-allocator,開発（実装）,approval,2026-10-06-s4-q03,arm-none-eabi-gcc の dotfiles への追加,adhoc,choice,1,1,0,0,0,,live

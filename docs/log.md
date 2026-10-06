@@ -49,6 +49,11 @@ exmem:
 
 ## Log
 
+### 2026-10-06（アロケータを実装した。セッション `2026-10-06-s4`）
+
+- ユーザーが、判断 E1（`-fno-strict-aliasing`）と `gcc-arm-none-eabi` の追加を承認し、`coding-rules.md` の `.data` の制約から「起動を楽にする」の削除を指示した。私は、先に設計書だけを直し、ここは残していた（削除の範囲の解釈の誤り。`events.csv` の `2026-10-06-s4-q01`、修正1）。
+- `projects/learn-c-pool-allocator/` に、`src/pool.{h,c}` と `tests/test_pool.c` を実装した。`make check`（整形、静的解析、制約、テスト、`-O2` のテスト、検査の検査）が通った。ホストのフットプリントは `.text` 633、`.data` 0、`.bss` 0。ARM の確認は、`arm-none-eabi-gcc` の導入待ち（dotfiles の `08df993`。ユーザーが導入する）。詳細は `projects/learn-c-pool-allocator/docs/log.md`。
+
 ### 2026-10-06（設計の判断 A〜D を承認。セッション `2026-10-06-s3`）
 
 - ユーザーが、メモリプールの設計の判断 A〜D に回答した（詳細は `projects/learn-c-pool-allocator/docs/decisions.md`）。AI の推奨（A1 遅延切り出し）が、ユーザーの優先（安全性が起動速度より上）と逆だった。`events.csv` に、`approval` 4行（A は修正つき、B・D は補足つき）と、`gap` 1行（設計の優先順位が聞かれなかった）を記録した。
