@@ -16,7 +16,8 @@ ALL_C   := $(SRC) $(TESTS) $(wildcard src/*.h) $(wildcard tests/*.h)
 # 組込み向けの freestanding ビルド（フットプリントの測定。サニタイザなし）。
 FREE    := -std=c11 -Os -ffreestanding -fno-pic -fno-stack-protector -fno-strict-aliasing
 ARM_GCC := arm-none-eabi-gcc
-ARM_CPUS := cortex-m0 cortex-m3 cortex-m4
+# 対象は、ハードウェア除算のあるコア。Cortex-M0 / M0+ は対象外（docs/design.md の判断 F4。src/pool.c が #error で止める）。
+ARM_CPUS := cortex-m3 cortex-m4
 
 .PHONY: check test test-o2 analyze check-rules check-arm size size-arm format format-check probe clean
 
@@ -57,7 +58,12 @@ check-arm: | $(BUILD)
 	  $(ARM_GCC) -mcpu=$$cpu -mthumb $(FREE) -Isrc -c $$f -o $$o || exit 1; \
 	  u=$$(arm-none-eabi-nm -u $$o | awk '{print $$NF}' | tr '\n' ' '); \
 	  if [ -n "$$u" ]; then echo "FAIL: $$f ($$cpu): 未定義シンボル: $$u"; fail=1; else echo "OK: $$f ($$cpu)"; fi; \
-	done; done; exit $$fail; fi
+	done; done; \
+	if $(ARM_GCC) -mcpu=cortex-m0 -mthumb $(FREE) -Isrc -c $(firstword $(SRC)) -o /dev/null 2>$(BUILD)/m0.err; then \
+	  echo "FAIL: Cortex-M0 は対象外のはずが、コンパイルできた"; fail=1; \
+	elif grep -q "not supported" $(BUILD)/m0.err; then echo "OK: Cortex-M0 は対象外（#error で止まる）"; \
+	else echo "FAIL: Cortex-M0 のコンパイルが、#error 以外の理由で失敗した"; cat $(BUILD)/m0.err; fail=1; fi; \
+	exit $$fail; fi
 
 # フットプリント（.text .data .bss）。ホスト（x86-64）の値は参考。目標は .data が 0。
 size: | $(BUILD)

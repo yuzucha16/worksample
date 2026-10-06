@@ -4,14 +4,18 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 ## Next Actions
 
-- 判断 F（Cortex-M0 の除算。F1 2進の筆算を推奨）を、ユーザーが決める（`docs/design.md`）。決定後に、`src/pool.c` を直し（F1 / F2 の場合）、`make check` の全項目が通ることを確認する（M0 / M3 / M4）。
-- Project を閉じる（close）。完了条件（`alloc`/`free` の単体テストと、ASan・UBSan の警告 0 の実行）は満たしている。閉じる手順は、`docs/drafts/project-close.md` の下書き（初回の実測）。ナレッジ化の候補は、`docs/decisions.md` の `未仕分け` の項目（Facts 3、Gotchas 2、Principles 2）。
-- 設計に沿って、`src/pool.c` と `tests/test_pool.c` を実装する（完了条件: 単体テストと、ASan・UBSan の警告 0）。
-- WSL の開発ツールが足りなければ、dotfiles に足す（ユーザーの方針。2026-10-06。`gdb` `valgrind` `clang` `cmake` は、いまは無い。必要になってから）。
+なし。Project を閉じた（2026-10-06）。持ち越しは `areas/learning/README.md` の「次の Project の候補」。`docs/decisions.md` の `未仕分け`（【汎用】の Principles 2、Facts 3、Gotchas 2）は、ユーザーが「ナレッジ化して」または「終了処理して」を言ったときに処理する（ユーザーの指示: あとでまとめて言う）。
 
 ## Open Questions
 
 ## Log
+
+### 2026-10-06（Project を閉じた。完了条件を達成。セッション `2026-10-06-s5`）
+
+- ユーザーが判断 F に F4（Cortex-M0 を対象外）を選んだ。`src/pool.c` に、ARMv6-M で `#error` で止める記述を足した。`make check-arm` は、M3 / M4 の未定義シンボルが無いことと、M0 が `#error` で止まることを確認する。`make check` が全項目通った（確認: 2026-10-06）。フットプリント: M3 / M4 は `.text` 288、`.data` 0、`.bss` 0。
+- 完了条件（`alloc`/`free` の単体テストと、ASan・UBSan の警告 0 の実行）を、`make check` で確認して達成。ユーザーの指示で、見直し日（2026-10-20）を待たずに閉じた。暫定の制約は、実測で再検討し、現状維持（再帰とポインタの検査を足した）。結果は `README.md`。
+- `archives/` へ移した（`git mv`）。親の Area の一覧（`areas/learning/README.md`）を更新した。
+- ユーザーの指示で、ナレッジ化は、あとでまとめて言う（`docs/decisions.md` の【汎用】の未仕分け 7 件を残した）。
 
 ### 2026-10-06（セッション `2026-10-06-s5`。ARM の実測と、暫定制約の再検討）
 

@@ -12,13 +12,20 @@ updated: 2026-10-06
 ## 基準
 
 - 学習は、成果物（実装物など）で完了条件を書ける Project にする。読書や講座の消化だけを目的にしない。
-- 見直し: Project の見直し日ごとに、この一覧を更新する。
+- 見直し: Project の見直し日ごとに、この一覧を更新する。完了条件を達成したら、見直し日を待たずに閉じる。
 - 一般化できる学びは、「ナレッジ化して」で exmem へ渡す。
+- 開発系の Project は、実装の前に、専門領域（組込み）、設計の優先順位（安全性 > 起動速度）、コーディングルールとチェックの有無を確認する（初回の Project で、聞き漏れが3回あったため）。
 
 ## 進行中の Project
 
-- [[projects/learn-c-pool-allocator/README|learn-c-pool-allocator]]（C。見直し 2026-10-20）
+なし。
+
+## 次の Project の候補（持ち越し。未決）
+
+- スレッド・割り込みの安全性（`learn-c-pool-allocator` の範囲外。呼び出し側の排他の設計）。
+- Cortex-M0 への対応（F1: 2進の筆算。試作で 378 バイト、未定義シンボルなしを確認済み。`archives/learn-c-pool-allocator/docs/design.md` の判断 F）。
+- 検査の限界の解消（間接呼び出し経由の再帰、ファイルスコープの `static`、複数ファイルの `src/` での未定義シンボルの検査）。
 
 ## 完了した Project
 
-なし。
+- [[archives/learn-c-pool-allocator/README|learn-c-pool-allocator]]（C。組込み向けの固定長メモリプール。2026-10-06 に達成。Cortex-M3 / M4 で `.text` 288 バイト、`.data` 0）

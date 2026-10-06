@@ -12,7 +12,7 @@
 | 書式 | `clang-format`（`.clang-format`。`make format-check`） | 決定。有効（clang-format 18.1.3） | ユーザーの報告（2026-10-06）。導入後の最初の `make check` で、手で揃えたマクロの `\` を指摘し、`make format` で直した |
 | 制約（.data・グローバル変数・動的確保・再帰・整数からのポインタ） | `tools/check-rules.sh`（`nm` と呼び出しグラフでオブジェクトを検査。**`src/` のみ**） | 決定 | 下の「制約」 |
 | 改行・文字コード | `tools/check-rules.sh`（CR、BOM、UTF-8 を検査。テストも含む） | 決定 | 下の「書式」 |
-| ARM の libc 非依存 | `make check-arm`（Cortex-M0 / M3 / M4 向けに、未定義シンボルが無いこと。libgcc の補助関数を含む） | 決定。**現状: M0 が FAIL、M3 / M4 は OK**（事実。ユーザーの実行: 2026-10-06） | M0 は `__aeabi_uidiv` `__aeabi_uidivmod`（除算命令が無いため）。対処は判断待ち（`docs/design.md` の 5 節） |
+| ARM の libc 非依存 | `make check-arm`（Cortex-M3 / M4 向けに、未定義シンボルが無いこと。libgcc の補助関数を含む。M0 が `#error` で止まることも確認） | 決定。OK（事実。2026-10-06） | Cortex-M0 / M0+ は対象外（判断 F4）。M0 は `__aeabi_uidiv` `__aeabi_uidivmod`（除算命令が無いため）に依存する（`docs/design.md`） |
 | 最適化への依存 | `make test-o2`（`-O2` でも同じテストを実行） | 決定 | 判断 E1（`-fno-strict-aliasing`）の確認用 |
 | ビルドフラグ | `-fno-strict-aliasing`（判断 E1） | 決定 | `Makefile`。製品のビルドにも同じフラグが要る |
 | フットプリント | `make size`（ホスト）、`make size-arm`（Cortex-M） | 事実（下の表） | 目標は `.data` が 0（達成） |
@@ -27,8 +27,7 @@ linter（静的解析ツール）は、gcc の `-fanalyzer` だけ。フォー�
 |---|---|---|---|---|
 | ホスト x86-64 | 633 | 0 | 0 | 参考値 |
 | Cortex-M3 / M4 | 288 | 0 | 0 | ハードウェア除算（ユーザーの実行結果） |
-| Cortex-M0（自分のコードだけ） | 332 | 0 | 0 | ユーザーの実行結果。libgcc の補助関数を含まない |
-| Cortex-M0（libgcc をリンク） | 612 | 0 | 0 | `__udivsi3` が 266 バイト（AI の実測: 2026-10-06、`-nostdlib -lgcc` でリンク） |
+| Cortex-M0（参考。**対象外**） | 332（自分のコードだけ）、612（libgcc をリンク） | 0 | 0 | 判断 F4。`__udivsi3` が 266 バイト（AI の実測: 2026-10-06、`-nostdlib -lgcc` でリンク） |
 
 ## 2. 書式（決定）
 

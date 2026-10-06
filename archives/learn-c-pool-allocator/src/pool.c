@@ -2,6 +2,14 @@
 
 #include <stdint.h>
 
+/* Cortex-M0 / M0+（ARMv6-M）は、除算命令が無く、libgcc
+ * の補助関数に依存するので対象外。 理由と代替案は docs/design.md の判断
+ * F（F4）。 */
+#if defined(__ARM_ARCH_6M__)
+#error                                                                         \
+    "pool: ARMv6-M (Cortex-M0/M0+) is not supported: no hardware divide (docs/design.md, judgment F4)"
+#endif
+
 /* 空きブロックの先頭に、次の空きブロックへのポインタを置く（侵入型リスト）。
  * バッファの宣言型は呼び出し側の任意なので、strict aliasing の対象になる。
  * ビルドで -fno-strict-aliasing を付ける前提（docs/design.md の判断 E1）。 */
