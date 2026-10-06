@@ -6,6 +6,12 @@
 
 ## Next Actions
 
+- **docs のデータの行き先の仕組み（試験運用中。2026-10-06 時点）**: works の `decisions.md` の42項目に印を付けた（`docs/decisions.md` の「docs の項目に「行き先」を持たせ…」）。残りは次の5点。
+  1. kit に反映する変更案を、ユーザーに示して承認を得る（`docs-rules.md` の新節「decisions.md の項目の行き先」、`templates/decisions.md` の行き先の行、`knowledge-hook.md` の対象に未処理の【汎用】項目、`tools/check-docs.ps1`、P2 と P5 の追記）。承認後に kit の版を上げ、`improvements.md` と README の変更履歴を更新する。
+  2. `転記済` の項目の根拠・却下案が、転記先に欠けなく写っているかを、項目ごとに確認する。確認後に、元の本文を外す（今は印だけで、本文は残している）。
+  3. 滞留の候補を探す（今は0件）。一般化を試みて難しい項目が見つかったら、`滞留（理由）` にする。
+  4. 会社 PC への展開（隔離ソース）。`転記待ち` を grep して、一般化済みの短文（1回10件前後、上限20件）を画面に出す手順を、kit の `docs-rules.md` に書く。
+  5. `docs/tools/check-docs.ps1` を、運用が固まったら kit の `tools/` に移す。
 - **`works` への移行の残り（2026-10-06 時点）**: 移行は完了した（Log 2026-10-06）。残りは次の2点。
   - 旧セッション `bc9d6801-…` の `claude --resume` が `works` で通らない原因を調べる（任意。通らなくても、旧パスの履歴は `C:\Users\ck\.claude\projects\C--vault-notes-*` に残っている）。
   - 各 `resources/*/.claude/settings.local.json`（端末ごとの許可設定。追跡しない）に、旧パスの許可項目が残っている。害はない。気になるときに整理する。
@@ -45,6 +51,8 @@ exmem:
 
 ### 2026-10-06
 
+- docs のデータの行き先の仕組みを設計し、works で試験運用を始めた（ユーザーの指示と承認。判断は `docs/decisions.md` の「docs の項目に「行き先」を持たせ、滞留するデータを検出する」）。現状把握（kit・exmem との突き合わせ）→ 論点と判断軸の作成 → 選択肢（現状維持、行き先の印、書く時点のラベル、docs からの転記、docs の共有）→ 採用（ラベルと行き先の印、滞留を独立した状態、上限20件、試験先行）の順。`docs/decisions.md` の42項目に、ラベルと行き先を付けた（転記済 31、転記待ち 3、local 6、破棄 2、滞留 0）。点検スクリプト `docs/tools/check-docs.ps1` を作り、FAIL 0 を確認した（見本で、欠落・不正な状態・上限超過の検出も試験した）。kit は、承認前なので変更していない。
+- 転記待ちのうち3件を処理した（ユーザーの承認）。① dotfiles の `docs/decisions.md` に、Linux 側の試験スクリプトの置き場の決定を足した（works の記録が先で、dotfiles 側に無かった）。② exmem の `README.md` と `AGENTS.md` の `contexts/` の定義を、決定（`works` から見えない場所の引継ぎコンテキスト）に合わせた。③ exmem の `obsidian-vault.md` の設定節は、すでに現状と一致していたので変更なし。
 - 「ナレッジ化して」を2回実行した（ユーザーの指示）。既存メモ `2026-10-06-vault-top-rename-impact.md` に、このメモに無い情報（旧パス 1180 件の内訳など）を追記し、別メモ `2026-10-06-archived-repo-old-path-policy.md`（旧名の時制の方針、アーカイブ済み GitHub リポジトリの削除の前提と手順）を作った。メモはコミットしない規則のため未追跡。点検スクリプトは FAIL 0。この実行の改善1点（既存メモへの追記と別メモの作成が同時に求められたときの手順）を、ユーザーが承認し、kit に反映した（版 `2026-10-06.10`。判断は kit の `improvements.md`）。`AGENTS.md` の「新規ファイルだけ」に例外の参照を足した（雛形と同じ文面）。
 - 現在形の旧パスを直した（ユーザーの指示。方針: 現在形の記述は現在の名前に直し、日付つきの履歴は書き換えない）。直したもの: `exmem/knowledge/` の `workflow-kit.md`（既定の対象。WSL から読めることを確認して更新）、`modern-cli-tools.md`（`.ignore` の場所）、`wsl-file-placement.md`（記述時点のパスと明記）、`obsidian-vault.md`（構造の図）。このリポジトリの Next Actions（終わった項目2つを削除、パスと `$WORKS_DIR` を更新）と、dotfiles の `docs/log.md` の Next Actions。残る旧パスは、すべて日付つきの履歴の記述（確認: 2026-10-06、根拠: `rg`）。旧 `notes` の GitHub 側の削除は、手順の案を Next Actions に記録した（未決）。
 - `works` への移行が完了した（ユーザーが `C:\vault\backup\finish-works-rename.ps1` を実行。その後の確認は次の項目）。`claude --resume bc9d6801-…` は、`cwd` を書き換えた履歴でも**通らなかった**（ユーザーの報告。エラーの内容は未取得）。
