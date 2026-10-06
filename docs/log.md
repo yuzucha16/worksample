@@ -7,10 +7,9 @@
 ## Next Actions
 
 - **Vault を `$HOME\works` へ移した後の残り（2026-10-06 に移行を実行。新しい場所で Obsidian と Claude Code の動作を確認済み。2026-10-06 時点）**: 残りは次の点。
-  1. dotfiles のコミット（`10_env.bat` ほか。dotfiles 側の `docs/` にも結果を書く）。works と `resources/` のコミットは済み（Log 2026-10-06）。
-  2. 旧 `C:\vault` を削除する。先に、`C:\vault\backup\notes-before-restructure-20261005` と旧 clone の扱い（下の「段階5の残り」）を決め、`C:\vault` の中にまだ要るものが無いか確認してから消す。
-  3. exmem の `obsidian-vault.md`（現行の記述: 環境変数 `WORKS_DIR`、トップのパス、構成図、`.obsidian` の表）などのナレッジの旧パスは未着手（版と承認が要る）。「ナレッジ化して」で直す。kit の `.gitignore` の雛形への `/repos/` も未着手。
-  4. WSL の `~/vault`（WSL 自身の作業用）と、WSL の `GHQ_ROOT`（`~/vault/repos`）は、今回は変えていない。
+  1. 旧 `C:\vault` の削除は保留（ユーザーの指示）。旧 `notes` の完全な履歴 58 コミットが残るバックアップ（`C:\vault\backup\notes-before-restructure-20261005`）と旧 clone を、`claude --resume` で旧セッションが復活するかの試験に使う（過去に成功した例が無い）。試験の後に、削除の可否（下の「段階5の残り」）を決める。
+  2. exmem の `obsidian-vault.md`（現行の記述: 環境変数 `WORKS_DIR`、トップのパス、構成図、`.obsidian` の表）などのナレッジの旧パスは未着手（版と承認が要る）。ユーザーの方針で、ナレッジ化は終了処理でまとめて行う。
+  3. WSL の `~/vault`（WSL 自身の作業用）と、WSL の `GHQ_ROOT`（`~/vault/repos`）は、今回は変えていない。
 - **PARA の使い方の検討（2026-10-06 開始。A・B・C は承認済み。D の1回目（最初の Project）を閉じた。2026-10-06 時点）**: 残りは次の4点。
   1. 承認待ちの改善案は無い（2026-10-06 に全件承認）。次の改善案は、2回目の実測から出す。
   2. open の手順書の下書き（`docs/drafts/project-open.md`）を、2回目で実測して直す。
@@ -68,6 +67,7 @@ exmem:
 
 - `migrate-works.ps1 -Execute` で移行を実行した。新しい `C:\Users\ck\works` で、Obsidian が動くこと（ユーザーの確認）、Claude Code が動くこと（`CLAUDE.md`・`AGENTS.md`・メモリを読めた、git の root と remote が `worksample`、`resources/` と `.obsidian` のジャンクションが生きている。確認: 起動したセッションで）を確認した。判断の根拠は、Next Actions の旧項目（Vault を `$HOME\works` に、ghq の root を `$HOME\works\repos` にし、`C:\vault` の親を畳む。ユーザーの決定）。
 - `resources/` の固定パスを直した（ユーザーの指示）。kit は、`setup-hook.md`、`knowledge-hook.md`、`integrate-hook.md`、README、`templates/`、`examples/` を `$HOME\works`（WSL は `/mnt/c/Users/<Windows のユーザー名>/works`）に、版を `2026-10-06.23` にした（コミット `7973a52`）。履歴の記述（過去の版の項目、`improvements.md`）は、当時のまま残した。`exmem/knowledge/modern-cli-tools.md` の現在地の1か所も直した。`AGENTS.md`、`exmem/AGENTS.md`、`exmem/README.md`、`cheatsheets/` の現行の記述はコミット `c418105`。`cheatsheets/CLAUDE.md` の文字化け3か所は、HEAD に戻してパスだけ直した（原因は未特定のまま）。
+- 続けて、kit の `templates/workspace/gitignore.template` に `/repos/` を足し、版を `2026-10-06.24` にした（`resources/` のコミット `c77e698`）。dotfiles の移行の変更は、`[env]`（`92fd142`。`10_env.bat`、`home/.profile`、`scripts/linux/`、`tests/`、`startup.bat`、`terminal/settings.json`）と `[docs]`（`5d59374`。`AGENTS.md`、`README.md`、`docs/decisions.md`）の2つでコミットした。Obsidian が書き換えた `windows/obsidian/.obsidian/plugins/colored-tags/data.json` は、このコミットに含めず、未コミットのまま残した（接頭辞 `[obsidian]` で別にコミットする）。
 - 直さなかったもの: `resources/*/.claude/settings.local.json`（端末ごと・追跡しない。旧パスの許可項目で、害は無い）、exmem の `obsidian-vault.md` など日付つきの確認記録を含むナレッジ（ナレッジ化の対象）。
 - 作業中の事故: 手元で `docs/log.md` を書き換えるとき、置換の手順の誤りでファイルが空になった。`git checkout` で HEAD に戻し、ユーザーの未コミットだった Next Actions の項目（移行の準備の記述）は、実行後の残りの記述に書き直した（準備の詳細は、dotfiles の未コミットの差分と `migrate-works.ps1` にある）。再発防止: 長い Markdown の書き換えは、スクリプトではなく Edit で行う。
 
