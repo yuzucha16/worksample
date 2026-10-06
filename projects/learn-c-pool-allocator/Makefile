@@ -27,9 +27,11 @@ $(BUILD)/test_%: tests/test_%.c $(SRC) | $(BUILD)
 analyze:
 	@set -e; for f in $(SRC) $(TESTS); do echo "analyze $$f"; $(CC) $(CFLAGS) -fanalyzer -Isrc -c $$f -o /dev/null; done
 
-# コーディングルールの制約（グローバル変数なし、動的確保なし）。src/ と tests/test_*.c が対象。tests/probe/ は意図した違反なので対象外。
+# コーディングルールの制約（初期値つき .data なし、グローバル変数なし、動的確保なし）。対象は src/ のみ（組込み用途の実装コードだけ。
+# テストは実現のしやすさを優先する）。改行・文字コードは、テストも含めて見る。
 check-rules:
-	@if [ -n "$(ALL_C)" ]; then tools/check-rules.sh $(ALL_C); fi
+	@if [ -n "$(SRC)" ]; then tools/check-rules.sh $(SRC) $(wildcard src/*.h); fi
+	@if [ -n "$(TESTS)" ]; then tools/check-rules.sh --encoding-only $(TESTS); fi
 
 # 整形。clang-format が無いときは、検査を飛ばしたことを明示する（dotfiles の manifests/apt.txt で導入する）。
 format:
@@ -44,7 +46,9 @@ probe: | $(BUILD)
 	$(CC) $(CFLAGS) $(SANFLAGS) -Wno-error tests/probe/ubsan_overflow.c -o $(BUILD)/ubsan_overflow
 	@if ./$(BUILD)/asan_overflow >/dev/null 2>&1; then echo "FAIL: ASan が検出しなかった"; exit 1; else echo "OK: ASan が検出した"; fi
 	@if ./$(BUILD)/ubsan_overflow >/dev/null 2>&1; then echo "FAIL: UBSan が検出しなかった"; exit 1; else echo "OK: UBSan が検出した"; fi
-	@if tools/check-rules.sh tests/probe/rules_global.c >/dev/null 2>&1; then echo "FAIL: check-rules が変数を検出しなかった"; exit 1; else echo "OK: check-rules が変数を検出した"; fi
+	@if tools/check-rules.sh tests/probe/rules_global.c >/dev/null 2>&1; then echo "FAIL: check-rules がグローバル変数を検出しなかった"; exit 1; else echo "OK: check-rules がグローバル変数を検出した"; fi
+	@if tools/check-rules.sh tests/probe/rules_static_data.c >/dev/null 2>&1; then echo "FAIL: check-rules が初期値つき .data を検出しなかった"; exit 1; else echo "OK: check-rules が初期値つき .data を検出した"; fi
+	@if tools/check-rules.sh tests/probe/rules_ok.c >/dev/null 2>&1; then echo "OK: check-rules が許可される例（static const、ゼロ初期化 .bss）を通した"; else echo "FAIL: check-rules が許可される例を誤検出した"; exit 1; fi
 	@if tools/check-rules.sh tests/probe/rules_malloc.c >/dev/null 2>&1; then echo "FAIL: check-rules が malloc を検出しなかった"; exit 1; else echo "OK: check-rules が malloc を検出した"; fi
 	@sed 's/$$/\r/' tests/test_smoke.c > $(BUILD)/probe_crlf.c
 	@if tools/check-rules.sh $(BUILD)/probe_crlf.c >/dev/null 2>&1; then echo "FAIL: check-rules が CRLF を検出しなかった"; exit 1; else echo "OK: check-rules が CRLF を検出した"; fi

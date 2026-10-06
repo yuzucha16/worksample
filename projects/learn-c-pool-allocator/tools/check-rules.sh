@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 # docs/coding-rules.md の機械で確認できる制約を、オブジェクトファイルから検査する。
-#   - グローバル変数・静的記憶域の変数（.data / .bss）を持たない（static のローカル変数も対象）
+#   - 初期値つきの .data を持たない。グローバル変数（外部リンケージの変数）を持たない。グローバルでないゼロ初期化の .bss は許可
 #   - 動的確保（malloc 系）を呼ばない
 #   - 改行コードは LF、文字コードは UTF-8（BOM なし）（.h も対象）
 # 使い方: tools/check-rules.sh <file.c>...   違反があれば、内容を出して終了コード 1。
 # 再帰の禁止は、ここでは検査しない（docs/coding-rules.md の「未検査」）。
 set -u
+
+# --encoding-only: 改行・文字コードだけを見る（テストなど、制約の対象外のファイル用）
+encoding_only=0
+if [[ "${1:-}" == "--encoding-only" ]]; then
+  encoding_only=1
+  shift
+fi
 
 CC=${CC:-gcc}
 tmp=$(mktemp -d)
@@ -28,17 +35,19 @@ for src in "$@"; do
     echo "FAIL: $src: UTF-8 として読めない"
     fail=1
   fi
-  [[ "$src" == *.c ]] || continue
+  [[ $encoding_only -eq 0 && "$src" == *.c ]] || continue
   obj="$tmp/$(basename "${src%.c}").o"
   if ! "$CC" -std=c11 -O0 -c "$src" -o "$obj"; then
     echo "FAIL: コンパイルできない: $src"
     fail=1
     continue
   fi
-  # 型 B/b（.bss）、D/d（.data）、C（common）、G/g、S/s（小さいデータ）が、変数の定義
-  vars=$(nm --defined-only "$obj" | awk '$2 ~ /^[BbDdCGgSs]$/ { print $3 " (" $2 ")" }')
+  # 禁止: 初期値つきの .data（D/d。フットプリントと起動のため）、外部リンケージの変数（大文字 B/C/G/S。グローバル変数）。
+  # 許可: グローバルでないゼロ初期化の .bss（小文字 b。static のローカル変数など）、.rodata（static const）。
+  # 限界: ファイルスコープの static 変数（小文字 b）も許可になる。nm では、関数内の static と区別できない。
+  vars=$(nm --defined-only "$obj" | awk '$2 ~ /^[DdBCGS]$/ { print $3 " (" $2 ")" }')
   if [[ -n "$vars" ]]; then
-    echo "FAIL: $src: 静的記憶域の変数がある:"
+    echo "FAIL: $src: 禁止された変数がある（.data、またはグローバル変数）:"
     echo "$vars" | sed 's/^/    /'
     fail=1
   fi

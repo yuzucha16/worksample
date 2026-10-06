@@ -10,7 +10,7 @@
   行を `live` `backfill` `import` のどれかに絞る。省略すると全部。
 
 .PARAMETER Kind
-  行を `interview` `approval` `improvement` のどれかに絞る。省略すると、存在する kind をすべて出す。
+  行を `interview` `approval` `improvement` `gap` のどれかに絞る。省略すると、存在する kind をすべて出す。
 
 .EXAMPLE
   pwsh -NoProfile -File docs/metrics/summarize.ps1
@@ -20,7 +20,7 @@
 param(
   [string]$Path = (Join-Path $PSScriptRoot 'events.csv'),
   [ValidateSet('', 'live', 'backfill', 'import')][string]$Basis = '',
-  [ValidateSet('', 'interview', 'approval', 'improvement')][string]$Kind = ''
+  [ValidateSet('', 'interview', 'approval', 'improvement', 'gap')][string]$Kind = ''
 )
 
 $rows = @(Import-Csv -Path $Path -Encoding utf8)
@@ -54,9 +54,10 @@ function Get-Stat($label, $target, $g) {
   }
 }
 
-foreach ($kind in @($rows | ForEach-Object kind | Select-Object -Unique)) {
-  $k = @($rows | Where-Object kind -eq $kind)
-  "== kind: $kind（基準: $(if ($Basis) { $Basis } else { '全行' })）"
+# ループ変数を $Kind にすると、検証つきの引数 $Kind（大文字小文字を区別しない）と衝突する
+foreach ($kindName in @($rows | ForEach-Object kind | Select-Object -Unique)) {
+  $k = @($rows | Where-Object kind -eq $kindName)
+  "== kind: $kindName（基準: $(if ($Basis) { $Basis } else { '全行' })）"
   $out = @(Get-Stat '全体' '-' $k)
   $out += $k | Group-Object area | Sort-Object Name | ForEach-Object { Get-Stat 'area' $_.Name $_.Group }
   $out += $k | Group-Object { "$($_.area)/$($_.project)" } | Sort-Object Name | ForEach-Object { Get-Stat 'project' $_.Name $_.Group }

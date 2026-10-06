@@ -94,3 +94,8 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s2-q07,追加の警告フラグと -fanalyzer を今入れるか,adhoc,choice,1,1,0,0,0,,live
 2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s2-q08,フォーマッタ・linter の導入範囲,adhoc,choice,1,1,0,1,0,,live
 2026-10-06,2026-10-06-s2,-,-,開始インタビュー,improvement,2026-10-06-s2-i03,開発の差分項目に「コーディングルールとチェックの有無」を足す,hook,choice,0,,,,,,live
+2026-10-06,2026-10-06-s3,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s3-q01,制約の適用範囲（AI の解釈: src と tests/test_*.c）,adhoc,choice,1,1,1,1,0,,live
+2026-10-06,2026-10-06-s3,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s3-q02,「.data を抑える」の解釈（AI: .data と .bss 全面禁止）,adhoc,choice,1,1,1,1,0,,live
+2026-10-06,2026-10-06-s3,-,-,開始インタビュー,gap,2026-10-06-s3-g01,利用者の専門領域（組込み）が聞かれず、設計の前提が後から出た,adhoc,free,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（実装前の規則）,gap,2026-10-06-s2-g01,コーディングルールと制約が、実装の前に聞かれず後から要望された,adhoc,free,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s3,-,-,開始インタビュー,improvement,2026-10-06-s3-i01,利用者の前提（専門領域・経験）を記憶に残し、不足していれば最初に1度だけ聞く,hook,choice,0,,,,,,live

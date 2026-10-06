@@ -4,15 +4,21 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 ## Next Actions
 
-- ユーザーが、WSL に `clang-format` を導入する（`docs/dotfiles-additions.md` のコマンド）。導入後に `make check` で `OK: format-check` になることを確認し、整形の差分があれば `make format` で直す。
-- 制約の適用範囲（`tests/probe/` は対象外）と、「`.data` を抑える」の読み方を、ユーザーに確認する（`docs/coding-rules.md` の「AI の解釈」）。
-- アロケータの API とメモリレイアウトを設計する（ブロックサイズ、フリーリスト、アライメント。動的確保とグローバル変数の禁止から、領域は呼び出し側が渡すバッファ）。判断は `docs/decisions.md` に残す。
+- `docs/design.md` の判断 A〜D（初期化の方式、不正な `free` の検出、libc 依存、ターゲットの前提）を、ユーザーが承認する。承認した項目を `docs/decisions.md` の決定にする。
+- 承認後に、`src/pool.h` `src/pool.c` と `tests/test_pool.c` を実装する。`make size`（フットプリントの表示）と、`libc` 非依存の検査（承認されたら）を足す。
+- 実装の前に、`docs/coding-rules.md` の節 5 を、`docs/design.md` と突き合わせて整理する。
 - 設計に沿って、`src/pool.c` と `tests/test_pool.c` を実装する（完了条件: 単体テストと、ASan・UBSan の警告 0）。
 - WSL の開発ツールが足りなければ、dotfiles に足す（ユーザーの方針。2026-10-06。`gdb` `valgrind` `clang` `cmake` は、いまは無い。必要になってから）。
 
 ## Open Questions
 
 ## Log
+
+### 2026-10-06（セッション `2026-10-06-s3`。組込み前提の設計）
+
+- ユーザーが `clang-format` を導入した（18.1.3）。`make check` で `format-check` が有効になり、手で揃えたマクロの `\` を指摘したので、`make format` で直した。
+- ユーザーが、組込み領域のエンジニアであることを伝え（インタビューで聞いていなかった前提）、制約の確認に回答した: ① 制約の適用範囲は `src/` のみ（テストは実現のしやすさを優先）、② 「`.data` を抑える」の目的は、初期値つき `.data` を減らしてフットプリントの削減と起動を楽にすること（`.bss` はグローバルでなければ許可）。AI の当初の解釈（`tests/test_*.c` も対象、`.bss` も全面禁止）は強すぎたので直した。`tools/check-rules.sh` を、初期値つき `.data`（`D` `d`）とグローバル変数（外部リンケージの `B` `C` `G` `S`）の禁止に変え、許可される例の対照（`rules_ok.c`）と、初期値つき `static` の検出（`rules_static_data.c`）を足した。`make check` が通った。
+- 組込み前提の設計を、`docs/design.md` に提案としてまとめた（未承認）。要点: 固定長ブロック、侵入型の単方向フリーリスト、遅延切り出し（`pool_init` がバッファに書かない。起動が O(1)）、呼び出し側が渡すバッファ、`libc` 非依存、`alloc`/`free` が O(1)。判断が要る4点（初期化の方式、不正な `free` の検出、libc 依存、ターゲットの前提）は、ユーザーの確認待ち。
 
 ### 2026-10-06（セッション `2026-10-06-s2`。コーディングルールとチェック）
 
