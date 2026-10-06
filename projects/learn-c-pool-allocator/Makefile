@@ -50,6 +50,7 @@ probe: | $(BUILD)
 	@if tools/check-rules.sh tests/probe/rules_static_data.c >/dev/null 2>&1; then echo "FAIL: check-rules が初期値つき .data を検出しなかった"; exit 1; else echo "OK: check-rules が初期値つき .data を検出した"; fi
 	@if tools/check-rules.sh tests/probe/rules_ok.c >/dev/null 2>&1; then echo "OK: check-rules が許可される例（static const、ゼロ初期化 .bss）を通した"; else echo "FAIL: check-rules が許可される例を誤検出した"; exit 1; fi
 	@if tools/check-rules.sh tests/probe/rules_malloc.c >/dev/null 2>&1; then echo "FAIL: check-rules が malloc を検出しなかった"; exit 1; else echo "OK: check-rules が malloc を検出した"; fi
+	@if tools/check-rules.sh tests/probe/rules_libc.c >/dev/null 2>&1; then echo "FAIL: check-rules が libc 依存を検出しなかった"; exit 1; else echo "OK: check-rules が libc 依存を検出した"; fi
 	@sed 's/$$/\r/' tests/test_smoke.c > $(BUILD)/probe_crlf.c
 	@if tools/check-rules.sh $(BUILD)/probe_crlf.c >/dev/null 2>&1; then echo "FAIL: check-rules が CRLF を検出しなかった"; exit 1; else echo "OK: check-rules が CRLF を検出した"; fi
 	@printf '\357\273\277int bom_probe(void) { return 0; }\n' > $(BUILD)/probe_bom.c

@@ -4,9 +4,9 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 ## Next Actions
 
-- `docs/design.md` の判断 A〜D（初期化の方式、不正な `free` の検出、libc 依存、ターゲットの前提）を、ユーザーが承認する。承認した項目を `docs/decisions.md` の決定にする。
-- 承認後に、`src/pool.h` `src/pool.c` と `tests/test_pool.c` を実装する。`make size`（フットプリントの表示）と、`libc` 非依存の検査（承認されたら）を足す。
-- 実装の前に、`docs/coding-rules.md` の節 5 を、`docs/design.md` と突き合わせて整理する。
+- 判断 E（strict aliasing。E1 `-fno-strict-aliasing` を推奨）を、ユーザーが承認する。承認後に、`docs/coding-rules.md` の節 5 を、`docs/design.md` の「実装の初期値」で置き換える。
+- `src/pool.h` `src/pool.c` と `tests/test_pool.c` を実装する（設計は `docs/design.md`。テストの観点は同書の 6 節）。`make size`（フットプリントの表示）を足す。
+- ARM 向けのフットプリントを測るために、`arm-none-eabi-gcc` を dotfiles に足すか、ユーザーに確認する（提案。いまは未導入。導入すれば Cortex-M 向けの `.text` `.data` `.bss` を実測できる）。
 - 設計に沿って、`src/pool.c` と `tests/test_pool.c` を実装する（完了条件: 単体テストと、ASan・UBSan の警告 0）。
 - WSL の開発ツールが足りなければ、dotfiles に足す（ユーザーの方針。2026-10-06。`gdb` `valgrind` `clang` `cmake` は、いまは無い。必要になってから）。
 
@@ -18,7 +18,10 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 - ユーザーが `clang-format` を導入した（18.1.3）。`make check` で `format-check` が有効になり、手で揃えたマクロの `\` を指摘したので、`make format` で直した。
 - ユーザーが、組込み領域のエンジニアであることを伝え（インタビューで聞いていなかった前提）、制約の確認に回答した: ① 制約の適用範囲は `src/` のみ（テストは実現のしやすさを優先）、② 「`.data` を抑える」の目的は、初期値つき `.data` を減らしてフットプリントの削減と起動を楽にすること（`.bss` はグローバルでなければ許可）。AI の当初の解釈（`tests/test_*.c` も対象、`.bss` も全面禁止）は強すぎたので直した。`tools/check-rules.sh` を、初期値つき `.data`（`D` `d`）とグローバル変数（外部リンケージの `B` `C` `G` `S`）の禁止に変え、許可される例の対照（`rules_ok.c`）と、初期値つき `static` の検出（`rules_static_data.c`）を足した。`make check` が通った。
-- 組込み前提の設計を、`docs/design.md` に提案としてまとめた（未承認）。要点: 固定長ブロック、侵入型の単方向フリーリスト、遅延切り出し（`pool_init` がバッファに書かない。起動が O(1)）、呼び出し側が渡すバッファ、`libc` 非依存、`alloc`/`free` が O(1)。判断が要る4点（初期化の方式、不正な `free` の検出、libc 依存、ターゲットの前提）は、ユーザーの確認待ち。
+- 組込み前提の設計を、`docs/design.md` にまとめた。要点: 固定長ブロック、侵入型の単方向フリーリスト、呼び出し側が渡すバッファ、`libc` 非依存、`alloc`/`free` が O(1)。
+- ユーザーが判断 A〜D を回答した（`docs/decisions.md`）: A 全ブロックを連結（AI の推奨の遅延切り出しは却下。安全性を起動速度より優先し、起動速度はチューニング要素）、B O(1) の検査 + `pool_check`（二重解放は、検知でなく、起こさないことをテストで見る）、C libc 非依存、D 32bit MCU（Cortex-M 系）。設計書から「起動を楽にする」を根拠にした記述を消し、遅延切り出しをチューニング要素の節に移した（AI の拡大解釈をユーザーが直した）。
+- 判断 C の検査（`check-rules.sh` の libc 非依存。`-ffreestanding`、`-O0` と `-Os`）を実装し、違反例（`rules_libc.c`）で検出を確認した。`make check` が通った。`-Os` では `memset` が展開され `strlen` だけが残るので、両方の最適化レベルで見る。
+- 新しい論点として、判断 E（strict aliasing: 空きブロックに `void *` を書く侵入型リストは、呼び出し側の `unsigned char` 配列に対して、規格上の有効型の問題がある）を、設計書に提案として足した（未承認）。
 
 ### 2026-10-06（セッション `2026-10-06-s2`。コーディングルールとチェック）
 

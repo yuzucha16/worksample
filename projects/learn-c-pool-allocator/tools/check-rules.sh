@@ -2,6 +2,7 @@
 # docs/coding-rules.md の機械で確認できる制約を、オブジェクトファイルから検査する。
 #   - 初期値つきの .data を持たない。グローバル変数（外部リンケージの変数）を持たない。グローバルでないゼロ初期化の .bss は許可
 #   - 動的確保（malloc 系）を呼ばない
+#   - libc に依存しない（未定義シンボルが無い。-ffreestanding で -O0 と -Os の両方）
 #   - 改行コードは LF、文字コードは UTF-8（BOM なし）（.h も対象）
 # 使い方: tools/check-rules.sh <file.c>...   違反があれば、内容を出して終了コード 1。
 # 再帰の禁止は、ここでは検査しない（docs/coding-rules.md の「未検査」）。
@@ -57,6 +58,22 @@ for src in "$@"; do
     echo "$calls" | sed 's/^/    /'
     fail=1
   fi
+  # libc に依存しない: 未定義シンボルが1つも無いこと。-O0 と -Os の両方で見る（-O0 は呼び出しが残り、-Os は最適化後の依存を見る）。
+  # ホストの既定の設定（PIE のための GOT、スタック保護）は、ターゲットの依存ではないので外す。
+  for opt in -O0 -Os; do
+    uobj="$tmp/$(basename "${src%.c}")$opt.o"
+    if "$CC" -std=c11 "$opt" -ffreestanding -fno-pic -fno-stack-protector -c "$src" -o "$uobj"; then
+      undef=$(nm -u "$uobj" | awk '{ print $NF }')
+      if [[ -n "$undef" ]]; then
+        echo "FAIL: $src: libc などの外部シンボルに依存している（$opt）:"
+        echo "$undef" | sed 's/^/    /'
+        fail=1
+      fi
+    else
+      echo "FAIL: コンパイルできない（freestanding, $opt）: $src"
+      fail=1
+    fi
+  done
 done
 
 if [[ $fail -eq 0 ]]; then echo "OK: check-rules（$# ファイル）"; fi
