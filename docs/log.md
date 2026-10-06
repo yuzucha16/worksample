@@ -45,6 +45,10 @@ exmem:
 
 ## Log
 
+### 2026-10-06（会社 CA 証明書の置き場を `$HOME/.certs` に変更）
+
+- ユーザーの指示で、`certs` の置き場を `areas/dev-env/certs/` から `$HOME/.certs` に変えた。このリポジトリの `.gitignore` から `/areas/dev-env/certs/` を除いた。kit は版 `2026-10-06.15`（雛形の `.gitignore` から同じ行を除く。「workflowを導入して」の手順は、もともと `certs` を作らないので変更なし）。dotfiles は `10_env.bat`、`common.sh`、`README.md` を直した（WSL へは `WSLENV` の `CERTS_DIR/p`）。判断は `docs/decisions.md`。旧 `areas/dev-env/certs` は空で、dotfiles の確認が済んだら削除する（dotfiles の Next Actions）。
+
 ### 2026-10-06
 
 - exmem の統合を確認して、棚卸しを行った（kit `docs-rules.md` の「棚卸し」。`workbase` の `9e335b7`）。メモ `2026-10-06-docs-destination-markers.md` は inbox から無くなり、`exmem/knowledge/workflow-kit.md` の新節（Principles 6、Decisions 6、Facts 5、Gotchas 3）に入っている。Decisions 6件の根拠と却下案が欠けなく写っていることを、本文で確認した。`decisions.md` の「docs の項目に「行き先」を持たせ…」を `転記済` にし、本文を外した（点検は FAIL 0。転記済34、転記待ち0、local 6、破棄 2、滞留 0）。統合された Open Questions に、「`転記済` に進める契機を決める」の提案が未承認のまま残っている（kit `2026-10-06.14` で決まった。exmem 側の修正は、exmem の運用）。

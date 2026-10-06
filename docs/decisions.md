@@ -14,6 +14,14 @@
 
 ## Decisions
 
+### 【この件】会社 CA 証明書の置き場を `areas/dev-env/certs/` から `$HOME/.certs` に移す（2026-10-06。上の `certs` の移動を置き換える）
+
+- 決めたこと: 置き場を `$HOME/.certs`（Windows は `%USERPROFILE%\.certs`）にする（ユーザーの指示）。ワークスペースの `.gitignore` と kit の雛形から `/areas/dev-env/certs/` を除く。作成と環境変数は dotfiles の `10_env.bat`（判断の詳細は dotfiles の `docs/decisions.md`）。
+- 根拠: ワークスペースの構造に依存させない。リポジトリの外なので、誤って共有する経路が無く、除外の行も要らない。
+- 却下案: 現状維持（`areas/dev-env/certs/`）。
+- 確認済み（2026-10-06）: 旧 `areas/dev-env/certs` は空。
+- 行き先: 転記待ち（→ exmem/inbox/<メモ>。「ナレッジ化して」で、`obsidian-vault.md` の旧決定（置き場、却下案、未決事項）を置き換える）
+
 ### 【汎用】docs の項目に「行き先」を持たせ、滞留するデータを検出する（2026-10-06。試験運用）
 
 - 行き先: 転記済（2026-10-06 → exmem/knowledge/workflow-kit.md、kit/docs-rules.md）
