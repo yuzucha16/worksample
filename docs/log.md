@@ -46,6 +46,10 @@ exmem:
 
 ## Log
 
+### 2026-10-06（指標を改善フックにも適用した。kit 版 `2026-10-06.19`）
+
+- ユーザーが指標の形式を承認し、同じ指標を既存の改善フックにも適用するよう指示した。実施: `docs/metrics/interview-events.csv` を `events.csv` に改名し、`kind=improvement`（改善案）を足した。`improvements.md` の66件を `import` で取り込み（採用率約98%。判別力が低いので、`fix` と `reversed` を重視する方針）、集計スクリプトを、未判定の行（`fix` や `answerable` が空）を母数から外すよう直した。kit の `knowledge-hook.md` に節「改善案の指標の記録」を足し、版を `2026-10-06.19` にした（`workbase` にコミット）。モバイル用プロンプトの `kit:` と見本の `kit:` を合わせた。判断は `docs/decisions.md`。
+
 ### 2026-10-06（開始インタビューの指標を集め始めた）
 
 - ユーザーの指示で、質問数・回答率・採用率・適合率などを、全体・Area・Project・セッションの単位で集めることにした。`docs/metrics/` に、定義（`README.md`）、イベントログ（`interview-events.csv`。このセッションの会話から15行を `backfill` で起こした）、集計スクリプト（`summarize.ps1`）を作り、集計が動くことを確認した。記録をエージェントの役目にするため、`AGENTS.md` に1項目足した。形式と推奨指標は AI の提案で、承認待ち（判断は `docs/decisions.md`）。`backfill` の行は推定で、`live` の行が溜まるまで、率は参考値。

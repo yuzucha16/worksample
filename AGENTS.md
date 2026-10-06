@@ -38,7 +38,7 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 - この PC のローカルの情報（業務固有のもの、個人的なもの）を、`resources/`（共有）に書かない。`resources/` の変更は、`resources/` の中でコミットする（このリポジトリのコミットには含まれない）。
 - `git add -f` で、ignore 済みのファイルを追加しない。
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）にある。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は、設定ファイル（`*.json`）を編集しない（Obsidian が上書きして、変更が消える）。プラグインやテーマを追加・削除するときは、設定ファイルと `community-plugins.json` を合わせる。`workspace.json` と `workspace-mobile.json` は端末ごとの状態なので、コミットしない（dotfiles の `.gitignore` 済み）。
-- ユーザーへの質問（聞き取り）と、AI の提案への承認の確認は、`docs/metrics/interview-events.csv` に1件1行で記録する（記録するのはエージェント。定義と列は `docs/metrics/README.md`、集計は `docs/metrics/summarize.ps1`）。質問の直後に行を足し、終了処理で `adopted` と `reversed` を確定する。質問の要旨に、機密・個人情報を書かない。
+- ユーザーへの質問（聞き取り）、AI の提案への承認の確認、改善フックの改善案は、`docs/metrics/events.csv` に1件1行で記録する（記録するのはエージェント。定義と列は `docs/metrics/README.md`、集計は `docs/metrics/summarize.ps1`）。回答を受けた同じターンで行を足し、終了処理で `adopted` と `reversed` を確定する。要旨に、機密・個人情報を書かない。
 
 ## コミット
 
