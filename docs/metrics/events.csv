@@ -118,6 +118,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s6,-,-,開始インタビュー,improvement,2026-10-06-s6-i01,各質問のあとに「ほかに前提はありますか」の自由記述を1つ置く（選択肢の外の前提を拾う）,hook,free,1,1,0,0,0,,live
 2026-10-06,2026-10-06-s6,-,-,方式検討,approval,2026-10-06-s6-q01,承認待ちの改善案5件の承認,adhoc,choice,1,1,0,1,0,,live
 2026-10-06,2026-10-06-s6,-,-,方式検討,approval,2026-10-06-s6-q02,新しいセッションの呼び出し（案 A: 作業を始めて を決めて AGENTS.md から参照）,adhoc,choice,1,1,0,0,0,,live
-2026-10-06,2026-10-06-s6,-,-,終了処理,improvement,2026-10-06-s6-i02,closing-hook の対象に、リポジトリ内の Project・Area の docs（projects・archives・areas 配下）を含める,hook,choice,0,,,,,,live
-2026-10-06,2026-10-06-s6,-,-,終了処理,improvement,2026-10-06-s6-i03,check-inbox の「Decisions に AI の提案が混ざっていない」の WARN が、種類の説明の語でも出る誤検知を、提案・未承認の形に絞る,hook,choice,0,,,,,,live
-2026-10-06,2026-10-06-s6,-,-,終了処理,improvement,2026-10-06-s6-i04,転記待ちの閾値（15件）を、複数の docs（works と archives の Project）の間で、どう数えるかを定める,hook,choice,0,,,,,,live
+2026-10-06,2026-10-06-s6,-,-,終了処理,improvement,2026-10-06-s6-i02,closing-hook の対象に、リポジトリ内の Project・Area の docs（projects・archives・areas 配下）を含める,hook,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s6,-,-,終了処理,improvement,2026-10-06-s6-i03,check-inbox の「Decisions に AI の提案が混ざっていない」の WARN が、種類の説明の語でも出る誤検知を、提案・未承認の形に絞る,hook,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s6,-,-,終了処理,improvement,2026-10-06-s6-i04,転記待ちの閾値（15件）を、複数の docs（works と archives の Project）の間で、どう数えるかを定める,hook,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s6,-,-,終了処理,approval,2026-10-06-s6-q04,終了処理の改善案 3 件の承認,adhoc,choice,1,1,0,0,0,,live
