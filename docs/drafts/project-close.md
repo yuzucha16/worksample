@@ -14,7 +14,7 @@
 3. **未解決を整理する**: Next Actions と Open Questions の残りを、次の Project、親の Area（`areas/<名>/README.md`）、または破棄に振り分ける。持ち越すものは、移し先に書く。
 4. **ナレッジ化の候補を示す**: `docs/decisions.md` の `未仕分け` のうち【汎用】の項目を一覧にして、ユーザーに示す。**「ナレッジ化して」は、ユーザーが言ったときだけ実行する**（自動で実行しない。`knowledge-hook.md`）。実行の有無と時期は、ユーザーが決める。
 5. **状態を更新する**: `README.md` の frontmatter を `status: done`（中止は `cancelled`）、`closed: <日付>` にする。完了条件の結果（実測の数字）と、成果物の場所を、`README.md` に1段落で足す。
-6. **`archives/` へ移す**: `projects/<名>/` を `archives/<名>/` に `git mv` する。親の Area の一覧（`areas/<名>/README.md`）を、「完了した Project」に移し、リンクを新しいパスにする。ほかの参照（`docs/log.md`、`docs/decisions.md`、`docs/metrics/events.csv` の `project` 列など）は、パスでなく名前なので、変更は不要か、`grep` で確認する。
+6. **`archives/` へ移す**: 先に、ビルド成果物を消す（`make clean` など。移したあとに未追跡のファイルが残らないようにする）。`projects/<名>/` を `archives/<名>/` に `git mv` する。**ディレクトリごとの `git mv` が失敗したら（`Permission denied`。2026-10-06 に発生）、`git ls-files` を回して、ファイル単位で移す**（履歴は、リネームとして保たれる）。親の Area の一覧（`areas/<名>/README.md`）を、「完了した Project」に移し、リンクを新しいパスにする。ほかの参照（`docs/log.md`、`docs/decisions.md`、`docs/metrics/events.csv` の `project` 列など）は、パスでなく名前なので、変更は不要か、`grep` で確認する。
 7. **指標を確定する**: この Project の `events.csv` の行の `adopted` と `reversed` を確定する。`summarize.ps1` の Project の単位で集計して、`docs/log.md` に結果を書く。
 8. **記録してコミットする**: `docs/log.md` に、閉じたことと結果を書く（日報の入力になる形）。パスを指定して `git add` し、コミットする（push はユーザー）。
 
