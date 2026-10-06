@@ -6,10 +6,9 @@
 
 ## Next Actions
 
-- **docs のデータの行き先の仕組み（kit 版 `2026-10-06.13` に反映済み。2026-10-06 時点）**: 残りは次の3点。
-  1. exmem が `exmem/inbox/2026-10-06-docs-destination-markers.md` を `knowledge/` に統合したら、次の棚卸し（`check-docs.ps1`）で、`decisions.md` の「docs の項目に「行き先」を持たせ…」の行き先を `転記済` にし、本文を外す（メモは未追跡。kit の `docs-rules.md` の「棚卸し」）。
-  2. 滞留の候補を探す（今は0件）。一般化を試みて難しい項目が見つかったら、`滞留（理由）` にする。
-  3. PC1（会社 PC）への展開の実測。`転記待ち` の【汎用】項目を grep して、一般化した短文を画面に出し、ユーザーが目視で運ぶ手順を、1回通して確認する（手順は kit の `docs-rules.md`）。他の作業ディレクトリ（dotfiles など）の `decisions.md` への印付けは、必要になったときに行う。- **`works` への移行の残り（2026-10-06 時点）**: 移行は完了した（Log 2026-10-06）。残りは次の2点。
+- **docs のデータの行き先の仕組み（kit 版 `2026-10-06.13` に反映済み。2026-10-06 時点）**: 残りは次の2点。
+  1. 滞留の候補を探す（今は0件）。一般化を試みて難しい項目が見つかったら、`滞留（理由）` にする。
+  2. PC1（会社 PC）への展開の実測。`転記待ち` の【汎用】項目を grep して、一般化した短文を画面に出し、ユーザーが目視で運ぶ手順を、1回通して確認する（手順は kit の `docs-rules.md`）。他の作業ディレクトリ（dotfiles など）の `decisions.md` への印付けは、必要になったときに行う。- **`works` への移行の残り（2026-10-06 時点）**: 移行は完了した（Log 2026-10-06）。残りは次の2点。
   - 旧セッション `bc9d6801-…` の `claude --resume` が `works` で通らない原因を調べる（任意。通らなくても、旧パスの履歴は `C:\Users\ck\.claude\projects\C--vault-notes-*` に残っている）。
   - 各 `resources/*/.claude/settings.local.json`（端末ごとの許可設定。追跡しない）に、旧パスの許可項目が残っている。害はない。気になるときに整理する。
 構造変更（`docs/decisions.md` の「Vault のトップを PC ローカルのリポジトリにし…」）。段階1〜4は実施済み（2026-10-05）。残り:
@@ -48,6 +47,7 @@ exmem:
 
 ### 2026-10-06
 
+- exmem の統合を確認して、棚卸しを行った（kit `docs-rules.md` の「棚卸し」。`workbase` の `9e335b7`）。メモ `2026-10-06-docs-destination-markers.md` は inbox から無くなり、`exmem/knowledge/workflow-kit.md` の新節（Principles 6、Decisions 6、Facts 5、Gotchas 3）に入っている。Decisions 6件の根拠と却下案が欠けなく写っていることを、本文で確認した。`decisions.md` の「docs の項目に「行き先」を持たせ…」を `転記済` にし、本文を外した（点検は FAIL 0。転記済34、転記待ち0、local 6、破棄 2、滞留 0）。統合された Open Questions に、「`転記済` に進める契機を決める」の提案が未承認のまま残っている（kit `2026-10-06.14` で決まった。exmem 側の修正は、exmem の運用）。
 - 「ナレッジ化して」の改善1点を kit に反映した（ユーザーの承認。kit の版 `2026-10-06.14`、`workbase` の `f2a815c`）。`転記待ち（→ exmem/inbox/<メモ>）` を `転記済` に進める契機を、棚卸しのとき、メモが inbox に無くなっていたら、統合先を確認して進める、と `docs-rules.md` に足した。もう1点（Gotchas の3行セットの検査）は、規則で足りるので変更なし（`improvements.md` に記録）。
 - 「ナレッジ化して」を実行した（ユーザーの指示。kit 版 `2026-10-06.13`）。先に dotfiles の `docs/log.md` に、転記した決定の記録を足した（dotfiles の `13ba921`）。`exmem/inbox/2026-10-06-docs-destination-markers.md` を作った（Principles 6、Decisions 6、Facts 6、Gotchas 3。点検スクリプトは FAIL 0、WARN 0）。メモはコミットしない規則のため未追跡。`decisions.md` の対応する項目の行き先を、このメモにした（転記待ち）。
 - `転記済` 33件の内容確認をして、元の本文を外した（ユーザーの指示。規則は kit の `docs-rules.md`）。確認: 各項目の根拠・却下案の要点を、転記先（kit の各ファイル、exmem の `workflow-kit.md` `app-config-placement.md` `obsidian-vault.md` ほか）の本文と突き合わせた（キーワードの一致 + 本文の目視）。D9（コミット権限）の却下案「PARA の中身も含める」は、exmem の別の項目（初回コミット）に入っていた。D15（`contexts/`）の根拠・却下案は exmem の `workflow-kit.md` に揃っていた。欠落は無し。`decisions.md` は 258 行 → 約140 行。見出し・日付・行き先だけにした（`local` `破棄` `転記待ち` の項目は変更なし）。作業中に、変数名の大文字小文字の衝突（`$l` と `$L`）で `decisions.md` を壊して書き出したが、`git restore` で戻して、やり直した（コミットした内容は無事）。
