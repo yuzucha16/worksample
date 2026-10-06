@@ -1,0 +1,16 @@
+date,session,area,project,work_type,kind,q_id,question,source,format,answered,adopted,fix,supplement,answerable,reversed,basis
+2026-10-06,2026-10-06-s1,-,-,方式検討,interview,2026-10-06-s1-q01,案件の業務情報の置き場と PC1・PC2 の関係,adhoc,free,1,1,0,1,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,interview,2026-10-06-s1-q02,PARA で主に管理したいものの優先順位,adhoc,free,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,interview,2026-10-06-s1-q03,試行の最初の対象,adhoc,free,1,1,1,1,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q04,A の定義の承認,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q05,C の判断基準8項目と数値の採否,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q06,docs 記録と B への移行,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q07,B1 の構造の承認,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q08,フックの優先順位と frontmatter の項目,adhoc,choice,1,1,0,1,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q09,D への移行,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,learning,learn-c-pool-allocator,学習計画,interview,2026-10-06-s1-q10,Project の言語（C か C++）,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,learning,learn-c-pool-allocator,学習計画,interview,2026-10-06-s1-q11,完了条件（成果物）の種類,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,learning,learn-c-pool-allocator,学習計画,interview,2026-10-06-s1-q12,見直し日,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,learning,learn-c-pool-allocator,学習計画,approval,2026-10-06-s1-q13,完了条件の案の承認,adhoc,choice,1,1,0,0,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q14,フック連鎖と開始インタビューの案の承認,adhoc,choice,1,1,0,1,0,,backfill
+2026-10-06,2026-10-06-s1,-,-,方式検討,approval,2026-10-06-s1-q15,コミットの可否,adhoc,choice,1,1,0,0,0,,backfill

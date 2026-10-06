@@ -46,6 +46,10 @@ exmem:
 
 ## Log
 
+### 2026-10-06（開始インタビューの指標を集め始めた）
+
+- ユーザーの指示で、質問数・回答率・採用率・適合率などを、全体・Area・Project・セッションの単位で集めることにした。`docs/metrics/` に、定義（`README.md`）、イベントログ（`interview-events.csv`。このセッションの会話から15行を `backfill` で起こした）、集計スクリプト（`summarize.ps1`）を作り、集計が動くことを確認した。記録をエージェントの役目にするため、`AGENTS.md` に1項目足した。形式と推奨指標は AI の提案で、承認待ち（判断は `docs/decisions.md`）。`backfill` の行は推定で、`live` の行が溜まるまで、率は参考値。
+
 ### 2026-10-06（PARA の `areas/` `projects/` の使い方の検討を始めた）
 
 - 検討の進め方を、A 役割と責務、B フックとディレクトリ構造、C 判断基準と候補、D 試行の4段階にした（ユーザーの指示）。A と C を同時に進め、ユーザーが承認した（判断は `docs/decisions.md` の「PARA の `areas/` `projects/` `archives/` の役割と判断基準を定める」）。前提（PC1・PC2 は別インスタンス、優先順位、最初の試行は PC2 の学習、`areas/dev-env` は廃止済み）も記録した。続いて B を承認（B1 フラット。開始・終了フックを先に）。D を始め、`areas/learning/README.md` と `projects/learn-c-pool-allocator/`（`README.md`、`docs/log.md`、`docs/decisions.md`）を作った。成果物（固定長ブロックのメモリプールアロケータ）はユーザーが承認した。フックの連鎖（open → [開始インタビュー → 作業 → 終了処理]×N → close）と、開始インタビューを育成・改善方式（プラン方式かプロンプトから始め、作業の種類のカテゴライズと抽象化・継承で定型化）で作る方針も、ユーザーが承認した（判断は `docs/decisions.md`）。
