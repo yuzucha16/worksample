@@ -20,6 +20,13 @@
 
 ## Decisions
 
+### Vault のトップを `notes` から `works` に rename し、`certs` を `areas/dev-env/certs/` へ移す（2026-10-06）
+
+- 決めたこと（ユーザー）: トップのディレクトリを `C:\vault\notes` から `C:\vault\works` にする。環境変数 `NOTES_DIR` は `WORKS_DIR` に改める。`C:\vault\certs`（CA 証明書の置き場）は、`works\areas\dev-env\certs\` へ移し、`CERTS_DIR` をその下にする。この PC のみ実施し、他の PC は未導入なので新規扱いで始める。
+- 根拠: トップの役割が、ノートではなく、業務・個人開発のデータ構造（PARA）になっていて、名前が体を表していなかった。`certs` は、会社固有の CA 証明書で、ローカル専用。共有の `resources/` には置けず、ローカルの3つのうち、継続して維持するものは `areas/` が合う（この Vault の `areas/` と `resources/` の分け方は、PARA の意味ではなく、共有かローカルか）。Area は責任領域の名前にするので、`areas/dev-env/` の下に置く。
+- 却下案: `areas/certs/`（将来、環境の設定が増えたとき、領域の名前が合わなくなる）、`areas/` に SSH の秘密鍵まで集約する（バックアップ、Grep、Obsidian Sync、push の経路に乗る）、`CERTS_DIR` を `C:\vault\certs` のままにする。
+- 履歴の扱い: `docs/` の過去の記述、`exmem/contexts/`、ナレッジの日付つきの記述の `notes` は、当時の名前のまま残す。旧 `notes`（アーカイブ済みの GitHub リポジトリ）の呼称と区別できなくなるため、一括置換はしない。
+- 注意: 秘密鍵は Vault に入れない（SSH の鍵は `~/.ssh`）。`.gitignore` の `/areas/dev-env/certs/` は、誤 push の防止（雛形にも足した）。ripgrep も `.gitignore` を尊重するので、この中は Grep / Glob に出ない。
 ### Vault のトップを PC ローカルのリポジトリにし、共有部分を `workbase` として入れ子で clone する（2026-10-05）
 
 - 決めたこと:

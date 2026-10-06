@@ -1,6 +1,6 @@
 # 作業ログ（log）
 
-`notes`（Obsidian Vault のトップ。PC ローカルのリポジトリ。PARA 構成）の現在状態と次にやること。2026-10-05 に、共有部分を別リポジトリ `workbase`（`resources/` に clone）に分け、`.obsidian/` を dotfiles へ戻した。対象は、Vault 全体の管理: `resources/exmem`（ナレッジ）、`resources/workflow-kit`（共通機能）、その他の `resources/`、`.obsidian/`（Obsidian の設定。実体は dotfiles）。判断の根拠・却下案・Gotchas は `docs/decisions.md`。作業の終わりに、Next Actions と Log を更新する。
+`works`（旧 `notes`。Obsidian Vault のトップ。PC ローカルのリポジトリ。PARA 構成）の現在状態と次にやること。2026-10-05 に、共有部分を別リポジトリ `workbase`（`resources/` に clone）に分け、`.obsidian/` を dotfiles へ戻した。対象は、Vault 全体の管理: `resources/exmem`（ナレッジ）、`resources/workflow-kit`（共通機能）、その他の `resources/`、`.obsidian/`（Obsidian の設定。実体は dotfiles）。判断の根拠・却下案・Gotchas は `docs/decisions.md`。作業の終わりに、Next Actions と Log を更新する。
 
 `.obsidian/` の 2026-10-04 以前の Log は、git 履歴（`notes` の `git log -- .obsidian`、dotfiles の `bbb294b`）から復元したもの。コミットメッセージと差分から読み取れる範囲で、書かれていない理由は「不明」としている。dotfiles 側の 2026-10-02 より前の履歴は、履歴の作り直し（単一コミット化）で残っていない。
 
@@ -42,6 +42,9 @@ exmem:
 
 ## Log
 
+### 2026-10-06
+
+- Vault のトップを `notes` から `works` に rename する作業を進めた（ユーザーの指示。判断は `docs/decisions.md`）。文字列の更新まで済み: dotfiles（`NOTES_DIR` → `WORKS_DIR`、パス、`CERTS_DIR`）、`workbase`（kit の版 `2026-10-06.8`、`AGENTS.md`、既定の対象、雛形、見本）、このリポジトリの `AGENTS.md` と `.gitignore`（`/areas/dev-env/certs/` を除外）。dotfiles の Linux のテストは 35/35 合格（実 WSL の項目だけ、rename 後でないと走らず skip）。**ディレクトリの rename 本体は、ユーザーが `C:\vault` で行う**（このセッションが cwd を掴むため）。
 ### 2026-10-05
 
 - 「ナレッジ化して」の改善2点を実施した（ユーザーの承認。kit の版 `2026-10-05.8`、`workbase` の `3daeff6`）。① 同じスレッドで `knowledge/` を直接編集済みのときは、Open Questions に「統合時の重複」を書く（手順 5-6）。② 自己点検の機械で確認できる項目を、点検スクリプト `workflow-kit/tools/check-inbox.ps1`（PowerShell 7）にした。一時ディレクトリで、正常なメモ1件と、わざと壊したメモ11種を試験し、すべて期待どおり。試験で、スクリプトの引数の受け取り方（複数パス）の誤りと、`kit` の版の比較を FAIL にする過剰さ（WARN にした）を直した。スクリプトを、今日の inbox の7メモに実行して、別セッションのメモ（ファイル名が7語、Facts の根拠が無い項目、`kit` が古い版）と、私のメモ1件（ファイル名が6語）の規定違反を検出した。私のメモは改名した。別セッションのメモは、既存のメモとして編集していない（ユーザーが統合のときに判断する）。判断は `docs/decisions.md`。
