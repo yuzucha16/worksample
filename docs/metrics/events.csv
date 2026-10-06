@@ -131,3 +131,5 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s7,-,-,終了処理,improvement,2026-10-06-s7-i02,check-docs.ps1: 点検対象のパスを位置引数で渡せない（-Path が必須の名前付き）。位置引数も受ける,hook,choice,1,1,0,0,0,,live,
 2026-10-06,2026-10-06-s7,-,-,計測設計,approval,2026-10-06-s7-q05,sessions.csv に開始の形（start_mode: bare / briefed）の列を足す提案と、背景なし→背景ありの順の試行,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-06,2026-10-06-s7,-,-,計測設計,improvement,2026-10-06-s7-i03,extract-threads.ps1 -Current: 並行スレッドがあると最新の更新ファイルを選ぶだけで外れうる（今回は別トライアルのスレッドが同時にあり、作業ディレクトリのキーと時刻の手動照合で確認した）。作業ディレクトリのキーを優先して選び、直近30分に更新した他のスレッドがあれば警告する,hook,choice,1,1,0,0,0,,live,
+2026-10-06,2026-10-06-s7,-,-,inbox整理,improvement,2026-10-06-s7-i04,integrate-hook: 統合で、元の決定に無い却下案が knowledge に書かれていた（2件。元は「未検討」）。却下案が元に無いときは「未検討（承認のみ）」と書く、を手順と点検に足す,hook,choice,1,1,0,0,0,,live,
+2026-10-06,2026-10-06-s7,-,-,inbox整理,approval,2026-10-06-s7-q06,転記済への案（archives の7件を転記済にする、works の5件は exmem の knowledge を直してから）の承認,adhoc,choice,1,1,0,0,0,0,live,
