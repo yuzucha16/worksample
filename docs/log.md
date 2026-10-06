@@ -11,7 +11,7 @@
   2. open の手順書の下書き（`docs/drafts/project-open.md`）を、2回目で実測して直す。
   3. **2回目の Project を、新しいセッションで始める**（ユーザーが「作業を始めて」と言う。`AGENTS.md` が手順書を参照する）。次の候補は `areas/learning/README.md`。開始インタビュー（開発の差分、「ほかに前提はありますか」を足した版）と open・close の手順を回し、`live` のデータを溜める。「ほかに前提はありますか」の効果（補足・漏れが減るか）を測る。作業の種類（文書作成・開発）の定型化は、2〜3回の実測がたまってから設計する。
   4. 試行で、上限（Project 3・Area 5）と契機を見直す。kit への昇格と PC1 への投入は、安定してから判断する。
-- **ナレッジ化（ユーザーの指示: あとでまとめて言う。2026-10-06 時点）**: `archives/learn-c-pool-allocator/docs/decisions.md` の【汎用】の未仕分け 7 件（Principles 2、Facts 3、Gotchas 2）と、この `docs/decisions.md` の未仕分け 4 件が対象。「終了処理して」または「ナレッジ化して」で処理する。
+- **統合待ち（2026-10-06 時点）**: `exmem/inbox/` に未統合のメモ 3 件（コミットしていない）と、`転記待ち` 11 件（この `docs/decisions.md` に 4、`archives/learn-c-pool-allocator/docs/decisions.md` に 7）。閾値（メモ 5 件、`転記待ち` 15 件）には届いていない。次回以降、メモが溜まったら「inboxを整理して」で統合し、`転記済` に進める。
 - **docs のデータの行き先の仕組み（kit 版 `2026-10-06.13` に反映済み。2026-10-06 時点）**: 残りは次の2点。
   1. 滞留の候補を探す（今は0件）。一般化を試みて難しい項目が見つかったら、`滞留（理由）` にする。
   2. PC1（会社 PC）への展開の実測。`転記待ち` の【汎用】項目を grep して、一般化した短文を画面に出し、ユーザーが目視で運ぶ手順を、1回通して確認する（手順は kit の `docs-rules.md`）。他の作業ディレクトリ（dotfiles など）の `decisions.md` への印付けは、必要になったときに行う。- **`works` への移行の残り（2026-10-06 時点）**: 移行は完了した（Log 2026-10-06）。残りは次の2点。
@@ -53,6 +53,13 @@ exmem:
 - 決定の記録の書式に、状態（提案／決定）と出典（ユーザーの発言／AI の提案）の欄を持つべきか。部分的な指示の範囲確認の手順を、共通機能に足すか。
 
 ## Log
+
+### 2026-10-06（終了処理。ナレッジ化 3 件。セッション `2026-10-06-s6`）
+
+- ユーザーが push を終え、「終了処理して」を指示した。対象は、`works`、`resources/`（kit）、dotfiles（すべて push 済み。dotfiles にユーザー自身の未コミットの変更（`notepadpp`）があり、触っていない）。
+- 棚卸し: `works` の `docs/decisions.md` は FAIL 0、WARN 0（`転記待ち` 4、`転記済` 35、`local` 7）。`archives/learn-c-pool-allocator/docs/decisions.md` は FAIL 0、WARN 0（`転記待ち` 7、`local` 7）。dotfiles は FAIL 0、WARN 0（`未仕分け` 0、`転記待ち` 0）。
+- ナレッジ化（`knowledge-hook.md`）: `exmem/inbox/` に 3 件を作った（コミットしていない）: `2026-10-06-embedded-c-constraint-checks.md`（組込み C の制約の機械検査。Principles 5、Decisions 4、Facts 10、Gotchas 2）、`2026-10-06-para-lifecycle-question-metrics.md`（PARA の運用と、質問・提案の指標。Principles 7、Decisions 5、Facts 6、Gotchas 1）、`2026-10-06-make-powershell-git-pitfalls.md`（Make・PowerShell・git の落とし穴。Principles 4、Facts 3、Gotchas 3）。点検スクリプトは FAIL 0、WARN 1（Decisions の「AI の提案」の語。種類の説明で、誤検知と判断）。この `docs/decisions.md` の未仕分け 4 件と、`archives/` の Project の未仕分け 7 件を、`転記待ち`（→ 上のメモ）にした。
+- 改善案を 3 点記録した（承認待ち。`events.csv` の `s6-i02`〜`i04`）: closing-hook の対象に Project・Area の `docs/` を含める、点検スクリプトの「AI の提案」の WARN の誤検知、`転記待ち` の閾値を複数の `docs/` 間でどう数えるか。
 
 ### 2026-10-06（新しいセッションの呼び出しを決めた。セッション `2026-10-06-s6`）
 
