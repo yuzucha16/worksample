@@ -68,7 +68,7 @@ AI がユーザーに聞く質問と、AI が出す提案（承認の確認、�
 - **`threads.csv`**（自動。`extract-threads.ps1` が jsonl から書く。派生データで、履歴が消えても既存の行は残す）: 1スレッド1行。
   - 自走: `prompts`（実プロンプト数）、`turn_med_s` `turn_p90_s` `turn_max_s`（ターン = 実プロンプトから次の実プロンプトの直前まで。30分で打ち切り）、`capped_turns`（打ち切った数。離席・許可待ち・放置の混入）、`tools_total` `tools_per_turn_med`、`active_min`（打ち切り後のターン長の合計。壁時計ではない）。
   - 無駄の合図: `tool_errors`（ツールエラー数。無駄な試行の代理）、`out_tokens` `fresh_in_tokens` `cache_read_tokens`（トークン）、`ctx_max_tokens`（1回の入力の最大。コンテキスト量の代理）。
-- **`sessions.csv`**（AI が終了処理で1行足す）: `session` `date` `thread_id`（`extract-threads.ps1 -Current` の値）`area` `project` `work_type`、`outcome`（達成・一部・未達。開始時のゴールとの突き合わせ）、`prompt_complete`（最初の依頼に、ゴール・完了条件・制約・やらないことが入っていた数 0〜4）、`prompt_evidence`（その根拠。ユーザーの発言の要旨）、`review`（ユーザーが AI の出力を批判・修正した件数。`events.csv` の `cause=review` と対応）、`mechanism`（ルール・フック・記憶に落とした件数）、`note`（無駄の所見）。
+- **`sessions.csv`**（AI が終了処理で1行足す）: `session` `date` `thread_id`（`extract-threads.ps1 -Current` の値）`area` `project` `work_type`、`outcome`（達成・一部・未達。開始時のゴールとの突き合わせ）、`prompt_complete`（最初の依頼に、ゴール・完了条件・制約・やらないことが入っていた数 0〜4）、`prompt_evidence`（その根拠。ユーザーの発言の要旨）、`review`（ユーザーが AI の出力を批判・修正した件数。`events.csv` の `cause=review` と対応）、`mechanism`（ルール・フック・記憶に落とした件数）、`note`（無駄の所見）、`start_mode`（開始の形。`bare` = 「作業を始めて」だけで始めた、`briefed` = 最初の依頼にゴール・完了条件・制約・やらないことを添えた。開始インタビューの効果と、最初の依頼の完備度を、別々に比べるため。2026-10-06 に追加）。
 - **無駄の見方**: `extract-threads.ps1 -Report`。「セッションに紐づかない」「放置（既定3日）」「ツールエラー率20%以上」「打ち切りターンあり」を合図として出す。合図は判定ではなく、中身を見て決める。トークン単価（成果1件あたり）は、`outcome` と紐づいてから見る。
 - **自走時間を伸ばす目的の注意**: 単独で目標にしない。品質（`fix` `gap` `reversed` `outcome`）と対で見る。`work_type` を分けて比べる。
 - 制約: 履歴に compact の記録が見当たらない（未観測）ので、コンテキスト量は `ctx_max_tokens` で代用する。Claude Code は古い履歴を消すことがあるので、定期的に `extract-threads.ps1` を回す（終了処理で回す）。

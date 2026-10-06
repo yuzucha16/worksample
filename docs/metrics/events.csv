@@ -129,3 +129,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s7,-,-,計測設計,gap,2026-10-06-s7-g01,無駄（放置・無駄打ち・トークンの無駄利用）の把握が目的に含まれることが、提案の構成に入っていなかった,adhoc,free,1,1,1,1,0,,live,ai
 2026-10-06,2026-10-06-s7,-,-,終了処理,improvement,2026-10-06-s7-i01,closing-hook: 手順4（棚卸し）が手順5（ナレッジ化）より先で、メモ作成後に decisions の行き先が転記待ちに変わるため件数が古くなる。ナレッジ化の後に check-docs を再実行する、または順序を入れ替える,hook,choice,1,1,0,0,0,,live,
 2026-10-06,2026-10-06-s7,-,-,終了処理,improvement,2026-10-06-s7-i02,check-docs.ps1: 点検対象のパスを位置引数で渡せない（-Path が必須の名前付き）。位置引数も受ける,hook,choice,1,1,0,0,0,,live,
+2026-10-06,2026-10-06-s7,-,-,計測設計,approval,2026-10-06-s7-q05,sessions.csv に開始の形（start_mode: bare / briefed）の列を足す提案と、背景なし→背景ありの順の試行,adhoc,choice,1,1,0,0,0,0,live,
