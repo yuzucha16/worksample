@@ -67,7 +67,7 @@ exmem:
 - ユーザーが、「終了処理して」をトリガにしてよいこと、別のトライアルと並行して数回回すことを指示した。`AGENTS.md` の手順を通した: `threads.csv` を更新（50 スレッド）、`sessions.csv` に s7 を1行（`outcome` 達成、`prompt_complete` 2、`review` 1、`mechanism` 1。根拠と所見は行に記載）、`-Report` で合図を確認（今日のスレッド18件のうち紐づくのは1件。残りは「セッションに紐づかない」。s1〜s6 は backfill しない）。
 - `events.csv` の s7 の行を確定した（`reversed` 0、補正の起因 `cause`: q02 は `ai`、q04 は `review`）。漏れ `g01`（無駄の観点が提案に無かった。`cause=ai`）を足した。
 - ナレッジ化: `exmem/inbox/2026-10-06-ai-work-metrics-transcripts.md`（Principles 7、Decisions 4、Facts 6、Gotchas 1。点検スクリプトは FAIL 0、WARN 0。コミットしていない）。この `docs/decisions.md` の項目を `転記待ち` にした。
-- 改善案を2点記録した（承認待ち。`events.csv` の `s7-i01` `s7-i02`）: closing-hook の棚卸しをナレッジ化の後に再実行する、`check-docs.ps1` の `-Path` を位置引数でも受ける。
+- 改善案を2点出し、ユーザーが承認して、kit に反映した（版 `2026-10-06.21`、`workbase` の `be89d15`。`events.csv` の `s7-i01` `s7-i02` は承認済み）: `closing-hook.md` の手順 5 に、メモを作ったら `check-docs.ps1` を再実行し、以後の報告の件数を再実行後の値にする、と足した。`check-docs.ps1` の `Path` を位置引数でも受けるようにした（位置引数、`-Path`、引数なし、存在しないパス、`-MaxPending` で試験）。モバイル用プロンプトと見本の `kit:` を合わせた。
 - 実装中の実測: jsonl の1応答は複数行に分かれ、同じ `message.id` と `usage` が繰り返される（601行が170応答）。`message.id` で一意化している。
 
 ### 2026-10-06（AI 活用・workflow の効果を測る指標を作った。セッション `2026-10-06-s7`）
