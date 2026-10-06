@@ -11,7 +11,10 @@
   - 会話の本文は読むが、書き出さない（数値と ID だけ）。
 
 .PARAMETER Current
-  最も新しく更新された会話の ID だけを出す（終了処理で sessions.csv の thread_id に書く用）。並行セッションがあると外れうる。
+  会話の ID だけを出す（終了処理で sessions.csv の thread_id に書く用）。-Cwd（Claude Code を開いた作業ディレクトリ）を渡すと、そのキーの履歴の中で最新のものを選ぶ。省略または履歴が無いときは、全体で最新の更新（並行セッションがあると外れうる）。選んだ会話の前後 -CurrentWindowMin 分（既定30）以内に別の会話も更新されていたら、警告を出す（出力は ID だけが標準出力。警告は別のストリーム）。
+
+.PARAMETER Cwd
+  Claude Code を開いた作業ディレクトリ（セッションの主な作業ディレクトリ。シェルのカレントではない）。
 
 .PARAMETER Report
   threads.csv と sessions.csv から、要約と「無駄の候補」を出す。書き込みはしない。
@@ -28,6 +31,8 @@ param(
   [int]$CapSeconds = 1800,
   [int]$IdleDays = 3,
   [string]$Since = '2026-10-06',
+  [string]$Cwd = '',
+  [int]$CurrentWindowMin = 30,
   [switch]$Current,
   [switch]$Report
 )
@@ -120,7 +125,20 @@ function Read-Thread($file) {
 }
 
 if ($Current) {
-  Get-ThreadFiles | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty BaseName
+  $recent = @(Get-ThreadFiles | Sort-Object LastWriteTime -Descending)
+  $pick = $null
+  if ($Cwd) {
+    # Claude Code の履歴のディレクトリ名は、作業ディレクトリのパスの英数字以外を `-` にしたもの
+    $key = $Cwd.TrimEnd('\', '/') -replace '[^A-Za-z0-9]', '-'
+    $pick = Get-ChildItem -Path (Join-Path $ProjectsDir $key) -Filter *.jsonl -File -ErrorAction SilentlyContinue |
+      Sort-Object LastWriteTime -Descending | Select-Object -First 1
+    if (-not $pick) { Write-Warning "作業ディレクトリのキー '$key' の履歴が無い。最新の更新を選ぶ（外れうる）" }
+  }
+  if (-not $pick) { $pick = $recent | Select-Object -First 1 }
+  # 選んだ会話の更新の前後 CurrentWindowMin 分以内に、別の会話も更新されていたら、並行している
+  $others = @($recent | Where-Object { $_.BaseName -ne $pick.BaseName -and [math]::Abs(($_.LastWriteTime - $pick.LastWriteTime).TotalMinutes) -le $CurrentWindowMin })
+  foreach ($o in $others) { Write-Warning "並行の可能性: $($o.BaseName.Substring(0, 8))（$($o.Directory.Name)、更新 $($o.LastWriteTime.ToString('HH:mm:ss'))）" }
+  $pick.BaseName
   return
 }
 
