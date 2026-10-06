@@ -6,16 +6,13 @@
 
 ## Next Actions
 
-- **`works` への移行の残り（2026-10-06 時点）**: 移行は完了した（Log 2026-10-06）。残りは次の3点。
+- **`works` への移行の残り（2026-10-06 時点）**: 移行は完了した（Log 2026-10-06）。残りは次の2点。
   - 旧セッション `bc9d6801-…` の `claude --resume` が `works` で通らない原因を調べる（任意。通らなくても、旧パスの履歴は `C:\Users\ck\.claude\projects\C--vault-notes-*` に残っている）。
-  - dotfiles の `docs/log.md` の Next Actions（27行目）に、旧名 `NOTES_DIR` と `~/vault/notes` が残っている。dotfiles 側で直す。
   - 各 `resources/*/.claude/settings.local.json`（端末ごとの許可設定。追跡しない）に、旧パスの許可項目が残っている。害はない。気になるときに整理する。
 構造変更（`docs/decisions.md` の「Vault のトップを PC ローカルのリポジトリにし…」）。段階1〜4は実施済み（2026-10-05）。残り:
-- **Obsidian の実機確認（ユーザー）**: `C:\vault\notes` を Vault として開き直し、検索、バックリンク、`.base`、テーマと CSS スニペット、`colored-tags` の色が、新しいトップ（実ディレクトリ + `resources/` の入れ子 + `.obsidian` のジャンクション）で動くか。`workspace.json` は新規になる（開いていたタブは消える）。
-- **コミットと push（ユーザー）**: `workbase`（`C:\vault\notes\resources`。`origin/main` より2コミット先: kit の `2026-10-05.1` と `.2`）。dotfiles（未コミットの差分: `windows/obsidian/` `windows/office/` の追加、`links.map` `10_env.bat` `50_repos.bat` `.gitignore` `README.md` `AGENTS.md` `docs/log.md`）。新しいトップ（`C:\vault\notes`。初回コミットは未実施。remote は `worksample`（非公開）を設定済みで、push はしていない）。
-- 段階5の残り: 旧 `notes` のローカルのリポジトリ（`C:\vault\repos\github.com\yuzucha16\notes`。GitHub 側はアーカイブ化済み）の扱いと、バックアップ（`C:\vault\backup\notes-before-restructure-20261005`）の保管期間を決める（しばらく残す）。
+- 段階5の残り: 旧 `notes`（GitHub 側はアーカイブ化済み）の扱い。GitHub 側を削除する案を検討中（ユーザー。2026-10-06。他の PC は未導入なので、他 PC の未 push は無い）。手順の案: ① `git bundle create <名前>.bundle --all` を旧ローカル clone（`C:\vault\repos\github.com\yuzucha16\notes`）で作り、`git bundle verify` で検証して、`C:\vault` の外にも置く（完全な履歴 58 コミットは、GitHub・旧 clone・バックアップ `C:\vault\backup\notes-before-restructure-20261005` にしか無い。`workbase` は 30 コミットの切り出し） ② 旧 clone の未追跡メモ（`exmem/inbox/2026-10-05-obsidian-explorer-color-and-indent-limits.md`。`obsidian-appearance.md` に統合済みに見えるが、突き合わせは未実施）を確認 ③ GitHub 側を削除（復元期間は設定画面で確認） ④ 旧 clone は復元期間が過ぎてから削除（Claude の履歴キー `C--vault-repos-github-com-yuzucha16-notes*` 4つの扱いも決める） ⑤ `docs/decisions.md` の「アーカイブとして残す」を撤回済みにし、`obsidian-vault.md` に旧 URL が無効になったことを1行足す ⑥ バックアップは、bundle の後に最後に消す候補（`projects/link-management` が退避先と一致するか確認してから）。
 - `projects/link-management` は、ユーザーが退避した（2026-10-05、ユーザーの回答）。バックアップ（`C:\vault\backup\notes-before-restructure-20261005\projects\link-management`）にも残っている。
-- ネイティブ Linux の実機で、dotfiles の `30_link.sh`（`.obsidian` の symlink）、`50_repos.sh`（`workbase` の clone）、`WORKS_DIR` の既定値（`~/vault/works`）を通して確認する（WSL は一時ディレクトリで試験済み）。ワークスペース生成フックの既定の対象 `C:\vault\notes` は、ネイティブ Linux では使えないので、対象を言葉で指定する。
+- ネイティブ Linux の実機で、dotfiles の `30_link.sh`（`.obsidian` の symlink）、`50_repos.sh`（`workbase` の clone）、`WORKS_DIR` の既定値（`~/vault/works`）を通して確認する（WSL は一時ディレクトリで試験済み）。ワークスペース生成フックの既定の対象 `C:\vault\works` は、ネイティブ Linux では使えないので、対象を言葉で指定する。
 - 後で見直す: `cheatsheets/` と `handson/` を `workbase` に置くこと。
 
 導入と共通機能（workflow-kit）:
@@ -40,7 +37,7 @@ exmem:
 
 ## Open Questions
 
-- 提案（未承認）: `AGENTS.md` の固定パス（`C:\vault\notes\...`）を `$NOTES_DIR` に置き換える（Linux での値は未確認）。
+- 提案（未承認）: `AGENTS.md` の固定パス（`C:\vault\works\...`）を `$WORKS_DIR` に置き換える（Linux での値は未確認）。
 - `workbase` の公開範囲（最初は非公開で作る。公開するときは exmem に会社固有の情報が無いか確認する）。
 - 決定の記録の書式に、状態（提案／決定）と出典（ユーザーの発言／AI の提案）の欄を持つべきか。部分的な指示の範囲確認の手順を、共通機能に足すか。
 
@@ -48,6 +45,7 @@ exmem:
 
 ### 2026-10-06
 
+- 現在形の旧パスを直した（ユーザーの指示。方針: 現在形の記述は現在の名前に直し、日付つきの履歴は書き換えない）。直したもの: `exmem/knowledge/` の `workflow-kit.md`（既定の対象。WSL から読めることを確認して更新）、`modern-cli-tools.md`（`.ignore` の場所）、`wsl-file-placement.md`（記述時点のパスと明記）、`obsidian-vault.md`（構造の図）。このリポジトリの Next Actions（終わった項目2つを削除、パスと `$WORKS_DIR` を更新）と、dotfiles の `docs/log.md` の Next Actions。残る旧パスは、すべて日付つきの履歴の記述（確認: 2026-10-06、根拠: `rg`）。旧 `notes` の GitHub 側の削除は、手順の案を Next Actions に記録した（未決）。
 - `works` への移行が完了した（ユーザーが `C:\vault\backup\finish-works-rename.ps1` を実行。その後の確認は次の項目）。`claude --resume bc9d6801-…` は、`cwd` を書き換えた履歴でも**通らなかった**（ユーザーの報告。エラーの内容は未取得）。
 - 移行の完了を確認した（確認: 2026-10-06）。① 旧パス `vault[\\/]notes` は、履歴（log・decisions・contexts・日付つきの記述、kit の `README.md` と `improvements.md` の変更履歴）と、`exmem/knowledge/` の日付つきの経緯を除いて、`works` と dotfiles のコードに無い（根拠: Grep と `rg`。dotfiles の `docs/log.md` の Next Actions に旧名が残る点は Next Actions に記録）。② 環境変数 `WORKS_DIR=C:\vault\works`、`CERTS_DIR=C:\vault\works\areas\dev-env\certs`（`NOTES_DIR` は未設定。ユーザー環境変数で取得）。`obsidian.json` の Vault は `C:\vault\works`。`C:\vault\works\.obsidian` は dotfiles の `windows\obsidian\.obsidian` へのジャンクション（`app.json` が読める）。`C:\vault\notes` は無く、`areas\dev-env\certs` がある。③ WSL から `/mnt/c/vault/works/resources/.git` が読め、`WORKS_DIR=/mnt/c/vault/works`。dotfiles の Linux テストは 36/36 合格（実 WSL の「default WORKS_DIR sees the Windows-side clone」も合格。以前の skip は解消）。
 - resume が通らなかった事実: 新キー `C--vault-works-resources-workflow-kit` の jsonl では、`"cwd"` 287件はすべて `works` に書き換わっていたが、本文・スナップショットの `workingDirectory`・読み込んだ `CLAUDE.md` のパスなどに、旧パス `C:\\vault\\notes\\…` が1180件残っていた（確認: 2026-10-06、根拠: jsonl の検索）。「`cwd` の不一致が原因」という仮説は、`cwd` だけでは足りなかった。原因は未特定。
