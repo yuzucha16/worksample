@@ -4,13 +4,24 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 ## Next Actions
 
-- アロケータの API とメモリレイアウトを設計する（ブロックサイズ、フリーリスト、アライメント）。判断は `docs/decisions.md` に残す。
+- ユーザーが、WSL に `clang-format` を導入する（`docs/dotfiles-additions.md` のコマンド）。導入後に `make check` で `OK: format-check` になることを確認し、整形の差分があれば `make format` で直す。
+- 制約の適用範囲（`tests/probe/` は対象外）と、「`.data` を抑える」の読み方を、ユーザーに確認する（`docs/coding-rules.md` の「AI の解釈」）。
+- アロケータの API とメモリレイアウトを設計する（ブロックサイズ、フリーリスト、アライメント。動的確保とグローバル変数の禁止から、領域は呼び出し側が渡すバッファ）。判断は `docs/decisions.md` に残す。
 - 設計に沿って、`src/pool.c` と `tests/test_pool.c` を実装する（完了条件: 単体テストと、ASan・UBSan の警告 0）。
 - WSL の開発ツールが足りなければ、dotfiles に足す（ユーザーの方針。2026-10-06。`gdb` `valgrind` `clang` `cmake` は、いまは無い。必要になってから）。
 
 ## Open Questions
 
 ## Log
+
+### 2026-10-06（セッション `2026-10-06-s2`。コーディングルールとチェック）
+
+- ユーザーの要望で、実装のときに私が暗黙に持っているルールを明示した（`docs/coding-rules.md`）。確認した事実: 導入済みの機械チェックは、コンパイラの警告とサニタイザだけで、linter もフォーマッタも無かった（WSL に `cppcheck` `clang-tidy` `clang-format` は未導入。`gcc -fanalyzer` は使える）。
+- ユーザーが承認した内容（`docs/decisions.md`）: 既存の書式を規則にする、改行コードと文字コードを規則に足す、制約（グローバル変数の禁止、`.data` の抑制、再帰の禁止、動的確保の禁止。暫定）、追加の警告フラグと `-fanalyzer`、`clang-format` の導入（目的はコードリーディングのコストの低減）。
+- 実施: `Makefile` に追加の警告フラグ、`analyze`（`-fanalyzer`）、`check-rules`、`format` `format-check`、全体の `check` を足した。制約を検査する `tools/check-rules.sh`（`nm` でグローバル・静的変数と `malloc` 系の呼び出しを、CR・BOM・UTF-8 も検出）と、`.clang-format` を作った。`make probe` に、変数・`malloc`・CRLF・BOM の検出の確認を足した。確認: `make check` が通った（`format-check` は `clang-format` 未導入のため SKIP）。
+- dotfiles の `manifests/apt.txt` に `clang-format` を追記した（dotfiles の `14711b5`）。WSL への導入は `sudo` のパスワードが要るため、ユーザーが行う（`docs/dotfiles-additions.md`）。
+- 再帰の禁止は検査していない。制約の適用範囲（`tests/probe/` は対象外）と、「`.data` を抑える」の強めの読みは、AI の解釈で、ユーザーの確認待ち。
+- 制約（動的確保の禁止、グローバル変数の禁止）から、設計の前提が決まる: プールの領域は呼び出し側が渡すバッファ、状態は構造体に持たせる。
 
 ### 2026-10-06（セッション `2026-10-06-s2`。環境と骨組み）
 

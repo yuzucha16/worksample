@@ -87,5 +87,10 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（環境構築）,interview,2026-10-06-s2-q02,前提・制約（ビルド環境。WSL の gcc と make）,adhoc,choice,1,1,0,0,1,,live
 2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（環境構築）,interview,2026-10-06-s2-q03,対象と読む資料,adhoc,choice,1,1,0,0,1,,live
 2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（環境構築）,interview,2026-10-06-s2-q04,やらないこと（dotfiles の変更は選択肢の前提が誤り）,adhoc,choice,1,1,1,1,0,,live
-2026-10-06,2026-10-06-s2,-,-,開始インタビュー,improvement,2026-10-06-s2-i01,「触ってよい範囲」（リポジトリ・ディレクトリ単位の許可）を独立した項目にする,hook,choice,0,,,,,,live
-2026-10-06,2026-10-06-s2,-,-,開始インタビュー,improvement,2026-10-06-s2-i02,答えが1つに定まる項目は質問せず、要約に宣言して反対だけを受ける,hook,choice,0,,,,,,live
+2026-10-06,2026-10-06-s2,-,-,開始インタビュー,improvement,2026-10-06-s2-i01,「触ってよい範囲」（リポジトリ・ディレクトリ単位の許可）を独立した項目にする,hook,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s2,-,-,開始インタビュー,improvement,2026-10-06-s2-i02,答えが1つに定まる項目は質問せず、要約に宣言して反対だけを受ける,hook,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s2,-,-,開始インタビュー,approval,2026-10-06-s2-q05,改善案2点の承認（併せて、暗黙のルールの明示と dotfiles 追加の報告を要望）,adhoc,choice,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s2-q06,既存の書式を規則にしてよいか,adhoc,choice,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s2-q07,追加の警告フラグと -fanalyzer を今入れるか,adhoc,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s2,learning,learn-c-pool-allocator,開発（実装前の規則）,approval,2026-10-06-s2-q08,フォーマッタ・linter の導入範囲,adhoc,choice,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s2,-,-,開始インタビュー,improvement,2026-10-06-s2-i03,開発の差分項目に「コーディングルールとチェックの有無」を足す,hook,choice,0,,,,,,live
