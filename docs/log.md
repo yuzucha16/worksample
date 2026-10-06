@@ -8,8 +8,8 @@
 
 - **Vault を `$HOME\works` へ移した後の残り（2026-10-06 に移行を実行。新しい場所で Obsidian と Claude Code の動作を確認済み。2026-10-06 時点）**: 残りは次の点。
   1. 旧 `C:\vault` の削除は保留（ユーザーの指示）。旧 `notes` の完全な履歴 58 コミットが残るバックアップ（`C:\vault\backup\notes-before-restructure-20261005`）と旧 clone を、`claude --resume` で旧セッションが復活するかの試験に使う（過去に成功した例が無い）。試験の後に、削除の可否（下の「段階5の残り」）を決める。
-  2. exmem の `obsidian-vault.md`（現行の記述: 環境変数 `WORKS_DIR`、トップのパス、構成図、`.obsidian` の表）などのナレッジの旧パスは未着手（版と承認が要る）。ユーザーの方針で、ナレッジ化は終了処理でまとめて行う。
-  3. WSL の `~/vault`（WSL 自身の作業用）と、WSL の `GHQ_ROOT`（`~/vault/repos`）は、今回は変えていない。
+  2. exmem の `obsidian-vault.md`（現行の記述: 環境変数 `WORKS_DIR`、トップのパス、構成図、`.obsidian` の表）などのナレッジの旧パスは未着手。移行のナレッジは inbox のメモ 2 件（下の Log）にして、「inboxを整理して」で統合するときに、`obsidian-vault.md` の現行の記述も直す（`knowledge/` の編集は exmem 側の運用）。
+  3. 実機の WSL で、新しいターミナルを開いて `echo $WORKS_DIR $GHQ_ROOT` を確認する（`WORKS_DIR` が `/mnt/c/Users/<名前>/works`、`GHQ_ROOT` が `~/works/repos` になること。`WSLENV` の受け渡しは実機で未確認）。既存の WSL の `~/vault`（旧 `GHQ_ROOT`。中の clone があれば）は動かしていない。`mv ~/vault ~/works` で移すか決める。
 - **PARA の使い方の検討（2026-10-06 開始。A・B・C は承認済み。D の1回目（最初の Project）を閉じた。2026-10-06 時点）**: 残りは次の4点。
   1. 承認待ちの改善案は無い（2026-10-06 に全件承認）。次の改善案は、2回目の実測から出す。
   2. open の手順書の下書き（`docs/drafts/project-open.md`）を、2回目で実測して直す。
@@ -68,6 +68,9 @@ exmem:
 - `migrate-works.ps1 -Execute` で移行を実行した。新しい `C:\Users\ck\works` で、Obsidian が動くこと（ユーザーの確認）、Claude Code が動くこと（`CLAUDE.md`・`AGENTS.md`・メモリを読めた、git の root と remote が `worksample`、`resources/` と `.obsidian` のジャンクションが生きている。確認: 起動したセッションで）を確認した。判断の根拠は、Next Actions の旧項目（Vault を `$HOME\works` に、ghq の root を `$HOME\works\repos` にし、`C:\vault` の親を畳む。ユーザーの決定）。
 - `resources/` の固定パスを直した（ユーザーの指示）。kit は、`setup-hook.md`、`knowledge-hook.md`、`integrate-hook.md`、README、`templates/`、`examples/` を `$HOME\works`（WSL は `/mnt/c/Users/<Windows のユーザー名>/works`）に、版を `2026-10-06.23` にした（コミット `7973a52`）。履歴の記述（過去の版の項目、`improvements.md`）は、当時のまま残した。`exmem/knowledge/modern-cli-tools.md` の現在地の1か所も直した。`AGENTS.md`、`exmem/AGENTS.md`、`exmem/README.md`、`cheatsheets/` の現行の記述はコミット `c418105`。`cheatsheets/CLAUDE.md` の文字化け3か所は、HEAD に戻してパスだけ直した（原因は未特定のまま）。
 - 続けて、kit の `templates/workspace/gitignore.template` に `/repos/` を足し、版を `2026-10-06.24` にした（`resources/` のコミット `c77e698`）。dotfiles の移行の変更は、`[env]`（`92fd142`。`10_env.bat`、`home/.profile`、`scripts/linux/`、`tests/`、`startup.bat`、`terminal/settings.json`）と `[docs]`（`5d59374`。`AGENTS.md`、`README.md`、`docs/decisions.md`）の2つでコミットした。Obsidian が書き換えた `windows/obsidian/.obsidian/plugins/colored-tags/data.json` は、このコミットに含めず、未コミットのまま残した（接頭辞 `[obsidian]` で別にコミットする）。
+- Linux 側も `~/works`、ghq の root を `~/works/repos` にそろえた（ユーザーの指示。dotfiles のコミット `b6c26c9`。WSL の `GHQ_ROOT` の既定、`10_dirs.sh`、README、試験）。dotfiles の試験は 51/51 合格（最初は 49/51。`50_repos.sh` の `ghq get` が `a88d23b` でコメントアウトされたのに、試験が `ghq` の呼び出しを期待したままだったため、試験を直した）。Obsidian が書き換えた `colored-tags/data.json` は、`841672b` `[obsidian]` でコミットした。判断は `docs/decisions.md` の「Vault のトップを `C:\vault\works` から `$HOME\works` に移し…」。
+- 確認の質問への回答: 「workflowを導入して」の固定パス `C:\vault\works` は、変更済み（`7973a52`。`setup-hook.md` の既定の対象は `$HOME\works`）。`setup-hook.md` のコミットメッセージ例 `[vault] initial commit: ...` は、旧名のまま（パスではない。改善案として終了処理で提案した）。
+- 終了処理（2回目の移行作業）: ナレッジ化で、`exmem/inbox/` にメモ 2 件を作った（`2026-10-06-windows-wsl-shared-workdir-layout.md`、`2026-10-06-powershell-script-file-rewrite-guard.md`。コミットしていない。`check-inbox.ps1` は PASS 50、FAIL 0、WARN 0）。上の決定と事故の Gotcha の行き先は `転記待ち`。
 - 直さなかったもの: `resources/*/.claude/settings.local.json`（端末ごと・追跡しない。旧パスの許可項目で、害は無い）、exmem の `obsidian-vault.md` など日付つきの確認記録を含むナレッジ（ナレッジ化の対象）。
 - 作業中の事故: 手元で `docs/log.md` を書き換えるとき、置換の手順の誤りでファイルが空になった。`git checkout` で HEAD に戻し、ユーザーの未コミットだった Next Actions の項目（移行の準備の記述）は、実行後の残りの記述に書き直した（準備の詳細は、dotfiles の未コミットの差分と `migrate-works.ps1` にある）。再発防止: 長い Markdown の書き換えは、スクリプトではなく Edit で行う。
 

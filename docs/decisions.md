@@ -14,6 +14,13 @@
 
 ## Decisions
 
+### 【汎用】Vault のトップを `C:\vault\works` から `$HOME\works` に移し、ghq の root を `$HOME\works\repos` にする。Linux 側（WSL・ネイティブ）も `~/works`、`~/works/repos` にそろえる（2026-10-06。ユーザーの決定と指示）
+
+- 決めたこと: 置き場は1つだけなので、親の `C:\vault` を畳む（ユーザーの決定）。Linux 側は、対称性のため `~/works`、ghq の root を `~/works/repos` にする（ユーザーの指示）。WSL の ghq の root は、Windows 側と共有せず、WSL 自身の `~/works/repos` に置く。旧 `C:\vault` は、`claude --resume` の試験が終わるまで削除しない（ユーザーの指示）。
+- 却下案: 未検討（承認のみ）。
+- 確認済み（2026-10-06）: 新しい場所で Obsidian と Claude Code が動いた。dotfiles の Linux 側の試験が 51/51 合格（WSL で実行）。未確認: 実機の WSL での `WORKS_DIR` の受け渡し（`WSLENV`）。
+- 行き先: 転記待ち（→ exmem/inbox/2026-10-06-windows-wsl-shared-workdir-layout.md）
+
 ### 【汎用】PARA の `areas/` `projects/` `archives/` の役割と判断基準を定める（2026-10-06。ユーザーが承認。試行で見直す前提）
 
 - 行き先: 転記済（2026-10-06 → exmem/knowledge/para-operations.md）
@@ -161,6 +168,10 @@
 
 ## Gotchas
 
+- 状況: PowerShell のスクリプトで `docs/log.md` を書き換えて書き戻したら、ファイルが二重になり、直そうとした次のスクリプトで空になった（2026-10-06）
+  - 原因: 二重になった原因は不明。空になったのは、見出し行の検索が何も見つけず、`$null` を添字にしたエラーのあとも、スクリプトが続行して空の内容を書いたため
+  - 解決: `git checkout -- docs/log.md` でコミット済みの版に戻し、未コミットだった差分は Edit で書き直した。以後、長い Markdown の書き換えは Edit で行う
+  - 【汎用】行き先: 転記待ち（→ exmem/inbox/2026-10-06-powershell-script-file-rewrite-guard.md）
 - 状況: `colored-tags` の `data.json` を、追跡する・しないが2回切り替わった
   - 【この件】行き先: 転記済（2026-10-06 → exmem/app-config-placement.md、exmem/workflow-kit.md）
 - 状況: AI が提案した記録先を「決定済み」と書いて進め、ユーザーに指摘された
