@@ -115,5 +115,6 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s5,-,-,Project の close,approval,2026-10-06-s5-q03,判断 F（Cortex-M0 の除算。AI の推奨は F1、ユーザーは F4）,adhoc,choice,1,1,0,0,0,,live
 2026-10-06,2026-10-06-s5,-,-,Project の close,approval,2026-10-06-s5-q04,ナレッジ化の時期（AI の推奨は close の直後。ユーザーは、あとでまとめて）,adhoc,choice,1,1,0,1,0,,live
 2026-10-06,2026-10-06-s5,-,-,Project の close,improvement,2026-10-06-s5-i02,close の移動は、先に make clean し、ディレクトリごとの git mv が失敗したらファイル単位で移す,hook,choice,1,1,0,0,0,,live
-2026-10-06,2026-10-06-s6,-,-,開始インタビュー,improvement,2026-10-06-s6-i01,各質問のあとに「ほかに前提はありますか」の自由記述を1つ置く（選択肢の外の前提を拾う）,hook,free,0,,,,,,live
+2026-10-06,2026-10-06-s6,-,-,開始インタビュー,improvement,2026-10-06-s6-i01,各質問のあとに「ほかに前提はありますか」の自由記述を1つ置く（選択肢の外の前提を拾う）,hook,free,1,1,0,0,0,,live
 2026-10-06,2026-10-06-s6,-,-,方式検討,approval,2026-10-06-s6-q01,承認待ちの改善案5件の承認,adhoc,choice,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s6,-,-,方式検討,approval,2026-10-06-s6-q02,新しいセッションの呼び出し（案 A: 作業を始めて を決めて AGENTS.md から参照）,adhoc,choice,1,1,0,0,0,,live

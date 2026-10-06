@@ -40,6 +40,8 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）にある。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は、設定ファイル（`*.json`）を編集しない（Obsidian が上書きして、変更が消える）。プラグインやテーマを追加・削除するときは、設定ファイルと `community-plugins.json` を合わせる。`workspace.json` と `workspace-mobile.json` は端末ごとの状態なので、コミットしない（dotfiles の `.gitignore` 済み）。
 - ユーザーへの質問（聞き取り）、AI の提案への承認の確認、改善フックの改善案は、`docs/metrics/events.csv` に1件1行で記録する（記録するのはエージェント。定義と列は `docs/metrics/README.md`、集計は `docs/metrics/summarize.ps1`）。回答を受けた同じターンで行を足し、終了処理で `adopted` と `reversed` を確定する。要旨に、機密・個人情報を書かない。
 
+- 「作業を始めて」と言われたら、`docs/drafts/session-start-interview.md`（開始インタビューの手順書の下書き。試験運用）に従う。進行中の Project が無い、または新しい Project を始めるときは、先に `docs/drafts/project-open.md`（Project を始める手順の下書き）で Project を作る。Project を閉じるときは、`docs/drafts/project-close.md`。手順書は、実測で直して育てる（PARA の試行の経緯は `docs/log.md`、判断は `docs/decisions.md`）。
+
 ## コミット
 
 - メッセージは `[領域] 変更内容`。`git add` はパスを指定する。
