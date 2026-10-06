@@ -6,17 +6,11 @@
 
 ## Principles
 
-- 【汎用】作業ログは `exmem` に置かず、作業ディレクトリ側の `docs/` に置く。理由: `exmem` は知識・経験・ルールの置き場で、作業ログは将来、日報・仕様書・手順書などの文書の入力にするため。 行き先: 転記済（2026-10-06 → kit/docs-rules.md、exmem/workflow-kit.md）
-- 【汎用】小さく一過性のディレクトリには、専用の `docs/` を置かない。親の作業ディレクトリの `docs/` に含める。理由: 小さな作業のために、`docs/` 一式を持つのは適正でない（ユーザーの判断）。 行き先: 転記済（2026-10-06 → kit/docs-rules.md。exmem 側にも済み）
-- 【汎用】アプリが自動で書き換えるファイルを追跡するかは、次の5項目で決める。理由: 「自動で書き換わるものは追跡しない」だけでは、見た目の再現に要る設定まで外れてしまう（`colored-tags` の `data.json` で判断に迷った）。 行き先: 転記済（2026-10-06 → exmem/app-config-placement.md）
-  1. 再現したい設定か（見た目や動作が、他の端末でも同じになる必要があるか）。
-  2. 共有ノートから決まる内容か（端末ごとの内容に依存しないか）。
-  3. 差分が、作業の意図と対応するか（作業のたびに無関係な差分が出ないか）。
-  4. 共有して問題ない内容か（機密や、ローカル専用ノートの内容を含まないか）。
-  5. 外したとき、再生成できるか（再生成できても内容が変わるなら、外す理由にならない）。
-  1〜4がすべて「はい」なら追跡する。端末ごとの状態（`workspace.json`）は 1 と 2 が「いいえ」なので追跡しない。
-- 【この件】Obsidian の設定は、使っているものだけに絞る。理由: 使っていないプラグインと旧設定の削除を、実際に行っている（`82953b7`）。 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
-- 【汎用】記録する決定は、ユーザーが明示したものだけにする。AI の提案は「提案」と書き、承認の確認が取れるまで決定として書かない。理由: 提案が決定として残ると、以後の判断が、承認されていない前提に乗る（実際に起きた）。 行き先: 転記済（2026-10-06 → kit/docs-rules.md。exmem 側にも済み）
+- 【汎用】作業ログは `exmem` に置かず、作業ディレクトリ側の `docs/` に置く。 行き先: 転記済（2026-10-06 → kit/docs-rules.md、exmem/workflow-kit.md）
+- 【汎用】小さく一過性のディレクトリには、専用の `docs/` を置かない。親の作業ディレクトリの `docs/` に含める。 行き先: 転記済（2026-10-06 → kit/docs-rules.md。exmem 側にも済み）
+- 【汎用】アプリが自動で書き換えるファイルを追跡するかは、次の5項目で決める。 行き先: 転記済（2026-10-06 → exmem/app-config-placement.md）
+- 【この件】Obsidian の設定は、使っているものだけに絞る。 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
+- 【汎用】記録する決定は、ユーザーが明示したものだけにする。AI の提案は「提案」と書き、承認の確認が取れるまで決定として書かない。 行き先: 転記済（2026-10-06 → kit/docs-rules.md。exmem 側にも済み）
 
 ## Decisions
 
@@ -34,171 +28,77 @@
 - 確認済み（2026-10-06、根拠: `resources/workflow-kit/tools/check-docs.ps1`）: 41項目すべてに印を付け、FAIL 0。印を付ける過程で、exmem の `README.md` と `AGENTS.md` の `contexts/` の定義の食い違い、dotfiles の `docs/decisions.md` に無かった決定（Linux 側の試験スクリプトの置き場）を見つけて直した。
 - 試験で出た、kit の変更案に反映する点: ① Gotchas は3行セット（状況・原因・解決）を崩さないよう、ラベルと行き先を入れ子の4行目に置く。② `転記済` の日付は、到達を確認した日。③ 行き先が複数ある項目（例: exmem には済み、kit には未）は、未完の方の状態にする。④ `転記済` の判定は見出し・キーワードの一致が中心だったので、本文を外す前に、項目ごとに根拠・却下案が写っているかを確認する。⑤ 行き先は、他のソースの `docs/` もありうる（別ソースの決定が混入していた）。
 - 行き先: 転記待ち（→ exmem/inbox。ルール本体は kit 2026-10-06.13 に反映済み: docs-rules.md、templates/decisions.md、tools/check-docs.ps1。根拠・却下案・試験の知見は、次の「ナレッジ化して」で運ぶ）
+
 ### 【この件】Vault のトップを `notes` から `works` に rename し、`certs` を `areas/dev-env/certs/` へ移す（2026-10-06）
 
-- 決めたこと（ユーザー）: トップのディレクトリを `C:\vault\notes` から `C:\vault\works` にする。環境変数 `NOTES_DIR` は `WORKS_DIR` に改める。`C:\vault\certs`（CA 証明書の置き場）は、`works\areas\dev-env\certs\` へ移し、`CERTS_DIR` をその下にする。この PC のみ実施し、他の PC は未導入なので新規扱いで始める。
-- 根拠: トップの役割が、ノートではなく、業務・個人開発のデータ構造（PARA）になっていて、名前が体を表していなかった。`certs` は、会社固有の CA 証明書で、ローカル専用。共有の `resources/` には置けず、ローカルの3つのうち、継続して維持するものは `areas/` が合う（この Vault の `areas/` と `resources/` の分け方は、PARA の意味ではなく、共有かローカルか）。Area は責任領域の名前にするので、`areas/dev-env/` の下に置く。
-- 却下案: `areas/certs/`（将来、環境の設定が増えたとき、領域の名前が合わなくなる）、`areas/` に SSH の秘密鍵まで集約する（バックアップ、Grep、Obsidian Sync、push の経路に乗る）、`CERTS_DIR` を `C:\vault\certs` のままにする。
-- 履歴の扱い: `docs/` の過去の記述、`exmem/contexts/`、ナレッジの日付つきの記述の `notes` は、当時の名前のまま残す。旧 `notes`（アーカイブ済みの GitHub リポジトリ）の呼称と区別できなくなるため、一括置換はしない。
-- 注意: 秘密鍵は Vault に入れない（SSH の鍵は `~/.ssh`）。`.gitignore` の `/areas/dev-env/certs/` は、誤 push の防止（雛形にも足した）。ripgrep も `.gitignore` を尊重するので、この中は Grep / Glob に出ない。
 - 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
+
 ### 【汎用】Vault のトップを PC ローカルのリポジトリにし、共有部分を `workbase` として入れ子で clone する（2026-10-05）
 
-- 決めたこと:
-  - 共有部分（今の `resources/`）を、新しい GitHub リポジトリ `workbase` に切り出す。vault 内には `C:\vault\notes\resources` へ**直接 `git clone`** する（ジャンクションにしない。ghq の管理外）。固定パス `C:\vault\notes\resources\{exmem,workflow-kit}` は変わらない。
-  - `C:\vault\notes`（トップ）は、PC ローカルのリポジトリにする（会社 PC は remote なし、個人 PC はローカルか非公開 GitHub）。`projects/` `areas/` `archives/`、`docs/`、トップの `AGENTS.md` を持つ。`resources/` はトップの `.gitignore` で除外する。
-  - 共有側の `_local/` は廃止する。
-  - `.obsidian/` は dotfiles へ戻す（10-03 の「`notes` へ移す」決定の撤回。dotfiles への配置はジャンクション。実績あり）。
-  - 切り出しで、`fonts/` と `wallpapers/` は履歴ごと削除（LFS も不要になる）。`_archive/obsolete/` は、履歴も含めて破棄する。`office/` は dotfiles へ移す。`cheatsheets/` と `handson/` は `workbase` に入れる（後で見直す）。
-  - 既存の GitHub リポジトリ `yuzucha16/notes` は、アーカイブとして残す。
-  - exmem と workflow-kit の単独リポジトリ化（B）は、今回は行わない。
-- 根拠:
-  - 会社 PC で `_local` の作業もコミットしたい。ローカルリポジトリと GitHub 共有を同じ作業ツリーに混ぜられない（1つのリポジトリの作業ツリーは連続している必要があり、入れ子の `.git` の中は外側から追跡できない）。
-  - 共有側がローカルの存在を知らない（一方向の依存）構成にして、共有側を単独で clone しても自己完結させる（汎用ナレッジとして育てるため）。
-  - 境界の数は、公開範囲の種類の数に合わせる（共有 / PC ローカル / 設定）。
-  - ジャンクション越しは、Claude Code の Grep / Glob が辿らない（下の Facts）。
-- 却下案:
-  - 1つの作業ツリーに2つの git を重ねる（bare リポジトリ方式。ルートの `.gitignore` が両方に効き、会社側に `git add -f` が必要になる。`.git` を持つ片方しか、普通の `git` や AI から見えない）。
-  - 共有リポジトリをトップに置いて `company/` を入れ子にする（共有側がローカルの存在を知る。逆向きの知識が残る）。
-  - トップをリポジトリにしない（`AGENTS.md` と `docs/` の持ち主が無い）。
-  - 共有部分を ghq の位置に置いてジャンクションで vault に出す（Grep / Glob で見えなくなる）。
-- 確認済み（2026-10-05）: 上の決定は、ユーザーが選択肢から選んだ（公開範囲は未定のまま。最初は非公開で作る）。
 - 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
 
 ### 【汎用】「ナレッジ化して」の自己点検を、点検スクリプトで機械化し、編集済みの知識との重複を明記する（2026-10-05）
 
-- 決めたこと（ユーザーの承認）: ① 同じスレッドで、エージェントが `knowledge/` を直接編集済みのときは、Open Questions に「統合時の重複」を書く。② 自己点検のうち機械で確認できる項目（ファイル名、frontmatter、見出し、Goal の末尾、Decisions の日付・根拠・却下案、Facts の表記、Gotchas の3行、会話依存の表現・共有したくない値の一部、行数の目安）を、`workflow-kit/tools/check-inbox.ps1`（PowerShell 7）にする。メモを作った後に実行して、結果を報告に添える。手で確認する項目（1ファイル1テーマ、既存メモとの重複、作業ログの混在、Decisions の承認、根拠の真偽）は、書く前に手で通す。
-- 根拠: 今回の「ナレッジ化して」で、機械的な点検を手で書いて実行した。毎回同じ確認を、人手（AI）の記憶に頼らず再現できる。実際に、私のメモのファイル名が規定（英単語2〜5語）を超えていたのを、スクリプトが検出した。
-- 却下案: 点検を手順書の文章だけに残す（漏れが出る）。`kit` の版が現在の版と違うことを FAIL にする（過去のメモは、作成時の版を記録する欄なので、版が上がると正常。WARN にした）。
-- 確認済み（2026-10-05）: 正常なメモ1件と、わざと壊したメモ11種で、検出が期待どおり。実際の7メモに実行し、別セッションのメモの規定違反も検出した。
 - 行き先: 転記済（2026-10-06 → kit/knowledge-hook.md、exmem/workflow-kit.md）
 
 ### 【汎用】「ナレッジ化して」で作った inbox のメモは、コミットしない（2026-10-05。全体に適用）
 
-- 決めたこと（ユーザーの指示）: 「ナレッジ化して」フックが `exmem/inbox/` に作ったメモは、コミットしない（このスレッドだけでなく全体）。未追跡のまま残す。ほかの変更のコミットは、従来どおり許可（`docs-rules.md` の「コミットと push」）。`knowledge-hook.md` の場所の制約と報告の型、`docs-rules.md` に明記した（kit 版 `2026-10-05.7`）。
-- 根拠: inbox のメモは、exmem 側で解釈して `knowledge/` に統合した後に、削除する運用。統合後は、すでにナレッジ化されているので不要になり、履歴に残す必要がない。
-- 却下案: inbox のメモもコミットする（直前の運用。削除のコミットと対になり、履歴にメモの出入りが残る）。
-- 影響（確認: 2026-10-05）: この決定の前に、WSL の試験のメモ（`exmem/inbox/2026-10-05-wsl-shell-script-testing-patterns.md`）を、`workbase` の `9df9903` でコミットしていた（未 push）。この決定の後、別セッションが作った未追跡のメモ1件が、コミットの対象から外れて残っていることを確認した。
 - 行き先: 転記済（2026-10-06 → kit/docs-rules.md、exmem/workflow-kit.md）
 
 ### 【汎用】「ナレッジ化して」の改善2点を採用する（2026-10-05）
 
-- 決めたこと（ユーザーの承認）: ① 範囲を限定された実行（その範囲だけ。曖昧なら書く前に1問確認。次の実行は前回の範囲を除く。範囲を限定したメモも、同日の既存メモとして扱う）。② 汎用と固有を分けるよう求められたとき、別ファイルにせず、項目の頭に【汎用】【この件】を付けて1ファイルの中で分ける（【この件】は作業ログにしない。統合先の候補は広い候補と狭い候補を並べる）。`knowledge-hook.md` の手順 2 と 4、自己点検、報告の型に反映した（kit 版 `2026-10-05.7`。`.6` は取り消した版のため欠番）。
-- 根拠: WSL の試験のメモで、範囲の限定と、汎用・固有の分け方が、手順書に無く、判断が揺れそうだった。範囲を限定した実行のあとに「前回の実行以降」だけを対象にすると、前回の範囲より前の内容が漏れる。
-- 却下案: 汎用と固有を別ファイルに分ける（統合先が同じ話題の場合に、「分けた各ファイルの Principles と Decisions が3項目に満たない」規則と衝突しやすい。どうしても別ファイルにしたいときは、ユーザーが指示する）。
 - 行き先: 転記済（2026-10-06 → kit/knowledge-hook.md、exmem/workflow-kit.md）
 
 ### 【この件】Linux 側の試験スクリプトを dotfiles の `tests/` に置く（2026-10-05）
 
-- 決めたこと（ユーザーの承認）: 試験スクリプトを `tests/linux/test_scripts.sh` として dotfiles に保存する。WSL とネイティブの分岐は `PROC_VERSION_FILE` で強制し、一時ディレクトリと偽の HOME だけを使う。
-- 根拠: 観点（新規作成、再実行、dry-run、元に戻す、実体があれば止まる、リンク切れ、元が無い）は、リンク配置スクリプトの変更のたびに使える。使い捨てでは、次回に作り直しになる。
-- 却下案: 使い捨てのまま、知識（inbox のメモ）だけに残す（コードの再利用ができない）。
-- 確認済み（2026-10-05）: WSL で36項目すべて合格（終了コード0）。dotfiles の `AGENTS.md` に「`scripts/linux/` などを変えたら実行する」を足した。
 - 行き先: 転記済（2026-10-06 → dotfiles/docs/decisions.md）
 
 ### 【汎用】（撤回済み 2026-10-05）項目 5 の既定の対象を、Claude を開いたディレクトリ（cwd）にする
 
-- 撤回（ユーザーの指示、2026-10-05）: 「`workbase` の中から呼ぶ」前提を見落としていた。呼び出し元が参照先（`workbase`）の中にあるのは自然で、ワークスペースの中から呼ぶ必要はない。このため、既定の対象は、下の決定どおり `C:\vault\notes` に戻した（kit は `git revert` で版 `2026-10-05.5` に戻した。`workbase` の `f7b054a`）。下の「入口がない」未決の問題も、この前提では起きないので、消えた。以下は、撤回前の記録。
-- 決めたこと（ユーザーの指示。撤回済み）: 既定の対象を固定パス `C:\vault\notes` ではなく、Claude を開いたディレクトリ（cwd）にする。この PC では `C:\vault\notes` で開くので、結果は固定パスと同じ。cwd の直下に `resources/`（`origin` が `workbase`）があるときだけ項目 5 とみなす。cwd が `workbase` の clone そのものなら、中に作らず、「`resources/` の親で開き直す」と報告して止まる。cwd が既にワークスペースなら、生成せず報告する。`resources/` が無い cwd では、従来どおり項目 1〜3。他の既定値（業務用、remote なし、初回コミットする）は変えない。
-- 根拠: PC ごとにパスが違っても、同じ言葉で使える。雛形の共通ルールの置き場も、固定パスでなく、ワークスペースの `resources/workflow-kit/` にした。
-- 確認済み（2026-10-05）: 5つの場面（新しいトップ、`workbase` の中、既にワークスペース、`resources/` の無い作業ディレクトリ、`origin` が `workbase` でない）の判定を、一時ディレクトリと実機で確認した。kit 版 `2026-10-05.6`。
-- 未決（副産物の問題）: 新しい PC のトップには `AGENTS.md` が無く、「workflowを導入して」と言うだけでは、エージェントが `setup-hook.md` に行き着けない（`resources/AGENTS.md` は、トップで開いても自動では読まれない）。入口を決める（候補: Claude 用スキル、ユーザーの `CLAUDE.md`、dotfiles が `NOTES_DIR` に置くブートストラップ用の `AGENTS.md`）。
 - 行き先: 転記済（2026-10-06 → kit/improvements.md、exmem/workflow-kit.md）
 
 ### 【汎用】「workflowを導入して」だけでワークスペースを生成する（2026-10-05）
 
-- 決めたこと（ユーザーの指示）: トリガーは「workflowを導入して」だけにする（別の言葉を足さない）。`workbase` の clone の中で、対象のパスを指定せずに言われたときは、項目 5（ワークスペースの生成）とみなし、既定値で作る: 対象 `C:\vault\notes`、PC の役割 業務用、remote なし、初回コミットする（目的は「業務用 PC の作業場。…」、読む順番の固有項目と固有ルールは「なし」）。言葉で指定した項目は、それを優先する。作成後の報告に、「条件」（各項目が既定値か指定か、変えたいときの方法）を必ず書く。
-- 根拠: 入口を1つにして、覚える言葉を増やさない。条件を報告に出せば、既定値で作ったことが後から分かる。
-- 補足: 既定値は業務用 PC を想定している。この PC のように個人用で非公開 remote を使うときは、「個人用、remote は <URL>」と言葉で指定する。`workbase` の外では、従来どおり項目 1〜3 の導入になる。対象が既にワークスペースなら、生成せず報告する。
-- 確認済み（2026-10-05）: 既定値で一時ディレクトリに生成して試験した（10ファイルをコミット、プレースホルダなし、誤って remote を足して push しても `pre-push` で止まり、リモートには何も届かない）。この試験で、`pre-push` の内容が未定義だったことに気づき、雛形にした（kit 版 `2026-10-05.5`）。
 - 行き先: 転記済（2026-10-06 → kit/setup-hook.md、exmem/workflow-kit.md）
 
 ### 【汎用】コミットの権限をエージェントに移す（2026-10-05。全体に適用）
 
-- 決めたこと（ユーザーの指示）: 「コミット・push はしない（ユーザーが行う）」のうち、**コミットを許可する**（個別のフックに限らず、すべての作業ディレクトリ。権限設定は `home/.claude/settings.json` の allow に既にある）。push と、GitHub 側のリポジトリ作成は、委譲しない（コマンドを案内する）。共通ルール `docs-rules.md` に「コミットと push」の節を置いた（範囲はパス指定、事前の確認、しないこと、push はユーザー）。`setup-hook.md` の項目 5 は、初回コミットまで行う（生成物だけ。入力 7）。
-- 根拠: コミットはローカルで、`git reset` などで戻せる。範囲をパス指定の生成物・変更物に限り、機密や既存の未確認ファイル（今回の `link-management` や履歴ファイルのようなもの）を巻き込まない境界を、手順に入れた。push は外向きで、既存のコミットとの衝突の判断も要る。GitHub 側の作成は、公開範囲を間違えると取り返しが難しい。
-- 却下案: 委譲しない（今まで）、PARA の既存の中身も初回コミットに含める（機密の混入に気づかないリスク）、push も委譲する（外向きの操作。毎回の確認が要る）。
-- 確認済み（2026-10-05）: 一時ディレクトリで、改訂した手順を3回試験した。空のトップ、PARA に既存の中身がある場合（中身は追跡されず、実ディレクトリの `.obsidian` も含まれない）、中止条件3種（既にコミットがある、`user.email` が仮値、機密らしき行）が、すべて期待どおり。曖昧さ3点を直した（中止時のステージの戻し方、仮値の定義、見本のファイル数）。kit の版は `2026-10-05.4`。
 - 行き先: 転記済（2026-10-06 → kit/docs-rules.md、exmem/workflow-kit.md）
 
 ### 【汎用】トップのワークスペースを kit の導入フックで生成する（2026-10-05）
 
-- 決めたこと（ユーザーの承認）: `setup-hook.md` に導入項目 5「ワークスペース（Vault のトップ）の生成」を足す。入力は、PC の役割と remote の方針（通常の4項目に追加）。生成物は、`.gitignore`、`.ignore`、ワークスペース用の `AGENTS.md`、PARA の3フォルダ、`git init`。雛形は `workflow-kit/templates/workspace/`。新しい PC では、`workbase` を clone し、その中で「workflowを導入して」と言う。決まった配置（`resources/` の clone、`.obsidian` のリンク）は dotfiles（`50_repos`、`30_link`）が担う。
-- 根拠: 骨組みを生成物にすれば、PC ごとの違いを中身（PARA、`docs/`、固有ルール）に限れる。トップが PC ごとに別のリポジトリになる問題（共有側を汎用ナレッジとして育てたい）への対応。出力のブレを抑えるため、既存の導入フックと同じ型（入力・手順・自己点検・報告の型）にそろえた。
-- 却下案: スクリプトにする（既存の決定。固有ルールを埋められず、保守が増える）。
-- 確認済み（2026-10-05）: この PC のトップを、この手順で生成した（自己点検を通した）。実測で `.ignore` の不足を見つけて、kit に足した（Facts）。
 - 行き先: 転記済（2026-10-06 → kit/setup-hook.md、exmem/workflow-kit.md）
 
 ### 【この件】`.obsidian` を dotfiles へ戻す（2026-10-05。2026-10-03 と 2026-10-04 の決定を撤回）
 
-- 決めたこと（ユーザー）: `.obsidian` の実体を dotfiles の `windows/obsidian/.obsidian` に置き、Vault のトップの `.obsidian` へジャンクションで張る（`links.map`）。`workspace*.json` は dotfiles の `.gitignore` で除外する。
-- 撤回する決定:
-  1. 2026-10-03「`.obsidian` を dotfiles から `notes` リポジトリへ移した」（根拠: git の管理境界を減らしたい）。
-  2. 2026-10-04「`.obsidian` は `notes` に置き続け、dotfiles には戻さない」（`exmem/knowledge/app-config-placement.md`。根拠: Obsidian は Vault 直下を読むのでジャンクションが必須になる、設定の中身が Vault と連動する、dotfiles → `notes` の片方向の依存を保てる、dotfiles の履歴が重くなる。却下案: dotfiles に戻してリンクする）。
-- 撤回の理由: Vault のトップを PC ローカルのリポジトリ（会社 PC は remote なし）にして、共有部分を別リポジトリ `workbase` に分けた。トップは PC 間で共有されないので、`.obsidian` をトップに置くと設定が PC ごとに別管理になる。dotfiles は全 PC に clone するので、設定を共有できる。10-04 の判断基準のうち「③ 依存の向き」と「④ 全 PC への到達性」の前提が変わった。境界の数は、公開範囲の種類（共有 / PC ローカル / 設定）に合わせる、という方針とも合う。
-- 経緯: 最初の提案では、10-04 の決定を示さず、10-03 の決定との関係だけを説明していた。実施中に 10-04 の決定の存在を見つけて報告し、決定と根拠を示した上で、ユーザーが改めて「dotfiles へ戻す（A）」を選んだ。
-- 引き受ける負担（10-04 の決定の根拠にあったもの）: ジャンクション越しの運用。リンクの前に Obsidian を開くと実ディレクトリが先にでき、`30_link.bat` が `[ERR]` で止まる（手で退避して再実行）。設定の変更が dotfiles のコミットになる（`[obsidian]` の接頭辞は dotfiles 側に移る）。
-- 却下案: トップのリポジトリで管理する（PC 間で共有されない）。
-- 反映（2026-10-05）: dotfiles に `.obsidian`（15ファイル）と `office/` をコピーし、`links.map` `10_env.bat` `50_repos.bat` `.gitignore` `README.md` `AGENTS.md` を更新した（未コミット。リンクを有効にするのは、トップの切り替え時）。`exmem/knowledge/obsidian-vault.md` と `app-config-placement.md` に、撤回済みを記録した（`workbase` 側の1コミット）。
 - 行き先: 転記済（2026-10-06 → exmem/app-config-placement.md）
 
 ### 【汎用】`notes/` を作業ディレクトリとし、`docs/` を `notes/docs/` に置く（2026-10-04）
 
-- 決めたこと: Obsidian の設定管理（`.obsidian/`）を含め、`notes/` 全体を1つの作業ディレクトリとし、作業ログと判断記録を `notes/docs/` に置く。直前に決めた「`.obsidian/docs/` に暫定で置く」は取り消した。
-- 根拠: `.obsidian/` は小さく一過性のディレクトリで、専用の `docs/` を置くのは適正でないと、ユーザーが判断した。作業ログを `exmem` に置かない方針は維持する。
-- 却下案: `.obsidian/docs/` に置く（小さく一過性のディレクトリに置くのは適正でない）、`exmem/contexts/` に記録する（作業ログを `exmem` に置かない方針に反する）。
-- 確認済み（2026-10-04、根拠: `git status`）: `.obsidian/` の `AGENTS.md`、`CLAUDE.md`、`docs/` は、当日作成の未コミットのファイルだった。内容をこの `docs/` に移して削除した。
 - 行き先: 転記済（2026-10-06 → exmem/workflow-kit.md）
 
 ### 【汎用】`notes/docs/` はローカル専用のままにする（2026-10-04）
 
-- 決めたこと: `notes/docs/` を共有（Git 管理）しない。`.gitignore` は変更しない。
-- 根拠: 作業ログに、会社固有の情報が入る可能性がある。`notes` リポジトリが公開か非公開かは未確認（`exmem/knowledge/obsidian-vault.md`）。ユーザーが承認した。
-- 却下案: `.gitignore` に `!/docs/` を足して共有する（会社固有の情報が共有側に出るリスク）。
-- 影響: `docs/` は他のPCに届かない。日報などの入力にするのは、そのPCの中になる。
 - 行き先: 転記済（2026-10-06 → exmem/workflow-kit.md）
 
 ### 【汎用】共通機能の導入手順を、「workflowを導入して」の導入フックにする（2026-10-04）
 
-- 決めたこと: `workflow-kit/setup-hook.md` を新設し、トリガーは「workflowを導入して」にする。導入項目は一覧の表で管理し、docs 以外の機能も足せるようにする。履歴からの復元は任意の項目にする。Claude 用スキルは、次回以降に作る（TODO）。試験導入先は `notes/`。
-- 根拠: 「ナレッジ化して」と同じ構成（手順・入力の型・自己点検・報告の型・改善フック）にそろえると、出力のブレを抑えられ、同じ育成と改善の枠に乗る。トリガーを `docs` でなく `workflow` にすると、docs 以外の機能の追加に対応しやすい。復元は、ほぼ使わないので任意でよい（ユーザーの判断）。
-- 却下案: 手順書だけにする（埋め方が揃わない）、導入スクリプトにする（固有ルールを埋められず、保守が増える）。スキルを同時に作る（次回以降に持ち越す）。
 - 行き先: 転記済（2026-10-06 → kit/setup-hook.md、exmem/workflow-kit.md）
 
 ### 【汎用】`contexts/` を「`notes` から見えない場所の引継ぎコンテキスト」にする（2026-10-04）
 
-- 決めたこと: `exmem/contexts/` は、モバイルや他環境での壁打ちの内容を引き継ぐためのコンテキストとし、作業ログの置き場にしない。消化の手段は未定。
-- 根拠: `exmem` は知識・経験・ルールの置き場で、作業ログは置かない（ユーザーの定義）。
-- 却下案: 作業ディレクトリが無い作業のログを `contexts/` に置く（役割が、引継ぎから作業ログへ広がる）。
-- 行き先: 転記済（2026-10-06 → exmem/README.md、exmem/AGENTS.md の contexts の定義）
+- 行き先: 転記済（2026-10-06 → exmem/knowledge/workflow-kit.md、exmem/README.md、exmem/AGENTS.md）
 
 ### 【この件】`.obsidian/` を dotfiles から `notes` リポジトリへ移した（2026-10-03）
 
-- 決めたこと: `.obsidian/` を、dotfiles の `windows/obsidian/.obsidian` から `notes` リポジトリ直下へ移し、`notes` で管理する。`workspace.json` は追跡しない。
-- 根拠: Git の管理境界を減らしたい（`exmem/knowledge/obsidian-vault.md` の記述。決定日は 2026-10-02）。
-- 却下案: 履歴を引き継いでの移管（履歴なしのコピーで行った。確認: `exmem/knowledge/obsidian-vault.md`）。
-- 確認済み（2026-10-04、根拠: `git log`）: `notes` の `cee0c82` と、dotfiles の `bbb294b`。
 - 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
 
 ### 【汎用】改行コードを LF に統一する（2026-10-03）
 
-- 決めたこと: `.gitattributes` に `* text=auto eol=lf` を書く。
-- 根拠: `.gitattributes` のコメントに「Obsidian・AI・WSL/Linux の出力が LF のため」とある。
-- 却下案: 約17分前の `76d3fec` で、設定ファイルを CRLF に戻していた（「Obsidian の出力に合わせて」）。この方針は、`df2d261` で LF に切り替えて置き換えた。理由は、履歴から不明。
-- 確認済み（2026-10-04、根拠: Obsidian が当日書き換えた `workspace.json`・`app.json`・`appearance.json`・`core-plugins.json`・`data.json` のバイト列に CR が無い）: Obsidian は設定ファイルを LF で書く。追跡中の15ファイルは、インデックスも作業ツリーも LF（`git ls-files --eol`）。他のPCでの出力は、未確認。
 - 行き先: 転記済（2026-10-06 → exmem/git-line-endings.md）
 
 ### 【この件】`colored-tags` の `data.json` は追跡する（2026-10-04）
 
-- 決めたこと: 既存の決定（`exmem/knowledge/obsidian-vault.md`。色の割り当てを固定するため追跡する）を、上の5項目で確認し、維持する。運用として、新しいタグを使い始めたコミットに、`data.json` の追記分を含める。
-- 根拠（5項目の確認）:
-  1. 再現したい設定か: 色の割り当ては、全端末で同じにしたい（`knowledge/obsidian-vault.md` の決定の根拠）。
-  2. 共有ノートから決まるか: 78タグのうち74件は、追跡対象の共有ノート（`.md`）の本文に文字列として出てくる。残る4件（`dashboard`、`report`、`monthly`、`weekly`）は見つからなかった（確認: 2026-10-04、根拠: 追跡対象の `resources/` の `.md` の部分一致検索。短いタグは過大に一致するので、74件は多めの数。日本語名の6ファイルは、パス処理の都合で検索できなかった）。`auto_ota` や `your_project` のような固有名も、共有側の `_archive/` のノートに出てくるので、ローカル専用ノートからの漏れではない。
-  3. 差分が作業の意図と対応するか: 新しいタグが増えたときだけ末尾に追記される（確認: 2026-10-04、根拠: `git diff`。当日6件が追記された）。
-  4. 共有して問題ないか: タグ名だけで、機密はない。共有ノートに見つからない4件は、一般的な語。
-  5. 外したとき再生成できるか: Obsidian が再発見すれば再生成できる。ただし、色は発見順の連番なので、clone ごとに変わる可能性がある（仮説。`knowledge/obsidian-vault.md` の記述より）。
-- 却下案: 追跡しない（clone 後に色が変わる）、CSS スニペットで色を固定する（タグが増えて必要になったら移る）。
-- 補足: `palette` の設定値は、`selected: adaptive-soft`、`mixColors: true`、`transition: true`（確認: 2026-10-04、根拠: `data.json`）。
 - 行き先: 転記済（2026-10-06 → exmem/app-config-placement.md）
 
 ### 【この件】`types.json` で `created` と `updated` を日付型にする（2026-10-03）
@@ -210,29 +110,19 @@
 
 ### 【この件】ファイルアイコンは CSS のみで種類ごとに色分けする（2026-10-04）
 
-- 決めたこと: `file-explorer-compact.css` に、種類ごとの色を足す。目標は、アイコンの適用と、起動・処理が重くならない確認まで（ユーザーの指示）。
-- 根拠: 単一色（`--text-faint`）で見分けにくい。色の変更だけなら、既存の形状（マスク）を流用でき、追加の処理は、静的な属性セレクタだけで済む。色は `--color-*` を使い、テーマとライト・ダークに追従させる。
-- 却下案: アイコン用プラグイン（`obsidian-icon-folder` は 2026-10-03 に、使わないとして削除済み。「設定は使っているものだけに絞る」にも反する）。
-- 配色（ユーザーの指示）: 開いているフォルダ=yellow、閉じているフォルダ=`#A7B85A`（`material-gruvbox-bold.css` の見出し色と同じ値を直接書いている。見出しの色を変えるときは両方直す）。アクティブなタブの文字とウィンドウ右上のボタンは、テーマの赤・黄を `--text-normal` に上書きした。
-- 見送り: 階層ごとのインデントを狭める。Obsidian が各行にインラインの `!important` で位置を付け（1階層17px）、CSS からは変えられない。`.nav-folder-children` の余白を変えると、行の位置と食い違ってずれた（確認: 2026-10-05、根拠: 開発者ツールで取った DOM）。
-- 確認済み: ユーザーが実機で見た目を確認しながら調整した。起動・処理の軽さは、計測していない（CSS のルール追加のみで、スクリプトは無い）。
 - 行き先: 転記済（2026-10-06 → exmem/obsidian-appearance.md）
 
 ### 【この件】本文の幅をフォントサイズに比例させる（2026-10-04）
 
-- 決めたこと: `--file-line-width: 58em` にし、`readableLineLength` を有効にする（`0fdd679`）。
-- 根拠: 拡大しても、1行の文字数が保たれる（`readable-width.css` のコメント）。
-- 却下案: 既定の固定幅 700px（拡大すると1行の文字数が減る）。
 - 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
 
 ## Facts
 
-- 【汎用】ripgrep（Claude Code の Grep を含む）は `.gitignore` を尊重する。トップの `.gitignore` が `resources/`（別リポジトリの clone）を除外すると、トップから Grep しても `resources/` の中が、エラーも警告も無く結果から抜ける。トップの `.ignore` に `!/resources/` を置くと、検索に含まれる（確認: 2026-10-05、根拠: `setup-hook` の Grep が `.ignore` の前は3件、後は8件以上で `resources/` 配下が出た）。`.gitignore` はこの PC のトップだけでなく、新しい PC でも同じなので、雛形 `templates/workspace/ignore.template` で生成する。Glob への影響は未確認（`resources/workflow-kit/*.md` の Glob は、`.ignore` の後に通った）。 行き先: 転記済（2026-10-06 → exmem/modern-cli-tools.md、kit/templates/workspace/ignore.template）
+- 【汎用】ripgrep（Claude Code の Grep を含む）は `.gitignore` を尊重する。 行き先: 転記済（2026-10-06 → exmem/modern-cli-tools.md、kit/templates/workspace/ignore.template）
 - 【この件】`docs/` は、トップのリポジトリで追跡する（共有の `workbase` には載らない）。2026-10-04 の「`notes/docs/` はローカル専用のままにする」の趣旨（共有リポジトリに載せない）は保たれる。個人用 PC では、非公開 remote（`worksample`）へ push するかは、ユーザーが決める。 行き先: local（この PC のトップの運用）
-- 【汎用】ジャンクション越しのディレクトリは、Claude Code の Grep / Glob、`rg`（既定）、PowerShell の `Get-ChildItem -Recurse` が辿らない。エラーも警告も出ず、結果から黙って抜ける。ジャンクション自体をパスに指定すると検索できる（結果は実体のパス）。`rg --follow` なら辿る（確認: 2026-10-05、根拠: 使い捨ての一時ディレクトリで実測。Windows 11、pwsh 7、rg は scoop 版）。Obsidian のジャンクション越しの動作は未検証。 行き先: 転記済（2026-10-06 → exmem/modern-cli-tools.md）
+- 【汎用】ジャンクション越しのディレクトリは、Claude Code の Grep / Glob、`rg`（既定）、PowerShell の `Get-ChildItem -Recurse` が辿らない。 行き先: 転記済（2026-10-06 → exmem/modern-cli-tools.md）
 - 【この件】`_archive/obsolete/` は、プロジェクト管理の旧雛形27ファイル（プレースホルダ `your_project` など）で、作成は 2026-10-02 の1コミットだけ。使われた形跡は、コミットからは見つからなかった（確認: 2026-10-05、根拠: `git log -- resources/_archive`）。 行き先: local（廃止した旧雛形の事実）
 - 【汎用】`git filter-repo` 2.47.0 を scoop で導入した（2026-10-05。ユーザーの承認）。 行き先: 転記済（2026-10-06 → exmem/git-subdirectory-split.md）
-
 - 【この件】`notes` のルートに作った `docs/` は、`.gitignore` のホワイトリスト（`/*`）により、既定でローカル専用になる（確認: 2026-10-04、根拠: `git check-ignore -v docs/log.md` が `.gitignore:3:/*` を返した）。共有するには、`.gitignore` に `!/docs/` を足す必要がある。 行き先: 破棄（旧 `.gitignore` のホワイトリストは廃止済み）
 - 【この件】`notes` の `AGENTS.md` と `CLAUDE.md` は、導入フックの実行前から存在した。`CLAUDE.md` は `@AGENTS.md` の1行（確認: 2026-10-04、根拠: ファイルの読み取り）。 行き先: 破棄（導入時の観測。log に記録済み）
 - 【この件】テーマは Material Gruvbox。以前は Obsidian gruvbox と Everforest で、`78e3975`（2026-10-03）で変更した。変更の理由は、履歴から不明。Zed の自作テーマ（Material Gruvbox Dark）と同じ名前だが、そろえる意図があったかは未確認（仮説）。 行き先: local（この Vault のテーマ）
@@ -241,17 +131,13 @@
   - 新規ノートの保存先は現在のフォルダ（`newFileLocation: current`）、添付は `./`、行番号を表示、削除の確認あり、タブ幅 2、検索から除外するフィルターは `.tmp.` `_archive/` `.claude/`。
   - コミュニティプラグインは `colored-tags` だけ。有効なスニペットは `material-gruvbox-bold`、`file-explorer-compact`、`readable-width`。
   - 有効なコアプラグインは、`file-explorer` `global-search` `switcher` `backlink` `outgoing-link` `tag-pane` `properties` `page-preview` `command-palette` `editor-status` `bookmarks` `outline` `word-count` `file-recovery` `sync` `bases`。
-- 【この件】食い違い: `exmem/knowledge/obsidian-vault.md` の「設定」節（2026-10-01 時点の記述）は、現在の設定と違う。同ノートはコアプラグインの有効に `Templates`、`Graph`、`Daily notes`、`Canvas` を、コミュニティプラグインに `calendar` と `obsidian-icon-folder` を挙げ、新規ノートの保存先を `0_inbox` と書いている。現在は、いずれもオフまたは削除済み（確認: 2026-10-04、根拠: `core-plugins.json` と `community-plugins.json`）。同ノートの `0_inbox` は、Vault に存在しないフォルダだった。 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md。設定節が現状と一致していることを確認）
+- 【この件】食い違い: `exmem/knowledge/obsidian-vault.md` の「設定」節（2026-10-01 時点の記述）は、現在の設定と違う。 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md。設定節が現状と一致していることを確認）
 - 【この件】2025-09-22 に、9つのコミュニティプラグインを追加し（`44054b5`）、翌日に取り消した（`dcbe209`）。 行き先: 転記済（2026-10-06 → exmem/obsidian-vault.md）
 - 【この件】dotfiles 側の 2026-10-02 より前の履歴は、履歴の作り直しで残っていない（確認: 2026-10-04、根拠: `git log --all -- windows/obsidian` の結果が、初期コミットと `bbb294b` だけ）。 行き先: 転記済（2026-10-06 → exmem/workflow-kit.md）
 
 ## Gotchas
 
 - 状況: `colored-tags` の `data.json` を、追跡する・しないが2回切り替わった
-  - 原因: 不明（コミットメッセージには「端末ごとのタグ色のキャッシュ」とだけある）
-  - 解決: 2026-10-04 に、判断基準5項目で追跡と決めた（Decisions を参照）。新しいタグを使い始めたコミットに、追記分を含める
   - 【この件】行き先: 転記済（2026-10-06 → exmem/app-config-placement.md、exmem/workflow-kit.md）
 - 状況: AI が提案した記録先を「決定済み」と書いて進め、ユーザーに指摘された
-  - 原因: ユーザーの回答が「疑問はその通り」までなのに、AI が記録先まで補って決定として扱った
-  - 解決: 「ユーザーが明示した決定」と「AI が追加した内容」を表に分けて確認し、追加分を削除・書き換えた
   - 【汎用】行き先: 転記済（2026-10-06 → exmem/human-ai-decision-loop.md）
