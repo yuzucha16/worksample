@@ -45,7 +45,9 @@ exmem:
 
 ## Log
 
-### 2026-10-06（会社 CA 証明書の置き場を `$HOME/.certs` に変更）
+### 2026-10-06（会社 CA 証明書の置き場を `$HOME/.certs` に変更。ナレッジ化）
+
+- 「ナレッジ化して」を実行し、`exmem/inbox/2026-10-06-certs-location-wslenv-path.md` を作った（コミット対象外）。`docs/decisions.md` の対応する項目の行き先を、このメモにした（転記待ち）。同じ実行で、dotfiles の未仕分け項目も別の2メモにした（dotfiles の `docs/log.md`）。
 
 - ユーザーの指示で、`certs` の置き場を `areas/dev-env/certs/` から `$HOME/.certs` に変えた。このリポジトリの `.gitignore` から `/areas/dev-env/certs/` を除いた。kit は版 `2026-10-06.15`（雛形の `.gitignore` から同じ行を除く。「workflowを導入して」の手順は、もともと `certs` を作らないので変更なし）。dotfiles は `10_env.bat`、`common.sh`、`README.md` を直した（WSL へは `WSLENV` の `CERTS_DIR/p`）。判断は `docs/decisions.md`。旧 `areas/dev-env/certs` は空で、dotfiles の確認が済んだら削除する（dotfiles の Next Actions）。
 
