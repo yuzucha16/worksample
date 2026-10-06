@@ -6,6 +6,7 @@
 
 ## Next Actions
 
+- **`works` への移行を完了する（ユーザー）**: アプリと Claude を閉じ、`C:\` の pwsh で `C:\vault\backup\finish-works-rename.ps1 -WhatIf` → 実行。`works` で `claude --resume bc9d6801-cc49-4c2d-989a-e7a4c18e0871` を試す。通らなければ新規に起動する。完了後、`rg` で旧パスの残存を確認し、`exmem/knowledge/obsidian-vault.md` の注記に完了を追記する。
 構造変更（`docs/decisions.md` の「Vault のトップを PC ローカルのリポジトリにし…」）。段階1〜4は実施済み（2026-10-05）。残り:
 - **Obsidian の実機確認（ユーザー）**: `C:\vault\notes` を Vault として開き直し、検索、バックリンク、`.base`、テーマと CSS スニペット、`colored-tags` の色が、新しいトップ（実ディレクトリ + `resources/` の入れ子 + `.obsidian` のジャンクション）で動くか。`workspace.json` は新規になる（開いていたタブは消える）。
 - **コミットと push（ユーザー）**: `workbase`（`C:\vault\notes\resources`。`origin/main` より2コミット先: kit の `2026-10-05.1` と `.2`）。dotfiles（未コミットの差分: `windows/obsidian/` `windows/office/` の追加、`links.map` `10_env.bat` `50_repos.bat` `.gitignore` `README.md` `AGENTS.md` `docs/log.md`）。新しいトップ（`C:\vault\notes`。初回コミットは未実施。remote は `worksample`（非公開）を設定済みで、push はしていない）。
@@ -45,6 +46,7 @@ exmem:
 ### 2026-10-06
 
 - Vault のトップを `notes` から `works` に rename する作業を進めた（ユーザーの指示。判断は `docs/decisions.md`）。文字列の更新まで済み: dotfiles（`NOTES_DIR` → `WORKS_DIR`、パス、`CERTS_DIR`）、`workbase`（kit の版 `2026-10-06.8`、`AGENTS.md`、既定の対象、雛形、見本）、このリポジトリの `AGENTS.md` と `.gitignore`（`/areas/dev-env/certs/` を除外）。dotfiles の Linux のテストは 35/35 合格（実 WSL の項目だけ、rename 後でないと走らず skip）。**ディレクトリの rename 本体は、ユーザーが `C:\vault` で行う**（このセッションが cwd を掴むため）。
+- ユーザーが `C:\vault\backup\rename-notes-to-works.ps1` を実行した（rename、certs の移動、環境変数、`obsidian.json`、Claude の履歴キーのコピー）。そのあと、Claude の `--resume` が新しいパスで通らなかったため、ユーザーが `works` を `notes` に戻した。結果、環境変数（`WORKS_DIR` `CERTS_DIR`）と `obsidian.json` は `works` を指し、ディレクトリは `notes` という食い違いの状態になった（確認: 2026-10-06、根拠: 環境変数と `obsidian.json` の取得、`C:\vault` の一覧）。コピーした履歴の `"cwd"` に旧パスが残っているのが原因という仮説で、`C:\vault\backup\finish-works-rename.ps1`（rename と、履歴の再コピー＋`cwd` の書き換え）を用意した。未実行。実行しないなら、環境変数と `obsidian.json` を `notes` に戻す必要がある。
 ### 2026-10-05
 
 - 「ナレッジ化して」の改善2点を実施した（ユーザーの承認。kit の版 `2026-10-05.8`、`workbase` の `3daeff6`）。① 同じスレッドで `knowledge/` を直接編集済みのときは、Open Questions に「統合時の重複」を書く（手順 5-6）。② 自己点検の機械で確認できる項目を、点検スクリプト `workflow-kit/tools/check-inbox.ps1`（PowerShell 7）にした。一時ディレクトリで、正常なメモ1件と、わざと壊したメモ11種を試験し、すべて期待どおり。試験で、スクリプトの引数の受け取り方（複数パス）の誤りと、`kit` の版の比較を FAIL にする過剰さ（WARN にした）を直した。スクリプトを、今日の inbox の7メモに実行して、別セッションのメモ（ファイル名が7語、Facts の根拠が無い項目、`kit` が古い版）と、私のメモ1件（ファイル名が6語）の規定違反を検出した。私のメモは改名した。別セッションのメモは、既存のメモとして編集していない（ユーザーが統合のときに判断する）。判断は `docs/decisions.md`。
