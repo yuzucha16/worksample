@@ -4,5 +4,23 @@
 
 ## Principles
 ## Decisions
+
+### 【この件】ビルド環境は WSL（Ubuntu 24.04）の gcc と make にする（2026-10-06。ユーザーが承認）
+
+- 決めたこと: コンパイルとテストは WSL の gcc 13.3.0 と make で行う。サニタイザ（AddressSanitizer、UndefinedBehaviorSanitizer）は gcc のものを使う。
+- 根拠: Windows 側に `gcc` `clang` `cl` `cmake` `make` が無く、WSL には `gcc` と `make` がある（確認: 2026-10-06、根拠: `Get-Command` と `wsl` での `command -v`。`clang` `cmake` `gdb` `valgrind` は WSL にも無い）。追加の導入なしで、完了条件（ASan・UBSan の警告 0）に届く。
+- 却下案: Windows 側のコンパイラの導入（WSL で足りる）。WSL に `clang` や `gdb` を先に導入する（このセッションのゴールが増える）。
+- 補足（ユーザーの方針）: WSL の環境は暫定で作ったもので、テストや自動化のためのツールが必要になれば、dotfiles に追記して育てる。kit は、これが PoC 相当なので、このセッションでは変更しない。
+- 行き先: local（この Project のビルド環境）
+
 ## Facts
+
+- 【汎用】サニタイザが実際に効いていることは、意図したバグ（ヒープの範囲外書き込み、符号付き整数のオーバーフロー）を含む小さなプログラムで、検出されて非ゼロで終わることを確認できる。`make probe` で、ASan と UBSan の両方が検出した（確認: 2026-10-06、gcc 13.3.0、WSL。`-fno-sanitize-recover=undefined` を付けないと、UBSan は警告を出して終了コード 0 で続行する。サニタイザなしも 0。対照で確認: 2026-10-06）。 行き先: 未仕分け
+- 【この件】WSL から Windows 側の `/mnt/c/...` 上でビルドしても、`make test` は問題なく動いた（確認: 2026-10-06）。速度は未計測。 行き先: local（この PC の置き場）
+
 ## Gotchas
+
+- 状況: UBSan のプローブが、検出されなくても `make probe` で「検出した」と判定された（`OK: UBSan が検出した`）。
+  - 原因: プローブの `main` が、オーバーフローした値で終了コードを決めていて（`x == 0 ? 0 : 1`）、検出の有無と無関係に非ゼロで終わった。
+  - 解決: 通常は終了コード 0 で終わる形にし、サニタイザなし・`recover` 許可（どちらも 0）と、`-fno-sanitize-recover=undefined`（非ゼロ）を対照して確認した（2026-10-06）。
+  - 【汎用】行き先: 未仕分け

@@ -16,7 +16,9 @@ C の低レイヤー（メモリ配置、ポインタ、アライメント、未
 
 ## 成果物
 
-- `src/`: 実装とテスト
+- `src/`: 実装（アロケータ）
+- `tests/`: 単体テスト（`test_*.c`）と、サニタイザが効いていることの確認（`probe/`）
+- `Makefile`: `make test`（ASan・UBSan つきで実行）、`make probe`（意図したバグを検出することの確認）。WSL（Ubuntu 24.04）の gcc と make で動かす
 - `docs/`: 経緯（`log.md`）と判断（`decisions.md`）。複数セッションにまたがるため置く
 
 ## 範囲外
@@ -25,4 +27,4 @@ C++ の機能、スレッド安全性（必要なら次の Project にする）�
 
 ## Open Questions
 
-- ビルド環境（Windows のコンパイラ、WSL の gcc/clang）のどれで作るか。
+なし。
