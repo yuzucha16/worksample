@@ -51,6 +51,9 @@ function Get-Stat($label, $target, $g) {
     適合率 = Format-Rate ($judged.Count - $misfit.Count) $judged.Count
     冗長率 = Format-Rate @($g | Where-Object answerable -eq '1').Count @($g | Where-Object answerable -ne '').Count
     覆り率 = Format-Rate $rev.Count $known.Count
+    起因ai = @($g | Where-Object cause -eq 'ai').Count
+    起因user = @($g | Where-Object cause -eq 'user').Count
+    起因review = @($g | Where-Object cause -eq 'review').Count
   }
 }
 
