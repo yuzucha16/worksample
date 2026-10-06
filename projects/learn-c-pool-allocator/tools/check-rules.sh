@@ -3,6 +3,8 @@
 #   - 初期値つきの .data を持たない。グローバル変数（外部リンケージの変数）を持たない。グローバルでないゼロ初期化の .bss は許可
 #   - 動的確保（malloc 系）を呼ばない
 #   - libc に依存しない（未定義シンボルが無い。-ffreestanding で -O0 と -Os の両方）
+#   - 整数をポインタにキャストしない（uintptr_t などから始まる式のキャストを検出。限界あり）
+#   - 再帰がない（-fcallgraph-info の呼び出しグラフに閉路が無い。tools/find-cycles.py。python3 が要る）
 #   - 改行コードは LF、文字コードは UTF-8（BOM なし）（.h も対象）
 # 使い方: tools/check-rules.sh <file.c>...   違反があれば、内容を出して終了コード 1。
 # 再帰の禁止は、ここでは検査しない（docs/coding-rules.md の「未検査」）。
@@ -36,9 +38,19 @@ for src in "$@"; do
     echo "FAIL: $src: UTF-8 として読めない"
     fail=1
   fi
-  [[ $encoding_only -eq 0 && "$src" == *.c ]] || continue
+  [[ $encoding_only -eq 0 ]] || continue
+  # 整数演算の値をポインタとして扱わない: 整数型（uintptr_t など）から始まる式を、ポインタ型にキャストしている行を検出する。
+  # 限界: 整数型の変数（例: addr）のキャストは、型が分からないので検出できない。コンパイラの警告
+  # （-Wint-to-pointer-cast）は、大きさが違うときだけ。残りはレビューで見る。
+  i2p=$(grep -nE '\(\s*(const\s+|volatile\s+)*(struct\s+\w+|\w+)\s*\*+\s*(const\s*)?\)\s*\(?\s*\(?\s*(u?intptr_t|size_t|ptrdiff_t)\b' "$src" || true)
+  if [[ -n "$i2p" ]]; then
+    echo "FAIL: $src: 整数をポインタにキャストしている:"
+    echo "$i2p" | sed 's/^/    /'
+    fail=1
+  fi
+  [[ "$src" == *.c ]] || continue
   obj="$tmp/$(basename "${src%.c}").o"
-  if ! "$CC" -std=c11 -O0 -c "$src" -o "$obj"; then
+  if ! "$CC" -std=c11 -O0 -fcallgraph-info -c "$src" -o "$obj"; then
     echo "FAIL: コンパイルできない: $src"
     fail=1
     continue
@@ -75,6 +87,17 @@ for src in "$@"; do
     fi
   done
 done
+
+# 再帰の禁止: 呼び出しグラフ（-fcallgraph-info）に閉路が無いこと。全ファイルをまとめて見る（翻訳単位をまたぐ再帰のため）。
+# 限界: 関数ポインタなどの間接呼び出しは検査できない（WARN を出す）。
+if [[ $encoding_only -eq 0 ]] && compgen -G "$tmp/*.ci" >/dev/null; then
+  cyclic=$(python3 "$(dirname "${BASH_SOURCE[0]}")/find-cycles.py" "$tmp"/*.ci)
+  if [[ -n "$cyclic" ]]; then
+    echo "FAIL: 再帰（直接・相互）がある:"
+    echo "$cyclic" | sed 's/^/    /'
+    fail=1
+  fi
+fi
 
 if [[ $fail -eq 0 ]]; then echo "OK: check-rules（$# ファイル）"; fi
 exit $fail

@@ -52,12 +52,12 @@ check-rules:
 check-arm: | $(BUILD)
 	@if ! command -v $(ARM_GCC) >/dev/null 2>&1; then echo "SKIP: check-arm（$(ARM_GCC) が未導入）"; \
 	elif [ -z "$(SRC)" ]; then echo "OK: check-arm（src が無い）"; \
-	else set -e; for cpu in $(ARM_CPUS); do for f in $(SRC); do \
+	else fail=0; for cpu in $(ARM_CPUS); do for f in $(SRC); do \
 	  o=$(BUILD)/arm_$${cpu}_$$(basename $$f .c).o; \
-	  $(ARM_GCC) -mcpu=$$cpu -mthumb $(FREE) -Isrc -c $$f -o $$o; \
-	  u=$$(arm-none-eabi-nm -u $$o | awk '{print $$NF}'); \
-	  if [ -n "$$u" ]; then echo "FAIL: $$f ($$cpu): 未定義シンボル: $$u"; exit 1; fi; \
-	done; done; echo "OK: check-arm（$(ARM_CPUS)）"; fi
+	  $(ARM_GCC) -mcpu=$$cpu -mthumb $(FREE) -Isrc -c $$f -o $$o || exit 1; \
+	  u=$$(arm-none-eabi-nm -u $$o | awk '{print $$NF}' | tr '\n' ' '); \
+	  if [ -n "$$u" ]; then echo "FAIL: $$f ($$cpu): 未定義シンボル: $$u"; fail=1; else echo "OK: $$f ($$cpu)"; fi; \
+	done; done; exit $$fail; fi
 
 # フットプリント（.text .data .bss）。ホスト（x86-64）の値は参考。目標は .data が 0。
 size: | $(BUILD)
@@ -90,6 +90,8 @@ probe: | $(BUILD)
 	@if tools/check-rules.sh tests/probe/rules_ok.c >/dev/null 2>&1; then echo "OK: check-rules が許可される例（static const、ゼロ初期化 .bss）を通した"; else echo "FAIL: check-rules が許可される例を誤検出した"; exit 1; fi
 	@if tools/check-rules.sh tests/probe/rules_malloc.c >/dev/null 2>&1; then echo "FAIL: check-rules が malloc を検出しなかった"; exit 1; else echo "OK: check-rules が malloc を検出した"; fi
 	@if tools/check-rules.sh tests/probe/rules_libc.c >/dev/null 2>&1; then echo "FAIL: check-rules が libc 依存を検出しなかった"; exit 1; else echo "OK: check-rules が libc 依存を検出した"; fi
+	@if tools/check-rules.sh tests/probe/rules_int2ptr.c >/dev/null 2>&1; then echo "FAIL: check-rules が整数からポインタへのキャストを検出しなかった"; exit 1; else echo "OK: check-rules が整数からポインタへのキャストを検出した"; fi
+	@if tools/check-rules.sh tests/probe/rules_recursion.c >/dev/null 2>&1; then echo "FAIL: check-rules が再帰を検出しなかった"; exit 1; else echo "OK: check-rules が再帰（直接・相互）を検出した"; fi
 	@sed 's/$$/\r/' tests/test_smoke.c > $(BUILD)/probe_crlf.c
 	@if tools/check-rules.sh $(BUILD)/probe_crlf.c >/dev/null 2>&1; then echo "FAIL: check-rules が CRLF を検出しなかった"; exit 1; else echo "OK: check-rules が CRLF を検出した"; fi
 	@printf '\357\273\277int bom_probe(void) { return 0; }\n' > $(BUILD)/probe_bom.c

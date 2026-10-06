@@ -108,3 +108,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s4,learning,learn-c-pool-allocator,開発（実装）,approval,2026-10-06-s4-q01,「起動を楽にする」の削除範囲（AI は design.md だけを直し、coding-rules.md に残した）,adhoc,choice,1,1,1,0,0,,live
 2026-10-06,2026-10-06-s4,learning,learn-c-pool-allocator,開発（実装）,approval,2026-10-06-s4-q02,判断 E（strict aliasing。E1 を推奨）,adhoc,choice,1,1,0,0,0,,live
 2026-10-06,2026-10-06-s4,learning,learn-c-pool-allocator,開発（実装）,approval,2026-10-06-s4-q03,arm-none-eabi-gcc の dotfiles への追加,adhoc,choice,1,1,0,0,0,,live
+2026-10-06,2026-10-06-s5,learning,learn-c-pool-allocator,開発（実測・再検討）,approval,2026-10-06-s5-q01,実装の初期値の承認,adhoc,choice,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s5,learning,learn-c-pool-allocator,開発（実測・再検討）,approval,2026-10-06-s5-q02,Project を見直し日（2026-10-20）まで残す提案（完了条件は達成済み）,adhoc,choice,1,1,1,0,0,,live
+2026-10-06,2026-10-06-s5,learning,learn-c-pool-allocator,開発（実測・再検討）,gap,2026-10-06-s5-g01,ポインタ操作の規則（コンパイラに任せる、キャストの扱い）が、コーディングルールの聞き取りに無かった,adhoc,free,1,1,0,1,0,,live
+2026-10-06,2026-10-06-s5,-,-,Project の close,improvement,2026-10-06-s5-i01,完了条件を達成した時点で close を提案する（見直し日まで残さない）,hook,choice,0,,,,,,live

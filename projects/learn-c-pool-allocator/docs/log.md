@@ -4,15 +4,25 @@ C のメモリプールアロケータの実装による学習（Project `learn-
 
 ## Next Actions
 
-- ユーザーが、WSL に `gcc-arm-none-eabi` を導入する（`docs/dotfiles-additions.md` のコマンド）。導入後に `make check-arm` と `make size-arm` を実行し、`pool_free` の除算が Cortex-M0 で未定義シンボルを出すか確認する（`docs/design.md` の 5 節のリスク）。出たら対処案（2 のべき乗に制限、除算なしの検査、M0 を対象外）を、ユーザーに相談する。
-- `docs/design.md` の 5 節「実装の初期値」を、ユーザーがレビューする（未承認）。承認後に、`docs/coding-rules.md` の節 5 をそちらで置き換える。
-- 実装のレビューを受ける。完了条件（`alloc`/`free` の単体テストと、ASan・UBSan の警告 0 の実行が通る）は、いまの時点で満たしている（`make check`）。Project を閉じる前に、見直し日（2026-10-20）までに、ARM の実測と、制約の再検討（暫定の見直し）を行う。
+- 判断 F（Cortex-M0 の除算。F1 2進の筆算を推奨）を、ユーザーが決める（`docs/design.md`）。決定後に、`src/pool.c` を直し（F1 / F2 の場合）、`make check` の全項目が通ることを確認する（M0 / M3 / M4）。
+- Project を閉じる（close）。完了条件（`alloc`/`free` の単体テストと、ASan・UBSan の警告 0 の実行）は満たしている。閉じる手順は、`docs/drafts/project-close.md` の下書き（初回の実測）。ナレッジ化の候補は、`docs/decisions.md` の `未仕分け` の項目（Facts 3、Gotchas 2、Principles 2）。
 - 設計に沿って、`src/pool.c` と `tests/test_pool.c` を実装する（完了条件: 単体テストと、ASan・UBSan の警告 0）。
 - WSL の開発ツールが足りなければ、dotfiles に足す（ユーザーの方針。2026-10-06。`gdb` `valgrind` `clang` `cmake` は、いまは無い。必要になってから）。
 
 ## Open Questions
 
 ## Log
+
+### 2026-10-06（セッション `2026-10-06-s5`。ARM の実測と、暫定制約の再検討）
+
+- ユーザーが `gcc-arm-none-eabi` を導入し、`make check-arm` と `make size-arm` を実行した。**仮説が当たった**: Cortex-M0 で `__aeabi_uidiv` `__aeabi_uidivmod`（除算命令が無いため）。M3 / M4 は OK。`check-arm` が最初の失敗で止まり M3 / M4 が見えなかったので、全 CPU を集計する形に直した。
+- 容量（`-Os`、`.text` バイト、`.data` と `.bss` は 0）: M3 / M4 は 288、M0 は 332 で、libgcc をリンクすると 612（`__udivsi3` が 266 バイト）。2進の筆算に置き換えた試作（一時ディレクトリ。`src/` には未反映）は、M0 で 378、M3 で 358、未定義シンボルなし。ホストで `test_pool.c` が ASan・UBSan つき、`-O1` と `-O2` で通った。選択肢 F1〜F4 は `docs/design.md`（判断 F）。
+- ユーザーが「実装の初期値」を承認した。MISRA C は目標にしない。ポインタの規則: コンパイラに任せる、明示的なキャストは許容、整数演算の値をポインタとして扱わない（`docs/decisions.md`）。
+- 暫定制約の再検討（ユーザーの指示: 見直し日を待たず、実測と再検討をして close に持っていく）:
+  - 再帰の禁止は、未検査だったので、機械検査にした（`gcc -fcallgraph-info` と `tools/find-cycles.py`。直接・相互・ファイルをまたぐ再帰を検出。間接呼び出しは警告）。
+  - ポインタの規則③（整数 → ポインタのキャスト禁止）を、簡易検査にした（`(T *)(uintptr_t …)` の形）。
+  - 結果: 制約（`.data`、グローバル変数、動的確保、libc、再帰）は、`src/pool.c` で満たされている（`make check` の `check-rules` と `check-arm`（M3 / M4）が OK）。**未解決は、Cortex-M0 の除算 1 点**。限界: ファイルスコープの `static`（ゼロ初期化）は許可になる、間接呼び出し経由の再帰は検査できない、`check-rules.sh` の未定義シンボルの検査は `src/` が1ファイルの前提。
+- いまの `make check` は、`check-arm` の M0 で失敗する（意図した状態。判断 F の決定後に直す）。
 
 ### 2026-10-06（セッション `2026-10-06-s4`。実装）
 
