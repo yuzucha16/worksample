@@ -4,14 +4,19 @@
 
 ## Next Actions
 
-- `feature/m0-speed`（速度のチューニング。実装とテストの強化は完了。Log 2026-10-07 の末尾の項目）を main に取り込むか、ユーザーが決める。
-- チューニングを終えたら（またはやらないと決めたら）、close の手順（`docs/drafts/project-close.md`）。完了条件は達成済み。
+なし（Project は 2026-10-07 に閉じた。持ち越しは `areas/learning/README.md` の「次の Project の候補」）。
 
 ## Open Questions
 
-- README の Open Questions を参照。
+なし。
 
 ## Log
+
+### 2026-10-07（close）
+
+- 完了条件の達成と、速度のチューニングの取り込み（`feature/m0-speed` を main に `--no-ff` でマージ。`2d83649`）を終えて、Project を閉じた（`docs/drafts/project-close.md` の手順。ユーザーの指示）。close の直前の確認（`make clean` の後の `make check` が終了コード 0、OK 28 行。`make size-arm`: M0 / M0+ が `.text` 352、M3 / M4 が 280、`.data` `.bss` は 0）。
+- 暫定の見直し: 暫定の決定は無かった。`docs/decisions.md` の「M0 の除算」の `on_boundary` と `PTRDIFF_MAX` の前提は、速度のチューニングで逆元の方式に置き換わった（更新の注記を足した）。
+- 持ち越し: スレッド安全性、検査の限界の解消（以前からの候補）、シミュレータと変異テストのスクリプトのリポジトリ化（任意。いまは一時ディレクトリ）、実機または QEMU での速度の確認、32 ビットの直接実行（`gcc -m32` の導入）、改善案 `s2-i01`（承認待ち）。
 
 ### 2026-10-07
 

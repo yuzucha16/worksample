@@ -1,8 +1,9 @@
 ---
-status: active
+status: done
 area: learning
 review: 2026-10-20
 created: 2026-10-07
+closed: 2026-10-07
 updated: 2026-10-07
 ---
 
@@ -27,7 +28,7 @@ updated: 2026-10-07
 
 ## 成果物
 
-- `src/`（`pool.h` `pool.c`。除算を使わない経路は `POOL_SOFT_DIV`）、`tests/`、`Makefile`（`make check`、`make test-soft`、`make size-arm`）、`tools/`、`.clang-format`: 前の Project から持ち込み、M0 対応を足した。
+- `src/`（`pool.h` `pool.c`。除算を使わない経路は `POOL_SOFT_DIV`）、`tests/`、`Makefile`（`make check`、`make test-soft`、`make test-white`、`make size-arm`）、`tools/`、`.clang-format`: 前の Project から持ち込み、M0 対応を足した。
 - `docs/`: 経緯（`log.md`）、判断（`decisions.md`）、設計（`design.md`。判断 F は前の Project の記録）、ルール（`coding-rules.md`）。
 
 ## 範囲外
