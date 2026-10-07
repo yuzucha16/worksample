@@ -162,3 +162,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q02,貸し出し表の形式と置き場が決まっているか,hook,choice,1,1,0,1,0,0,live,user
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q03,緊急プロトコルの中身を手順書でどこまで書くか,hook,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q04,Project の置き場（Area）をどうするか,hook,choice,1,1,0,1,0,0,live,user
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q05,ほかに前提はありますか（自由記述）,hook,free,1,1,0,1,0,0,live,user
