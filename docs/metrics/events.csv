@@ -135,3 +135,10 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s7,-,-,inbox整理,approval,2026-10-06-s7-q06,転記済への案（archives の7件を転記済にする、works の5件は exmem の knowledge を直してから）の承認,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-06,2026-10-06-s8,-,-,移行,improvement,2026-10-06-s8-i01,"docs-rules.md の書き方の共通ルール: 長い Markdown をスクリプトで全文書き換えして、ファイルが二重・空になる事故があった（git で復元）。長い文書の書き換えは Edit ツールで行い、スクリプトで書く場合は書き込み前に検証（空でない・行数）、と足す",hook,choice,1,1,0,0,0,,live,
 2026-10-06,2026-10-06-s8,-,-,移行,improvement,2026-10-06-s8-i02,"setup-hook.md のコミットメッセージ例 [vault] initial commit が旧名のまま。[works] に直し、版と見本を合わせる",hook,choice,1,1,0,0,0,,live,
+2026-10-07,2026-10-07-s1,-,-,移行,approval,2026-10-07-s1-q01,未移行20本の旧パスの対応先と、コピー済み30本の cwd 書き換えの承認,adhoc,free,1,1,0,0,0,1,backfill,
+2026-10-07,2026-10-07-s1,-,-,移行,approval,2026-10-07-s1-q02,notes の移行先（本体か .claude か）と、exmem への統合・寄せ先の確認,adhoc,choice,1,1,0,0,0,1,backfill,
+2026-10-07,2026-10-07-s1,-,-,移行,approval,2026-10-07-s1-q03,entrypoint の書き換え対象範囲（新ディレクトリのみ、実行中のセッションを除く）の確認,adhoc,choice,1,1,1,1,0,0,backfill,ai
+2026-10-07,2026-10-07-s1,-,-,移行,approval,2026-10-07-s1-q04,.obsidian のスレッドの cwd を、ジャンクションのパスにするか実体のパスにするか,adhoc,choice,1,1,0,0,0,0,backfill,
+2026-10-07,2026-10-07-s1,-,-,移行,gap,2026-10-07-s1-g01,Zed の中のエージェントは、Zed を閉じると止まり「終了した」と返せない前提が、Zed 終了の依頼に入っていなかった,adhoc,free,1,1,1,1,0,0,live,ai
+2026-10-07,2026-10-07-s1,-,-,移行,improvement,2026-10-07-s1-i01,closing-hook.md 手順 2: リポジトリのファイルを変えず、変更先が ~\.claude やアプリのデータだけの作業では、更新対象が決まらない。Claude Code を開いた作業ディレクトリの docs/ を対象にする、と足す,hook,choice,0,,,,,,live,
+2026-10-07,2026-10-07-s1,-,-,移行,improvement,2026-10-07-s1-i02,closing-hook.md: 作業ディレクトリや親の AGENTS.md が終了処理の追加手順（指標の記録など）を定めているとき、続けて行う、と手順 3 の後に足す,hook,choice,0,,,,,,live,
