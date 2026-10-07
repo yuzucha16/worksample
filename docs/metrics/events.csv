@@ -175,3 +175,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,gap,2026-10-07-s3-g02,初稿の前に骨子（前半に概要の箇条書きとフローチャート、後半に詳細手順）のすり合わせが無かった,adhoc,free,1,1,0,1,0,,live,ai
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,gap,2026-10-07-s3-g03,図表の要否と水準（mermaid 程度）を確認せず、「細かい図表をやらない」の語から図なしで作った,adhoc,free,1,1,0,1,0,,live,ai
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,improvement,2026-10-07-s3-i02,文書作成の差分に「初稿の前に骨子（構成・ストーリーライン）をすり合わせる」と「図の要否と水準を確認する」を足す,hook,choice,1,1,0,0,0,0,live,
+2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q01,フック名の体系（open は start を呼ぶか、end の名前、日本語トリガーの扱い）,adhoc,choice,1,1,1,1,0,0,live,user
+2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q02,旧ファイル名の扱い（案内だけ残す）と日本語の別名の範囲,adhoc,choice,1,1,0,1,0,0,live,user
+2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q03,kit に入れる範囲と、改善ループ（works に記録し承認後に kit を直す）,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q04,実装の順（AGENTS.md の差し替え、start/open/close の kit 移行）とコミット,adhoc,choice,1,1,0,0,0,0,live,

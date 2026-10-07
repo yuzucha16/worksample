@@ -14,6 +14,17 @@
 
 ## Decisions
 
+### 【汎用】フックを寿命の階層ごとに開始と終了の対にし、英語の短い名前にする: init / open・close / start・wrap / stock / integrate（2026-10-08。ユーザーの決定）
+
+- 体系: ワークスペースは `init`（導入。終了なし）。Project は `open`（ひな形の `README` `AGENTS` を作る）と `close`（`archives/` へ移す）。セッションは `start`（開始インタビュー。旧「作業を始めて」）と `wrap`（旧「終了処理して」）。随時は `stock`（旧「ナレッジ化して」）と `integrate`（旧「inboxを整理して」）。連鎖: `init`、`open → [start → 作業 → wrap]×N → close`。
+- 定義（既存のナレッジと同じ）: スレッド = Claude Code の1会話。セッション = `start` から `wrap` までの作業手順の単位。スレッドはフックの対象にしない。`open` と `close` は Project の寿命であり、スレッドの開始・終了ではない（ユーザーの当初の案は「スレッドの open / close」だったが、既存の定義との照合で Project の寿命に直した）。
+- `open` は、ひな形を作ったあとに `start` を呼ぶ。`start` は単独でも呼べる（進行中の Project があるとき）。
+- セッションの終了は `end` でなく `wrap` にする。理由（ユーザー）: `end` は紛らわしい。
+- 日本語のトリガーは、覚える負担が大きいので、主な呼び出しにしない。残す場合は別名（エイリアス）として。
+- 却下案: `end`（紛らわしい。ユーザー）。ほかは未検討。
+- 未決: ファイル名とトリガーの切り替えの手順（既存の `closing-hook.md` などの改名）、別名の扱い、`init` のワークスペースの寿命の扱い。
+- 行き先: 転記待ち
+
 ### 【汎用】Vault のトップを `C:\vault\works` から `$HOME\works` に移し、ghq の root を `$HOME\works\repos` にする。Linux 側（WSL・ネイティブ）も `~/works`、`~/works/repos` にそろえる（2026-10-06。ユーザーの決定と指示）
 
 - 固有（この PC の確認）: 新しい場所で Obsidian と Claude Code が動いた（2026-10-06）。WSL への `WORKS_DIR` の受け渡し（`WSLENV`）は、実機で渡っていなかった（2026-10-06、エージェント経由の確認。原因は未特定。この PC の WSL は未移行）。

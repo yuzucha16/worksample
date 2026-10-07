@@ -1,5 +1,7 @@
 # Project を閉じる（close）手順書の下書き
 
+> 2026-10-08: 正本は kit（`resources/workflow-kit` の `start-hook.md` `open-hook.md` `close-hook.md`）に移した。このファイルは、実測の経緯（出どころの ID つきの理由）の記録として残す。改善は kit を直す。
+
 状態: **下書き**。最初の Project（`learn-c-pool-allocator`）を閉じるときの手順を、実測しながら起こす。実測で直し、安定したら kit への昇格を判断する（いまは PoC で、kit は変更しない）。判断基準は `docs/decisions.md`（「PARA の `areas/` `projects/` `archives/` の役割と判断基準を定める」の 4・6・7）。
 
 ## 閉じる契機
