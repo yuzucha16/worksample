@@ -37,6 +37,11 @@ param(
   [switch]$Report
 )
 
+# threads.csv の列。履歴が消えた会話の古い行は、新しい列が空になる（空 = 不明。0 ではない）
+$Columns = 'thread_id', 'project_key', 'first_ts', 'last_ts', 'prompts', 'active_min', 'turn_med_s', 'turn_p90_s', 'turn_max_s', 'capped_turns',
+  'tools_total', 'tools_per_turn_med', 'tool_errors', 'out_tokens', 'fresh_in_tokens', 'cache_read_tokens', 'ctx_max_tokens',
+  'know_reads', 'know_searches', 'know_files', 'kit_files'
+
 function Get-Pct($sorted, [double]$p) {
   $sorted = @($sorted)
   if ($sorted.Count -eq 0) { return '' }
@@ -54,6 +59,9 @@ function Read-Thread($file) {
   $events = [System.Collections.Generic.List[object]]::new()
   $msgs = @{}
   $toolErrors = 0
+  $knowFiles = [System.Collections.Generic.SortedSet[string]]::new()
+  $kitFiles = [System.Collections.Generic.SortedSet[string]]::new()
+  $knowSearches = 0
   foreach ($line in [System.IO.File]::ReadLines($file.FullName)) {
     if (-not $line.Contains('"timestamp"')) { continue }
     try { $o = $line | ConvertFrom-Json } catch { continue }
@@ -67,7 +75,20 @@ function Read-Thread($file) {
         $toolErrors += @($o.message.content | Where-Object { $_.type -eq 'tool_result' -and $_.is_error }).Count
       }
     } else {
-      if ($o.message.content -is [array]) { $tools = @($o.message.content | Where-Object type -eq 'tool_use').Count }
+      if ($o.message.content -is [array]) {
+        $uses = @($o.message.content | Where-Object type -eq 'tool_use')
+        $tools = $uses.Count
+        foreach ($t in $uses) {
+          $in = $t.input
+          if ($t.name -eq 'Read' -and $in.file_path) {
+            if ($in.file_path -match '[\\/]knowledge[\\/]([^\\/]+\.md)$') { [void]$knowFiles.Add($Matches[1]) }
+            elseif ($in.file_path -match '[\\/]workflow-kit[\\/]([^\\/]+\.md)$') { [void]$kitFiles.Add($Matches[1]) }
+          } elseif ($t.name -in 'Grep', 'Glob', 'Bash', 'PowerShell') {
+            $s = (@($in.pattern, $in.path, $in.command) | Where-Object { $_ }) -join ' '
+            if (($s -match 'exmem' -and $s -match 'knowledge') -or $s -match 'find-knowledge') { $knowSearches++ }
+          }
+        }
+      }
       # 1回の応答が複数行に分かれ、同じ message.id と同じ usage が繰り返されるので、id で1つにする
       $u = $o.message.usage
       if ($o.message.id -and $u) {
@@ -121,6 +142,10 @@ function Read-Thread($file) {
     fresh_in_tokens  = ($m | Measure-Object fresh -Sum).Sum
     cache_read_tokens = ($m | Measure-Object cacheRead -Sum).Sum
     ctx_max_tokens   = ($m | Measure-Object ctx -Maximum).Maximum
+    know_reads       = $knowFiles.Count
+    know_searches    = $knowSearches
+    know_files       = $knowFiles -join ';'
+    kit_files        = $kitFiles -join ';'
   }
 }
 
@@ -153,6 +178,30 @@ if ($Report) {
     $med = Get-Pct (@($big | ForEach-Object { [int]$_.turn_med_s }) | Sort-Object) 0.5
     "プロンプト3回以上のスレッド $($big.Count) 件: ターン長の中央値の中央値 ${med} 秒、out トークン合計 $(($big | Measure-Object out_tokens -Sum).Sum)"
   }
+  # 再利用（参照）: 業務側のスレッド（exmem・kit の保守を除く）が、knowledge を読んだか。know_reads が空の行（履歴が消えた古い行）は母数に入れない
+  $work = @($th | Where-Object { [int]$_.prompts -ge 3 -and $_.project_key -notmatch 'exmem$|workflow-kit$' -and $_.know_reads -ne '' })
+  if ($work.Count) {
+    $hit = @($work | Where-Object { [int]$_.know_reads -gt 0 })
+    $miss = @($work | Where-Object { [int]$_.know_reads -eq 0 -and [int]$_.know_searches -gt 0 })
+    "== 再利用（業務側のスレッド、プロンプト3回以上 $($work.Count) 件。下限値: Read と検索の呼び出しだけ数える）"
+    "参照率（knowledge を1件以上 Read）: $($hit.Count)/$($work.Count) = $('{0:P0}' -f ($hit.Count / $work.Count))。参照したスレッドの Read 件数の中央値: $(Get-Pct (@($hit | ForEach-Object { [int]$_.know_reads }) | Sort-Object) 0.5)"
+    "空振りの合図（検索したが 1件も読まなかった）: $($miss.Count) 件"
+    $kdir = Join-Path $PSScriptRoot '../../resources/exmem/knowledge'
+    $all = if (Test-Path $kdir) { @(Get-ChildItem $kdir -Filter *.md -File | ForEach-Object Name) } else { @() }
+    $readBy = @{}
+    foreach ($r in $work) { foreach ($f in ($r.know_files -split ';' | Where-Object { $_ })) { $readBy[$f] = 1 + [int]$readBy[$f] } }
+    if ($all.Count) { "knowledge $($all.Count) 件のうち、期間内に1度でも読まれた: $(@($all | Where-Object { $readBy.ContainsKey($_) }).Count) 件（未参照は縮小・統合の候補。判定ではなく合図）" }
+    if ($readBy.Count) { ($readBy.GetEnumerator() | Sort-Object Value -Descending | Select-Object -First 8 | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join '、' | ForEach-Object { "よく読まれる: $_" } }
+  }
+  # kit の手順書の参照（どのフックが実際に読まれているか）。保守のスレッドも含む
+  $kitRead = @{}
+  foreach ($r in @($th | Where-Object { $_.kit_files })) { foreach ($f in ($r.kit_files -split ';' | Where-Object { $_ })) { $kitRead[$f] = 1 + [int]$kitRead[$f] } }
+  if ($kitRead.Count) {
+    $kd = Join-Path $PSScriptRoot '../../resources/workflow-kit'
+    $unread = if (Test-Path $kd) { @(Get-ChildItem $kd -Filter *.md -File | ForEach-Object Name | Where-Object { -not $kitRead.ContainsKey($_) }) } else { @() }
+    "== kit の手順書を読んだスレッド数: $(($kitRead.GetEnumerator() | Sort-Object Value -Descending | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join '、')"
+    if ($unread) { "期間内に読まれていない: $($unread -join '、')" }
+  }
   "== 無駄の候補（判定ではなく合図。中身を見て判断する）"
   $rows = foreach ($r in $th) {
     $why = @()
@@ -174,7 +223,7 @@ foreach ($f in Get-ThreadFiles) {
   $row = Read-Thread $f
   if ($row) { $existing[$row.thread_id] = $row; $updated++ }
 }
-$existing.Values | Sort-Object first_ts | Export-Csv -Path $Out -Encoding utf8 -NoTypeInformation
+$existing.Values | Sort-Object first_ts | Select-Object $Columns | Export-Csv -Path $Out -Encoding utf8 -NoTypeInformation
 # 改行コードは LF に統一する（.gitattributes）。Export-Csv は Windows で CRLF を書く
 [System.IO.File]::WriteAllText($Out, ([System.IO.File]::ReadAllText($Out) -replace "`r`n", "`n"), [System.Text.UTF8Encoding]::new($false))
 "更新 $updated 件、合計 $($existing.Count) 件 → $Out"

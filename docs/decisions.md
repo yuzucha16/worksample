@@ -14,6 +14,14 @@
 
 ## Decisions
 
+### 【この件】再利用率を直接測る指標を足す: 参照率・未参照の知識・手順書の参照・活用率・空振り（2026-10-08。ユーザーの指示。試験運用）
+
+- 決めたこと: `threads.csv` に `know_reads` `know_searches` `know_files` `kit_files` を足し（会話履歴の `Read` と検索から自動）、`sessions.csv` に `knowledge_used` `knowledge_miss` を足す（`wrap` で AI が数える）。定義は `docs/metrics/README.md` の「再利用率の指標」。`extract-threads.ps1 -Report` が出す。
+- 根拠: 目的は「同じことを何度も言わない・聞かれない・最短で目的地に近づく」。適合率・冗長率は質問・提案の質の指標で、知識が再利用されたかは測っていなかった。肥大化の原因は、効果を測らずに量が増えたことだと見る（ユーザー）。
+- 初回の実測（2026-10-06 以降、業務側スレッド 17 件）: 参照率 4/17（24%）。`knowledge/` 42 件のうち、読まれたのは 5 件。空振りの合図 7 件。kit で読まれていない手順書は `init-hook.md` だけ。下限値（`Read` と検索の呼び出しだけ数える）。
+- 未決: 下限値と実際の使用の突き合わせ（精度）。維持コストとの比の取り方。
+- 行き先: local
+
 ### 【汎用】Project の構造は、固定の核（README・docs・直下の最終成果物）に、type（doc / dev / research）別の追加を足す（2026-10-08。ユーザーが承認。試験運用）
 
 - 決めたこと: type は成果物の種類で決める（Area は既定値のヒント）。`doc` は `drafts/` と `refs/`、`dev` は `src/` `tests/` `tools/`、`research` は `sources/` と `report.md`。`docs/` は作業の記録（log・decisions）だけにして、下書きは `drafts/` に分ける。深さは直下から2階層まで。空のディレクトリは先に作らない。正本は kit の `open-hook.md`「Project の構造」。ひな形は `templates/project/README.template.md`。
