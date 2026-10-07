@@ -10,7 +10,7 @@
   行を `live` `backfill` `import` のどれかに絞る。省略すると全部。
 
 .PARAMETER Kind
-  行を `interview` `approval` `improvement` `gap` のどれかに絞る。省略すると、存在する kind をすべて出す。
+  行を `interview` `approval` `improvement` `gap` `again` のどれかに絞る。省略すると、存在する kind をすべて出す。
 
 .EXAMPLE
   pwsh -NoProfile -File docs/metrics/summarize.ps1
@@ -20,7 +20,7 @@
 param(
   [string]$Path = (Join-Path $PSScriptRoot 'events.csv'),
   [ValidateSet('', 'live', 'backfill', 'import')][string]$Basis = '',
-  [ValidateSet('', 'interview', 'approval', 'improvement', 'gap')][string]$Kind = ''
+  [ValidateSet('', 'interview', 'approval', 'improvement', 'gap', 'again')][string]$Kind = ''
 )
 
 $rows = @(Import-Csv -Path $Path -Encoding utf8)
@@ -33,7 +33,6 @@ function Format-Rate($num, $den) { if ($den -eq 0) { '-' } else { '{0:P0}' -f ($
 function Get-Stat($label, $target, $g) {
   $g = @($g)
   $answered = @($g | Where-Object answered -eq '1')
-  $adopted = @($g | Where-Object adopted -eq '1')
   $judged = @($answered | Where-Object { $_.fix -ne '' })
   $misfit = @($judged | Where-Object { $_.fix -eq '1' -or $_.supplement -eq '1' })
   $known = @($g | Where-Object { $_.reversed -ne '' })
@@ -44,8 +43,6 @@ function Get-Stat($label, $target, $g) {
     質問数 = $g.Count
     回答数 = $answered.Count
     回答率 = Format-Rate $answered.Count $g.Count
-    採用数 = $adopted.Count
-    採用率 = Format-Rate $adopted.Count $answered.Count
     修正   = @($g | Where-Object fix -eq '1').Count
     補足   = @($g | Where-Object supplement -eq '1').Count
     適合率 = Format-Rate ($judged.Count - $misfit.Count) $judged.Count

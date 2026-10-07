@@ -40,7 +40,10 @@ param(
 # threads.csv の列。履歴が消えた会話の古い行は、新しい列が空になる（空 = 不明。0 ではない）
 $Columns = 'thread_id', 'project_key', 'first_ts', 'last_ts', 'prompts', 'active_min', 'turn_med_s', 'turn_p90_s', 'turn_max_s', 'capped_turns',
   'tools_total', 'tools_per_turn_med', 'tool_errors', 'out_tokens', 'fresh_in_tokens', 'cache_read_tokens', 'ctx_max_tokens',
-  'know_reads', 'know_searches', 'know_files', 'kit_files'
+  'know_reads', 'know_searches', 'know_files', 'kit_files', 'again_hint'
+
+# 「前にも言った」の機械検出（目安。誤検出を含む。本命はユーザーが付ける `again`）
+$AgainPattern = '前にも|前に(も)?言っ|さっき(も)?言っ|また同じ|何度(も)?(言|説明)|\bagain\b'
 
 function Get-Pct($sorted, [double]$p) {
   $sorted = @($sorted)
@@ -62,6 +65,7 @@ function Read-Thread($file) {
   $knowFiles = [System.Collections.Generic.SortedSet[string]]::new()
   $kitFiles = [System.Collections.Generic.SortedSet[string]]::new()
   $knowSearches = 0
+  $againHint = 0
   foreach ($line in [System.IO.File]::ReadLines($file.FullName)) {
     if (-not $line.Contains('"timestamp"')) { continue }
     try { $o = $line | ConvertFrom-Json } catch { continue }
@@ -71,6 +75,10 @@ function Read-Thread($file) {
     $tools = 0
     if ($o.type -eq 'user') {
       $real = -not $o.toolUseResult -and -not $o.isMeta
+      if ($real) {
+        $txt = if ($o.message.content -is [string]) { $o.message.content } else { @($o.message.content | Where-Object type -eq 'text' | ForEach-Object text) -join ' ' }
+        if ($txt -match $AgainPattern) { $againHint++ }
+      }
       if ($o.message.content -is [array]) {
         $toolErrors += @($o.message.content | Where-Object { $_.type -eq 'tool_result' -and $_.is_error }).Count
       }
@@ -146,6 +154,7 @@ function Read-Thread($file) {
     know_searches    = $knowSearches
     know_files       = $knowFiles -join ';'
     kit_files        = $kitFiles -join ';'
+    again_hint       = $againHint
   }
 }
 
@@ -202,6 +211,17 @@ if ($Report) {
     "== kit の手順書を読んだスレッド数: $(($kitRead.GetEnumerator() | Sort-Object Value -Descending | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join '、')"
     if ($unread) { "期間内に読まれていない: $($unread -join '、')" }
   }
+  # again（目的「言わない」の直接指標）と、wrap の遠回りの自己申告
+  $ag = @(Import-Csv -Path (Join-Path $PSScriptRoot 'events.csv') -Encoding utf8 | Where-Object kind -eq 'again')
+  $hint = ($th | Where-Object again_hint -ne '' | ForEach-Object { [int]$_.again_hint } | Measure-Object -Sum).Sum
+  "== again: ユーザーが付けた $($ag.Count) 件（うち、情報が既に知識・docs にあった $(@($ag | Where-Object answerable -eq '1').Count) 件 = 探し方の問題）。会話履歴の機械検出（目安・誤検出あり）: $hint プロンプト"
+  $dt = @($ss | Where-Object { $_.detour } | Group-Object detour | ForEach-Object { "$($_.Name)=$($_.Count)" })
+  "遠回りの自己申告（sessions.csv の detour）: $(if ($dt) { $dt -join '、' } else { '記録なし' })"
+  # 常時読み込み（コスト側。開始時に読む指示の字数。増やさない）
+  $root = Join-Path $PSScriptRoot '../..'
+  $startFiles = 'AGENTS.md', 'resources/AGENTS.md', 'docs/log.md', 'docs/decisions.md', 'resources/workflow-kit/docs-rules.md'
+  $sizes = foreach ($p in $startFiles) { $f = Join-Path $root $p; [pscustomobject]@{ p = $p; n = if (Test-Path $f) { [IO.File]::ReadAllText($f).Length } else { 0 } } }
+  "== 常時読み込み（開始時に読む指示の字数）: 合計 $(($sizes | Measure-Object n -Sum).Sum) 字（$(($sizes | ForEach-Object { "$($_.p)=$($_.n)" }) -join '、')）"
   "== 無駄の候補（判定ではなく合図。中身を見て判断する）"
   $rows = foreach ($r in $th) {
     $why = @()

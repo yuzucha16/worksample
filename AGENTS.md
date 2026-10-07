@@ -38,13 +38,18 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 - この PC のローカルの情報（業務固有のもの、個人的なもの）を、`resources/`（共有）に書かない。`resources/` の変更は、`resources/` の中でコミットする（このリポジトリのコミットには含まれない）。
 - `git add -f` で、ignore 済みのファイルを追加しない。
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）にある。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は、設定ファイル（`*.json`）を編集しない（Obsidian が上書きして、変更が消える）。プラグインやテーマを追加・削除するときは、設定ファイルと `community-plugins.json` を合わせる。`workspace.json` と `workspace-mobile.json` は端末ごとの状態なので、コミットしない（dotfiles の `.gitignore` 済み）。
-- ユーザーへの質問（聞き取り）、AI の提案への承認の確認、改善フックの改善案は、`docs/metrics/events.csv` に1件1行で記録する（記録するのはエージェント。定義と列は `docs/metrics/README.md`、集計は `docs/metrics/summarize.ps1`）。回答を受けた同じターンで行を足し、`wrap`（終了処理）で `adopted` と `reversed` を確定する。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
+- ユーザーへの質問（聞き取り）、AI の提案への承認の確認、改善フックの改善案は、`docs/metrics/events.csv` に1件1行で記録する（記録するのはエージェント。定義と列は `docs/metrics/README.md`、集計は `docs/metrics/summarize.ps1`）。回答を受けた同じターンで行を足し、`wrap`（終了処理）で `reversed` を確定する（採用率は集計しない。2026-10-08 廃止）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
+- ユーザーが `again`（または「前にも言った」）と書いたら、同じターンで `events.csv` に `kind=again` の行を足す（`question` に再度言ったことの要旨。`answerable` は、その情報が既に知識・`AGENTS.md`・`docs/` にあったら 1、無かったら 0）。そのうえで、前提を `AGENTS.md` か知識（`stock`）に昇格する案を出す（承認制）。`wrap` では、「今日の遠回りは、なし・少し・大きく のどれか」を1問だけ聞き、`sessions.csv` の `detour` に書く。
 - 終了処理（「終了処理して」）の `docs/` 更新の中で、スレッド・セッションの指標を足す（試験運用。定義は `docs/metrics/README.md` の「スレッドとセッションの指標」。用途はユーザー本人の自己改善だけ）。手順: ① `pwsh -NoProfile -File docs/metrics/extract-threads.ps1` で `threads.csv` を更新 ② `-Current -Cwd <Claude を開いた作業ディレクトリ（シェルのカレントではない）>` で今のスレッド ID を取り、`sessions.csv` に1行足す（`outcome` `prompt_complete`、根拠 `prompt_evidence`、`review` `mechanism` `note` `start_mode`（`bare` か `briefed`。最初の依頼の形から判定する）、`knowledge_used`（このセッションで読んだ exmem の知識のうち、判断・成果物に反映した件数）、`knowledge_miss`（探した・読んだが、無い・古い・ずれていた件数。1件ごとに `gap` の行にもする。定義は `docs/metrics/README.md` の「再利用率の指標」）。「並行の可能性」の警告が出たら、選んだ会話が今のものか（最初のプロンプトの内容や時刻）を確かめ、確かめられなければユーザーに聞く。根拠はユーザーの発言の要旨を残し、忖度しない。機密・個人情報を書かない） ③ `-Report` で無駄の合図を見て、報告に1〜2行書く。
 
 - 「start」（別名「作業を始めて」）と言われたら、kit の `start-hook.md`（開始インタビュー。試験運用）に従う。進行中の Project が無い、または新しい Project を始めるときは、先に `open-hook.md` で Project を作る（`open` は `start` を呼ぶ）。Project を閉じる（`close`）ときは、`close-hook.md`。手順書の正本は kit（2026-10-08 に `docs/drafts/` から移した）。実務で出た漏れ・補正は、ここの `docs/metrics/events.csv` に記録し、承認されたら kit を直す。`docs/drafts/` の3つは、実測の経緯の記録として残す（PARA の試行の経緯は `docs/log.md`、判断は `docs/decisions.md`）。
 
 - 「review」（別名「見直して」）と言われたら、kit の `review-hook.md` に従う（試験運用。週1回を目途。チェック機能の集約先）。`wrap` の報告が、前回から7日以上たっていれば勧める。記録は `docs/metrics/reviews.csv` と `docs/metrics/rule-hits.csv`。
 - `wrap` の改善案は、線引きで扱う（2026-10-08 ユーザーの決定。試験運用。正本は kit の `wrap-hook.md` の「自動採用の範囲」）。運用の補助は、承認なしに追加・削除してコミットする（`review` が要・不要を判断する）。安全規則（push・機密・破壊的操作・身元・決定の原則・書き込み先・承認の規則）と手順の本体は、承認制のまま。
+
+## 規模の凍結（2026-10-08〜判定日 2026-11-08。ユーザーの決定。試験運用）
+
+手順書・指標・規則を足すときは、同時に1つ畳む。この指示（`AGENTS.md`）に、指標の数値目標を書かない（指標はユーザーの見直し専用）。根拠と判定の基準は `docs/decisions.md`。
 
 ## push の許可リスト（2026-10-08 ユーザーの決定。試験運用）
 
