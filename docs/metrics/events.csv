@@ -154,7 +154,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q07,静的な切り替えの方式,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q08,前の Project の成果物の持ち込み方（補足: ブランチで作業するのでデグレの保証と試験はこちら側で）,adhoc,choice,1,1,0,1,0,0,live,user
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,gap,2026-10-07-s2-g01,チューニングの対象（速度かサイズか）を確認せず、サイズの削減と解釈して見積もりを出した（ユーザーは速度を意図）,,,,,,,,,live,ai
-2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,improvement,2026-10-07-s2-i01,開発のインタビューに「最適化・チューニングの軸（速度・サイズ・消費電力など）と、測る対象の操作」を足す。曖昧な語（チューニング）は、軸を確認してから測る,hook,choice,0,,,,,,live,
+2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,improvement,2026-10-07-s2-i01,開発のインタビューに「最適化・チューニングの軸（速度・サイズ・消費電力など）と、測る対象の操作」を足す。曖昧な語（チューニング）は、軸を確認してから測る,hook,choice,1,1,0,0,0,,live,
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q09,対象 M0 の乗算のサイクル数（1 か 32）,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,approval,2026-10-07-s2-q10,S3（is_initialized の縮小）を取り込むか（補足: 初期化の設計保証とテスト強化を条件にした）,adhoc,choice,1,1,0,1,0,0,live,user
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,approval,2026-10-07-s2-q11,S4（RAM +8B/プール、pool.h の変更）の許容,adhoc,choice,1,1,0,0,0,0,live,
