@@ -158,3 +158,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q09,対象 M0 の乗算のサイクル数（1 か 32）,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,approval,2026-10-07-s2-q10,S3（is_initialized の縮小）を取り込むか（補足: 初期化の設計保証とテスト強化を条件にした）,adhoc,choice,1,1,0,1,0,0,live,user
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,approval,2026-10-07-s2-q11,S4（RAM +8B/プール、pool.h の変更）の許容,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q01,チェックリストの受け取り時機（初稿の前 か 後 か 無い）,hook,choice,1,1,0,1,1,0,live,user
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q02,貸し出し表の形式と置き場が決まっているか,hook,choice,1,1,0,1,0,0,live,user
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q03,緊急プロトコルの中身を手順書でどこまで書くか,hook,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q04,Project の置き場（Area）をどうするか,hook,choice,1,1,0,1,0,0,live,user
