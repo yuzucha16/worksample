@@ -140,3 +140,20 @@ AI の推奨は F1 だった（原則「安全性を優先し、速度はチュ�
   - リストを壊したときの `pool_check`（`POOL_ERR_CORRUPT`）。
   - **モデル検査**: 決定的な疑似乱数（固定シード）で、確保と解放を数千回繰り返し、テスト側のシャドウモデル（配列の使用中フラグ）と突き合わせる。**シャドウモデルで、二重解放を起こさないことを確かめる**（ユーザーの方針: 二重解放を、起こさないことで見る）。最後にすべて返却して、`free_count == capacity`。
 - **フットプリント**: `make size` で、`src/*.o`（`-Os`、サニタイザなし、freestanding）の `.text` `.data` `.bss` を表示する。`.data` が 0 のことを目標にして記録する。**実測（ホスト x86-64、`-Os`。2026-10-06）: `.text` 633、`.data` 0、`.bss` 0（バイト）**。ARM 向けは `make size-arm`（Cortex-M0 / M3 / M4、`-mthumb -Os`）。`arm-none-eabi-gcc` は、dotfiles の `manifests/apt.txt` に追記済み（ユーザーの承認。実機への導入待ちで、いまは SKIP）。
+
+## 7. 初期化の保証（2026-10-07。M0 の速度のチューニングで、`pool_alloc` と `pool_free` の検査を減らしたことに伴う設計。ユーザー承認）
+
+`pool_alloc` と `pool_free` は、`struct pool` の中身を再検査しない。その代わり、構造体の状態を次の 2 つに限る（正本は `src/pool.h` の「初期化の保証」）。
+
+- **(a) 全バイトが 0（未初期化）**: `pool_alloc` は `NULL`、`pool_free` と `pool_check` は `POOL_ERR_ARG`。`base == NULL` だけで判定する。
+- **(b) `pool_init` が `POOL_OK` を返した後で、呼び出し側が書き換えていない**: 不変条件 I1〜I5 が成り立つ。I1 `base` が `align` の境界、I2 `block_size >= sizeof(void *)` で `align` の倍数、I3 `capacity >= 1` で `capacity * block_size` が `buf` に収まる、I4 `free_head` が空きリストの先頭、I5（除算なしの経路）`block_size = d * 2^shift`（`d` は奇数）で `inv * d = 1`。
+- 失敗した `pool_init` は `*p` を変更しない。初期化していない自動変数に対する失敗した `pool_init` の後は、(a) でも (b) でもないので使えない（戻り値の確認は、呼び出し側の責務）。
+
+保証の根拠は、実行時の検査でなく、テスト:
+
+- 不変条件 I1〜I5 は、`pool_init` が成功した直後に、引数の組（要求サイズ 1〜90、`align` 8 / 16 / 32、先頭のずらし 0〜7）を総当たりして確かめる（`test_init_contract_sweep`、`check_contract`）。
+- 失敗した `pool_init` が、全ゼロの構造体を全ゼロのまま残し、以後の操作で弾かれる（`test_failed_init_keeps_zeroed_pool_uninitialized`）。
+- `pool_free` がブロックの先頭だけを受け付けることを、全バイトのオフセットで、除算と剰余による判定と突き合わせる（`test_free_accepts_exactly_block_starts`。要求サイズ 20 通りと `align` 組み合わせ）。
+- ブロックの先頭の判定そのもの（乗法の逆元）は、`block_size` 1〜700、境界の `capacity`（`SIZE_MAX / block_size` を含む）で、約 5,400 万ケースを、参照の判定と突き合わせる（`tests/white_locate.c`。`pool.c` を直接取り込む。除算の経路と除算なしの経路の両方）。32 ビットは、ホストで直接は実行できない（`gcc -m32` が無い）ので、M0 の実バイナリを命令シミュレータで動かした確認（全バイトのオフセットで、13,392 ケース、不一致 0）で補った（一時の確認で、リポジトリには入れていない）。
+- 変異テスト（一時の確認）: 判定の境界の誤り、シフトの誤り、逆元の反復不足、`shift` の未設定、`free_head`、リスト終端、`capacity` の数え間違い、`is_initialized` と `pool_check` の検査の欠落を、それぞれ入れて、テストが失敗する（検出される）ことを確かめた。
+- `pool_check`（debug 用）は、(a)、`block_size < sizeof(void *)`、`capacity == 0` を `POOL_ERR_ARG` にする（以前の `is_initialized` と同じ範囲）。I5 は、フットプリントのため検査しない（検査を足すと `.text` が 36 バイト増える）。

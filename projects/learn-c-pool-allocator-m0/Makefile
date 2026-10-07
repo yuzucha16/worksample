@@ -11,7 +11,8 @@ SRC     := $(wildcard src/*.c)
 TESTS   := $(wildcard tests/test_*.c)
 TEST_BINS := $(patsubst tests/%.c,$(BUILD)/%,$(TESTS))
 TEST_BINS_O2 := $(patsubst tests/%.c,$(BUILD)/o2/%,$(TESTS))
-ALL_C   := $(SRC) $(TESTS) $(wildcard src/*.h) $(wildcard tests/*.h)
+WHITE   := $(wildcard tests/white_*.c)
+ALL_C   := $(SRC) $(TESTS) $(WHITE) $(wildcard src/*.h) $(wildcard tests/*.h)
 
 # 組込み向けの freestanding ビルド（フットプリントの測定。サニタイザなし）。
 FREE    := -std=c11 -Os -ffreestanding -fno-pic -fno-stack-protector -fno-strict-aliasing
@@ -21,10 +22,10 @@ ARM_CPUS := cortex-m0 cortex-m0plus cortex-m3 cortex-m4
 # 除算を使わない経路を、ホストでも強制して試験する（src/pool.c の POOL_NO_HW_DIV）。
 SOFT    := -DPOOL_NO_HW_DIV
 
-.PHONY: check test test-o2 test-soft test-soft-o2 analyze check-rules check-arm size size-arm format format-check probe clean
+.PHONY: check test test-o2 test-soft test-soft-o2 test-white test-white-soft analyze check-rules check-arm size size-arm format format-check probe clean
 
 # 全チェック。1つでも失敗すれば失敗する。
-check: format-check analyze check-rules check-arm test test-o2 test-soft test-soft-o2 probe
+check: format-check analyze check-rules check-arm test test-o2 test-soft test-soft-o2 test-white test-white-soft probe
 
 # 単体テストを、ASan と UBSan つきで実行する。警告が1件でも出たら失敗する。
 test: $(TEST_BINS)
@@ -56,15 +57,22 @@ $(BUILD)/test_%: tests/test_%.c $(SRC) | $(BUILD)
 $(BUILD)/o2/test_%: tests/test_%.c $(SRC) | $(BUILD)/o2
 	$(CC) $(filter-out -O1,$(CFLAGS)) -O2 $(SANFLAGS) -Isrc $< $(SRC) -o $@
 
+# ホワイトボックステスト（tests/white_*.c は pool.c を直接取り込む。リンクしない）。除算の経路と、
+# 除算なしの経路（POOL_NO_HW_DIV）の両方で実行する。
+test-white: | $(BUILD)
+	@set -e; for f in $(WHITE); do echo "== $$f"; $(CC) $(CFLAGS) $(SANFLAGS) -Isrc -Itests $$f -o $(BUILD)/white; ./$(BUILD)/white; done
+
+test-white-soft: | $(BUILD)
+	@set -e; for f in $(WHITE); do echo "== $$f (soft)"; $(CC) $(CFLAGS) $(SOFT) $(SANFLAGS) -Isrc -Itests $$f -o $(BUILD)/white_soft; ./$(BUILD)/white_soft; done
 # gcc の静的解析（-fanalyzer）。解析だけで、実行ファイルは作らない。
 analyze:
-	@set -e; for f in $(SRC) $(TESTS); do echo "analyze $$f"; $(CC) $(CFLAGS) -fanalyzer -Isrc -c $$f -o /dev/null; done
+	@set -e; for f in $(SRC) $(TESTS) $(WHITE); do echo "analyze $$f"; $(CC) $(CFLAGS) -fanalyzer -Isrc -c $$f -o /dev/null; done
 
 # コーディングルールの制約（初期値つき .data なし、グローバル変数なし、動的確保なし、libc 非依存）。対象は src/ のみ
 # （組込み用途の実装コードだけ。テストは実現のしやすさを優先する）。改行・文字コードは、テストも含めて見る。
 check-rules:
 	@if [ -n "$(SRC)" ]; then tools/check-rules.sh $(SRC) $(wildcard src/*.h); fi
-	@if [ -n "$(TESTS)" ]; then tools/check-rules.sh --encoding-only $(TESTS) $(wildcard tests/*.h); fi
+	@if [ -n "$(TESTS)" ]; then tools/check-rules.sh --encoding-only $(TESTS) $(WHITE) $(wildcard tests/*.h); fi
 
 # ARM（Cortex-M）向けにコンパイルして、未定義シンボル（libgcc の除算などの補助関数を含む）が無いことを確認する。
 # ツールチェーンが無いときは、飛ばしたことを明示する（dotfiles の manifests/apt.txt の gcc-arm-none-eabi）。

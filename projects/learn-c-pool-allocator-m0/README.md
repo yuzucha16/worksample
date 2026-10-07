@@ -23,7 +23,7 @@ updated: 2026-10-07
 
 ## 結果（2026-10-07。完了条件は達成。ユーザーが確認: 2026-10-07）
 
-- `make check` が通る（終了コード 0。ホスト試験は ASan・UBSan つき、除算なしの経路も含む）。フットプリント（`-Os`、freestanding、バイト）: Cortex-M0 / M0+ は `.text` 360、M3 / M4 は 288（変更前とバイト単位で同一）。`.data` と `.bss` はすべて 0。
+- `make check` が通る（終了コード 0。ホスト試験は ASan・UBSan つき、除算なしの経路も含む）。フットプリント（`-Os`、freestanding、バイト）: Cortex-M0 / M0+ は `.text` 352、M3 / M4 は 280。`.data` と `.bss` はすべて 0。速度のチューニング（2026-10-07、`feature/m0-speed`）で、M0 の `pool_free` は約 5.5 倍速く（乗算 32 サイクルの想定で 563 → 103 サイクル）、`struct pool` は M0 で 8 バイト増えた（`docs/decisions.md`）。
 
 ## 成果物
 
