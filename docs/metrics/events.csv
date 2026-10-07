@@ -179,3 +179,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q02,旧ファイル名の扱い（案内だけ残す）と日本語の別名の範囲,adhoc,choice,1,1,0,1,0,0,live,user
 2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q03,kit に入れる範囲と、改善ループ（works に記録し承認後に kit を直す）,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-08,2026-10-07-s4,-,-,フック設計,approval,2026-10-07-s4-q04,実装の順（AGENTS.md の差し替え、start/open/close の kit 移行）とコミット,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-08,2026-10-07-s4,-,-,フック設計,improvement,2026-10-07-s4-i01,wrap-hook の手順 4 と 5 の重複（手順 4 の行末に手順 5 の文が混ざっていた）を削除する,hook,choice,1,1,0,0,0,0,live,

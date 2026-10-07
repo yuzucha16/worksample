@@ -73,7 +73,7 @@ exmem:
 - ユーザーの見解（2026-10-07 時点。2026-10-08 に決定へ進んだ。下記）: 今の形で kit 化してよい。ただし、フック名は整合させたい（現状は「作業を始めて」。ほかのフックは「〜して」の形で、`knowledge-hook.md` 等の名前と並べる）。kit 化の範囲・名前・時機は、次に相談する。
 - フック名の体系を決めた（2026-10-08。ユーザーの決定。`docs/decisions.md` の先頭の項目）: `init` / `open`・`close` / `start`・`wrap` / `stock` / `integrate`。`open` は `start` を呼び、`start` は単独でも呼べる。`end` は紛らわしいので `wrap`。日本語のトリガーは別名に下げる。スレッドの open / close ではなく、Project の寿命だと既存の定義で直した。kit 化の範囲（手順本体と共通の項目を入れ、差分は試験運用と明記）と、改善ループ（実務の漏れは works に記録し、承認したら kit を直す）も、ユーザーが賛成した。実装（kit のファイル名・定義・雛形・`AGENTS.md` のトリガー）は、次の作業。
 - 実装した（2026-10-08。セッション `2026-10-07-s4`）: ① kit（版 `2026-10-08.1`、`ac7d574`）: `closing-hook.md` → `wrap-hook.md`、`knowledge-hook.md` → `stock-hook.md`、`setup-hook.md` → `init-hook.md`（旧名は案内だけ）、`start-hook.md` `open-hook.md` `close-hook.md` を works の下書きから一般化して追加（試験運用）、README に「フックの体系」、雛形 2 つの呼び出し行、`improvements.md`。② works（`df7b10a`）: `AGENTS.md` の呼び出し行、`docs/decisions.md`、この log、`docs/drafts/` の 3 つに「正本は kit」の注記、`events.csv`（`2026-10-07-s4-q01`〜`q04`）。モバイル用プロンプトと見本は、メモの形式が変わらないので `kit:` を据え置き、参照先だけ `stock-hook.md` に直した。
-- 残り: ① `resources/AGENTS.md`（`workbase` の規約）の呼び出し行が旧名のまま（案内ファイル経由で動く）。② dotfiles など他の作業ディレクトリの `AGENTS.md` も旧名のまま。名前が定着した後に、旧名のファイルとあわせて一斉に直す。③ 実務（office-admin、learning）で `start` を使い、漏れを `events.csv` に記録して、承認後に kit を直す。④ `wrap-hook.md` の手順 4 と 5 が、同じ行に重複している（改善案。未承認）。
+- 残り: ① `resources/AGENTS.md`（`workbase` の規約）の呼び出し行が旧名のまま（案内ファイル経由で動く）。② dotfiles など他の作業ディレクトリの `AGENTS.md` も旧名のまま。名前が定着した後に、旧名のファイルとあわせて一斉に直す。③ 実務（office-admin、learning）で `start` を使い、漏れを `events.csv` に記録して、承認後に kit を直す。④ `wrap-hook.md` の手順 4 と 5 の重複は、ユーザーが承認して直した（kit 版 `2026-10-08.2`。`events.csv` の `2026-10-07-s4-i01`）。
 
 ### 2026-10-07（2回目の Project `learn-c-pool-allocator-m0` を閉じた。セッション `2026-10-07-s2`。`bare` の回）
 
