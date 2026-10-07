@@ -13,6 +13,7 @@
 | 制約（.data・グローバル変数・動的確保・再帰・整数からのポインタ） | `tools/check-rules.sh`（`nm` と呼び出しグラフでオブジェクトを検査。**`src/` のみ**） | 決定 | 下の「制約」 |
 | 改行・文字コード | `tools/check-rules.sh`（CR、BOM、UTF-8 を検査。テストも含む） | 決定 | 下の「書式」 |
 | ARM の libc 非依存 | `make check-arm`（Cortex-M0 / M0+ / M3 / M4 向けに、未定義シンボルが無いこと。libgcc の補助関数を含む） | 決定。OK（事実。2026-10-07） | M0 / M0+ は、除算を使わない経路を自動で選ぶ（`docs/decisions.md`）。以前の `__aeabi_uidiv` 依存は解消した |
+| 除算なしの経路の検証 | `make test-soft` `test-soft-o2`（ホストで `POOL_NO_HW_DIV`）、`make test-white` `test-white-soft`（`tests/white_*.c`。ブロックの先頭の判定を、参照と大量に突き合わせる） | 決定 | 設計は `docs/design.md` の 7 節 |
 | 最適化への依存 | `make test-o2`（`-O2` でも同じテストを実行） | 決定 | 判断 E1（`-fno-strict-aliasing`）の確認用 |
 | ビルドフラグ | `-fno-strict-aliasing`（判断 E1） | 決定 | `Makefile`。製品のビルドにも同じフラグが要る |
 | フットプリント | `make size`（ホスト）、`make size-arm`（Cortex-M） | 事実（下の表） | 目標は `.data` が 0（達成） |
@@ -26,8 +27,8 @@ linter（静的解析ツール）は、gcc の `-fanalyzer` だけ。フォー�
 | 対象 | `.text` | `.data` | `.bss` | 備考 |
 |---|---|---|---|---|
 | ホスト x86-64 | 633 | 0 | 0 | 参考値 |
-| Cortex-M3 / M4 | 288 | 0 | 0 | ハードウェア除算（ユーザーの実行結果） |
-| Cortex-M0 / M0+ | 360 | 0 | 0 | 除算を使わない経路（2026-10-07、`arm-none-eabi-size`）。前の Project の「現状」は 612（libgcc 込み）、F1 の試作は 378 |
+| Cortex-M3 / M4 | 280 | 0 | 0 | ハードウェア除算。2026-10-07 の速度のチューニングで 288 から減った（`pool_alloc` / `pool_free` の検査の削減と、初期化ループの整理） |
+| Cortex-M0 / M0+ | 352 | 0 | 0 | 除算を使わない経路（2026-10-07、`arm-none-eabi-size`）。速度のチューニング前は 360、前の Project の「現状」は 612（libgcc 込み）、F1 の試作は 378。`struct pool` は、この経路で 8 バイト増える（`inv` `shift`） |
 
 ## 2. 書式（決定）
 

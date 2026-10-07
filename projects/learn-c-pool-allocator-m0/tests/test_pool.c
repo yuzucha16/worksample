@@ -238,6 +238,166 @@ static void test_check_detects_corruption(void) {
   CHECK(pool_check(&p, NULL) == POOL_ERR_CORRUPT);
 }
 
+#ifdef POOL_SOFT_DIV
+static size_t reference_odd_part(size_t v) {
+  while (v % 2 == 0) {
+    v /= 2;
+  }
+  return v;
+}
+#endif
+
+/* pool_init が OK を返した直後の構造体が、pool.h の不変条件 I1〜I5 を満たすか。
+ */
+static void check_contract(const struct pool *p, const unsigned char *buf,
+                           size_t buf_size, size_t align) {
+  size_t n;
+  size_t used_end;
+
+  CHECK(p->base != NULL);
+  CHECK((uintptr_t)p->base % align == 0);
+  CHECK(p->base >= buf && p->base < buf + buf_size);
+  CHECK(p->block_size >= sizeof(void *));
+  CHECK(p->block_size % align == 0);
+  CHECK(p->capacity >= 1);
+  used_end = (size_t)(p->base - buf) + p->capacity * p->block_size;
+  CHECK(p->capacity <= buf_size / p->block_size);
+  CHECK(used_end <= buf_size); /* capacity * block_size は、buf に収まる */
+  CHECK(used_end + p->block_size > buf_size); /* もう 1 ブロックは入らない */
+  CHECK(p->free_head == p->base);
+  CHECK(pool_check(p, &n) == POOL_OK);
+  CHECK(n == p->capacity);
+#ifdef POOL_SOFT_DIV
+  {
+    size_t odd = reference_odd_part(p->block_size);
+    CHECK((odd << p->shift) == p->block_size);
+    CHECK(odd * p->inv == 1);
+  }
+#endif
+}
+
+/* 初期化の保証: pool_init
+ * が成功した構造体は、どの引数の組でも不変条件を満たす。 */
+static void test_init_contract_sweep(void) {
+  static const size_t aligns[] = {8, 16, 32};
+  size_t ai;
+  size_t req;
+  size_t shift;
+
+  for (ai = 0; ai < sizeof aligns / sizeof aligns[0]; ai++) {
+    for (req = 1; req <= 90; req++) {
+      for (shift = 0; shift < 8; shift++) {
+        struct arena a;
+        struct pool p;
+        size_t size = 600 - shift;
+
+        arena_reset(&a);
+        CHECK(pool_init(&p, arena_body(&a) + shift, size, req, aligns[ai]) ==
+              POOL_OK);
+        check_contract(&p, arena_body(&a) + shift, size, aligns[ai]);
+        arena_check_guards(&a, 1024);
+      }
+    }
+  }
+}
+
+/* 失敗した pool_init
+ * は、全ゼロの構造体を全ゼロのまま残し、未初期化として弾かれる。 */
+static void test_failed_init_keeps_zeroed_pool_uninitialized(void) {
+  struct pool p;
+  struct pool zero;
+  unsigned char tiny[4];
+
+  memset(&p, 0, sizeof p);
+  memset(&zero, 0, sizeof zero);
+  CHECK(pool_init(&p, tiny, sizeof tiny, 16, 8) == POOL_ERR_SIZE);
+  CHECK(memcmp(&p, &zero, sizeof p) == 0);
+  CHECK(pool_init(&p, tiny, sizeof tiny, 16, 3) == POOL_ERR_ARG);
+  CHECK(memcmp(&p, &zero, sizeof p) == 0);
+  CHECK(pool_alloc(&p) == NULL);
+  CHECK(pool_free(&p, tiny) == POOL_ERR_ARG);
+  CHECK(pool_check(&p, NULL) == POOL_ERR_ARG);
+}
+
+/* pool_free は、ブロックの先頭だけを受け付ける。全バイトのオフセットを、
+ * 除算と剰余による参照の判定と突き合わせる（除算なしの経路の検証）。 */
+static void check_free_accepts_exactly_block_starts(size_t req, size_t align) {
+  struct arena a;
+  struct pool p;
+  void *blocks[128];
+  size_t i;
+  ptrdiff_t off;
+  ptrdiff_t total;
+
+  arena_reset(&a);
+  CHECK(pool_init(&p, arena_body(&a), 1024, req, align) == POOL_OK);
+  CHECK(p.capacity <= sizeof blocks / sizeof blocks[0]);
+  for (i = 0; i < p.capacity; i++) {
+    blocks[i] = pool_alloc(&p);
+    CHECK(blocks[i] != NULL);
+  }
+  CHECK(pool_alloc(&p) == NULL);
+
+  total = (ptrdiff_t)(p.capacity * p.block_size);
+  for (off = -(ptrdiff_t)(2 * align + 8);
+       off < total + 2 * (ptrdiff_t)align + 8; off++) {
+    /* 配列の外へのポインタ演算は未定義なので、整数で作る。 */
+    void *ptr = (void *)((uintptr_t)p.base + (uintptr_t)off);
+    int expect_ok = off >= 0 && off < total && (size_t)off % p.block_size == 0;
+
+    if (expect_ok) {
+      CHECK(pool_free(&p, ptr) == POOL_OK);
+      CHECK(pool_alloc(&p) == ptr); /* LIFO: 戻したブロックが、すぐ取り出せる */
+    } else {
+      CHECK(pool_free(&p, ptr) == POOL_ERR_PTR);
+    }
+    CHECK(pool_alloc(&p) == NULL); /* どの場合も、プールは空のまま */
+  }
+  arena_check_guards(&a, 1024);
+}
+
+static void test_free_accepts_exactly_block_starts(void) {
+  /* 要求サイズ: 2 のべき乗、奇数部が 3, 5, 7, 9, 11, 13, 15, 17、
+   * ブロックが 1 個だけ、など。 */
+  static const size_t reqs[] = {8,   16,  24,  32,  40,  48,  56,
+                                64,  72,  80,  88,  96,  104, 120,
+                                136, 200, 264, 512, 520, 1024};
+  size_t i;
+
+  for (i = 0; i < sizeof reqs / sizeof reqs[0]; i++) {
+    check_free_accepts_exactly_block_starts(reqs[i], 8);
+  }
+  check_free_accepts_exactly_block_starts(24, 16);
+  check_free_accepts_exactly_block_starts(40, 32);
+  check_free_accepts_exactly_block_starts(100, 32);
+}
+
+/* pool_alloc と pool_free が省いた不変条件のうち、I1・I2・I3
+ * の下限は、pool_check が検査する（debug 用）。 */
+static void test_check_detects_broken_structure(void) {
+  struct arena a;
+  struct pool p;
+  struct pool good;
+
+  arena_reset(&a);
+  CHECK(pool_init(&good, arena_body(&a), 1024, 24, 8) == POOL_OK);
+
+  p = good;
+  p.block_size = 1; /* void * より小さい */
+  CHECK(pool_check(&p, NULL) == POOL_ERR_ARG);
+  p = good;
+  p.capacity = 0;
+  CHECK(pool_check(&p, NULL) == POOL_ERR_ARG);
+  p = good;
+  p.base = NULL;
+  CHECK(pool_check(&p, NULL) == POOL_ERR_ARG);
+  /* I5（shift と
+   * inv）は、実行時には検査しない（フットプリントのため）。pool_init の
+   * 直後の値は check_contract が、判定の結果は
+   * test_free_accepts_exactly_block_starts と white_locate が、検証する。 */
+  CHECK(pool_check(&good, NULL) == POOL_OK);
+}
+
 /* 決定的な疑似乱数（固定シード）。 */
 static uint32_t rng_next(uint32_t *s) {
   *s = *s * 1664525u + 1013904223u;
@@ -321,6 +481,10 @@ int main(void) {
   test_free_rejects_invalid_pointers();
   test_uninitialized_pool_is_rejected();
   test_check_detects_corruption();
+  test_init_contract_sweep();
+  test_failed_init_keeps_zeroed_pool_uninitialized();
+  test_free_accepts_exactly_block_starts();
+  test_check_detects_broken_structure();
   test_model_random_operations();
   puts("ok: test_pool");
   return 0;
