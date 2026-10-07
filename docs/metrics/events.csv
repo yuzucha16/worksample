@@ -144,4 +144,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s1,-,-,移行,improvement,2026-10-07-s1-i02,closing-hook.md: 作業ディレクトリや親の AGENTS.md が終了処理の追加手順（指標の記録など）を定めているとき、続けて行う、と手順 3 の後に足す,hook,choice,1,1,0,0,0,,live,
 2026-10-06,2026-10-06-s9,-,-,移行,approval,2026-10-06-s9-q01,現在形の旧パス・旧名の修正をまとめて行うか（時制の方針は既存の決定）,adhoc,choice,1,1,0,1,1,0,live,ai
 2026-10-06,2026-10-06-s9,-,-,移行,approval,2026-10-06-s9-q02,終了処理を実行するか（docs の記述が実態とずれているため勧めた）,adhoc,choice,1,1,0,0,0,0,live,
-2026-10-07,2026-10-06-s9,-,-,移行,improvement,2026-10-06-s9-i01,closing-hook.md 手順 2: 変更したリポジトリ（workbase など）に docs/ が無く、親のワークスペースに docs/ があるとき、更新対象が決まらない。親の docs/ を対象にする、と足す,hook,choice,0,,0,0,0,,live,
+2026-10-07,2026-10-06-s9,-,-,移行,improvement,2026-10-06-s9-i01,closing-hook.md 手順 2: 変更したリポジトリ（workbase など）に docs/ が無く、親のワークスペースに docs/ があるとき、更新対象が決まらない。親の docs/ を対象にする、と足す,hook,choice,1,1,0,0,0,,live,

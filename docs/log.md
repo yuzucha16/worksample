@@ -69,6 +69,7 @@ exmem:
 - 現在形のまま残っていた旧パス・旧名を、ユーザーの承認で直した（`workbase` の `4ee2d40`、6 ファイル。`claude-code-storage.md`、`context.md`、`workflow-kit.md`、`ai-development-workflow.md`、`app-config-placement.md`、`obsidian-vault.md`）。方針は既存の決定（現在形は新名、日付つきの履歴は書き換えない。`docs/decisions.md` と exmem の `obsidian-vault.md`）。承認の前に、ユーザーから「時制で揃えると過去に決めた」と補足された（質問する前に、既存の決定を確認すべきだった。`docs/metrics/events.csv` の `2026-10-06-s9-q01`）。
 - 同日の夕方に、Vault を `$HOME\works` へ移す別のセッションがあり、この修正で書いた `C:\vault\works` の現在形の記述は、`0e75bed` で `$HOME\works` に直された（確認: 2026-10-07、根拠: `git grep` で、残る `C:\vault\works` が日付つきの履歴だけであること）。
 - 「ナレッジ化して」は実行しなかった。再利用できる知識（旧名の時制の方針、rename の影響の点検の観点）は、既存のナレッジ `obsidian-vault.md` と既存のメモに入っている。
+- 終了処理の改善 1 点を、ユーザーの承認で kit に反映した（版 `2026-10-07.4`）。`closing-hook.md` の手順 2 に、変更したリポジトリに `docs/` が無く、親のワークスペースに `docs/` があるときは、親の `docs/` を対象にする、と足した（`docs/metrics/events.csv` の `2026-10-06-s9-i01`。判断は kit の `improvements.md`）。
 
 ### 2026-10-06（Vault を `C:\vault\works` から `$HOME\works` へ移した。固定パスを直した。kit 版 `2026-10-06.23`）
 
