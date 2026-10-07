@@ -8,7 +8,7 @@
 
 - **目的の置き直しと規模の凍結（2026-10-08 開始。判定日 2026-11-08）**: 判断は `docs/decisions.md` の先頭の項目。残りは次の点。
   1. 週 1・15 分の `review`。見るのは `again` と `gap` の事例だけ（`extract-threads.ps1 -Report` で `again`・`detour`・常時読み込みの字数が出る）。
-  2. L1（リポジトリ構成）の第三者レビュー依頼文を作る。案 A〜D に、案 E（1 ファイル + 1 語方式）を足す。
+  2. L1（リポジトリ構成）の第三者レビュー依頼文は作成済み（`docs/drafts/review-l1-structure-third-party-prompt.md`。案 A〜E）。結果が来たら `docs/drafts/review-l1-structure-result.md` に置いてもらい、L2 以降の依頼に反映する。
   3. 常時読み込みの縮小（`log.md` の退避が先頭）と、kit の `adopted` の記述の整理（1 つ足すなら 1 つ畳む）。
 
 - **権限移譲の試験運用（2026-10-08 開始）**: 残りは次の点。
