@@ -18,9 +18,10 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 
 ## 読む順番
 
-1. `docs/log.md`
+1. `docs/log.md`（現在状態だけ。4KB 目安）
 2. `resources/AGENTS.md`（Vault 全体の規約）
-3. `docs/decisions.md`
+
+`docs/decisions.md` と `docs/log-history.md` は開始時に読まない。何かを決める・変える前に、`decisions.md` を検索して、既存の決定と矛盾しないか確かめる。kit の手順が「`log.md` の Log に書く」と言うときは、`docs/log-history.md` の `## Log` の先頭に追記する（2026-10-08〜。試験運用。1週間後に kit の `docs-rules.md` へ昇格するか判断）。
 
 ## 構成と管理
 
