@@ -43,6 +43,19 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 
 - 「start」（別名「作業を始めて」）と言われたら、kit の `start-hook.md`（開始インタビュー。試験運用）に従う。進行中の Project が無い、または新しい Project を始めるときは、先に `open-hook.md` で Project を作る（`open` は `start` を呼ぶ）。Project を閉じる（`close`）ときは、`close-hook.md`。手順書の正本は kit（2026-10-08 に `docs/drafts/` から移した）。実務で出た漏れ・補正は、ここの `docs/metrics/events.csv` に記録し、承認されたら kit を直す。`docs/drafts/` の3つは、実測の経緯の記録として残す（PARA の試行の経緯は `docs/log.md`、判断は `docs/decisions.md`）。
 
+- 「review」（別名「見直して」）と言われたら、kit の `review-hook.md` に従う（試験運用。週1回を目途。チェック機能の集約先）。`wrap` の報告が、前回から7日以上たっていれば勧める。記録は `docs/metrics/reviews.csv` と `docs/metrics/rule-hits.csv`。
+- `wrap` の改善案は、線引きで扱う（2026-10-08 ユーザーの決定。試験運用。正本は kit の `wrap-hook.md` の「自動採用の範囲」）。運用の補助は、承認なしに追加・削除してコミットする（`review` が要・不要を判断する）。安全規則（push・機密・破壊的操作・身元・決定の原則・書き込み先・承認の規則）と手順の本体は、承認制のまま。
+
+## push の許可リスト（2026-10-08 ユーザーの決定。試験運用）
+
+エージェントが push してよいのは、次のリポジトリの `main` だけ。条件（公開範囲の確認、fast-forward、機密の検索）は、kit の `docs-rules.md` の「push」。
+
+| リポジトリ | ブランチ | 備考 |
+|---|---|---|
+| `works`（remote: `yuzucha16/worksample`。非公開） | `main` | このリポジトリ |
+
+`resources/`（`workbase`）、dotfiles、ほかのリポジトリは対象外（公開範囲が決まってから、ユーザーが広げる）。`workbase` を push するときは、ユーザーが行う。
+
 ## コミット
 
 - メッセージは `[領域] 変更内容`。`git add` はパスを指定する。
