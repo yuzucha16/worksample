@@ -14,6 +14,13 @@
 
 ## Decisions
 
+### 【汎用】Project の構造は、固定の核（README・docs・直下の最終成果物）に、type（doc / dev / research）別の追加を足す（2026-10-08。ユーザーが承認。試験運用）
+
+- 決めたこと: type は成果物の種類で決める（Area は既定値のヒント）。`doc` は `drafts/` と `refs/`、`dev` は `src/` `tests/` `tools/`、`research` は `sources/` と `report.md`。`docs/` は作業の記録（log・decisions）だけにして、下書きは `drafts/` に分ける。深さは直下から2階層まで。空のディレクトリは先に作らない。正本は kit の `open-hook.md`「Project の構造」。ひな形は `templates/project/README.template.md`。
+- 根拠: 浅くてフラットな構造にしたい（ユーザーの希望）。`write-pc-loan-procedure` は下書きが `docs/` に入って、log と混ざっていた。`dev` は `learn-c-pool-allocator` の実績どおり。
+- 未決: `research` と、混合の Project の扱いは、実測が無い。既存の `write-pc-loan-procedure`（下書きが `docs/`）は、移行せず、閉じるときに扱う。
+- 行き先: 転記済（2026-10-08 → kit/open-hook.md「Project の構造」）
+
 ### 【汎用】フックの権限を、一律でなく線引きで移譲する: wrap の改善案の自動採用、push の許可リスト、転記の台帳と review フック（2026-10-08。ユーザーの決定。試験運用）
 
 - 背景（データ。2026-10-08、`summarize.ps1`）: 改善案の承認は 89 件中 88 件が採用で、`fix` と補足は 0。ゲートとしての情報量がほぼ無い。一方、一般の承認確認は 55 件中、修正 7・補足 21 で機能している。

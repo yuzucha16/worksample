@@ -71,6 +71,12 @@ exmem:
 
 ## Log
 
+### 2026-10-08（Project の構造の設計。セッション `2026-10-08-s2`）
+
+- ユーザーの依頼（`start`/`open` で作る Project の中身を、浅いフラットな構造で固定したい）に、素案を出した。ユーザーが、①type は3種（`doc` `dev` `research`）②下書きは `docs/` から `drafts/` に分ける ③kit に反映、を承認した（判断は `docs/decisions.md` の先頭の項目）。
+- 実装: `resources/`（`workbase`）の `3e9e63e`。`open-hook.md` に「Project の構造」の節と手順 3・4 の追記、`templates/project/README.template.md` を新設、`start-hook.md` の差分の項目を `type` と対応づけた。`workbase` は push していない（ユーザーが行う）。
+- 残り: `research` と混合の Project は実測が無い。`write-pc-loan-procedure` は、下書きが `docs/` のまま（閉じるときに扱う）。次の `open` で、type の聞き方とひな形を実測する。
+
 ### 2026-10-08（第三者レビューを受けて、台帳方式を直した。セッション `2026-10-08-s1`）
 
 - ユーザーの相談（`wrap` の改善案の承認、push、転記の往復を、エージェントに移したい）に、影響分析を出した。結論は一律でなく線引き。ユーザーが、①安全規則は承認制のまま ②push は `works` のみ ③転記は台帳方式、を決め、見直しのフックを `review` とし、チェック機能をここに集約する方針を示した（判断は `docs/decisions.md` の先頭の項目）。

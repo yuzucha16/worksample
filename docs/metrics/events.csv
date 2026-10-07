@@ -182,5 +182,6 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-08,2026-10-07-s4,-,-,フック設計,improvement,2026-10-07-s4-i01,wrap-hook の手順 4 と 5 の重複（手順 4 の行末に手順 5 の文が混ざっていた）を削除する,hook,choice,1,1,0,0,0,0,live,
 2026-10-08,2026-10-08-s1,-,-,フック設計,approval,2026-10-08-s1-q01,権限移譲 3 件（wrap の改善案の自動採用、push、転記の台帳）の影響分析への回答: 一律でなく線引き案、安全規則は承認制のまま、push は works のみ、転記は台帳方式,adhoc,choice,1,1,1,1,0,0,live,user
 2026-10-08,2026-10-08-s1,-,-,フック設計,approval,2026-10-08-s1-q02,見直しフックの名前を review にし、チェック機能を集約していく方針,adhoc,free,1,1,0,1,0,0,live,user
+2026-10-08,2026-10-08-s2,-,-,フック設計,approval,2026-10-08-s2-q01,Project の構造の素案（type 3種、drafts/ の分離、kit への反映）の承認,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-08,2026-10-08-s1,-,-,フック設計,approval,2026-10-08-s1-q03,第三者レビューの指摘の反映方針（軽量版: ID の新設でなくメモ名の再利用禁止、案2を不採用、試験中は review を3〜4日おき）,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-08,2026-10-08-s1,-,-,フック設計,improvement,2026-10-08-s1-i01,台帳方式を直す（照合を統合時に移す、本文ハッシュ、本文残しの廃止、台帳の種別と merge=union）,hook,choice,1,1,0,0,0,0,live,
