@@ -165,3 +165,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,interview,2026-10-07-s3-q05,ほかに前提はありますか（自由記述）,hook,free,1,1,0,1,0,0,live,user
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q06,貸し出し表の置き場（共有フォルダの表計算ファイル1つ）の承認,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q07,紛失に早く気付く工夫（最長1週間と週次確認）の承認,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q08,承認メールに事務員を Cc に入れる書き方が意図と合うか,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q09,延長の手順を足すか,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q10,紛失時の連絡手段（夜間・休日）,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q11,用語が事務員さんに通じるか,adhoc,choice,1,1,0,1,0,0,live,user
