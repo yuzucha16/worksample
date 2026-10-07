@@ -54,7 +54,7 @@ AI がユーザーに聞く質問と、AI が出す提案（承認の確認、�
 
 ## 改善フックへの適用
 
-改善フック（kit の `knowledge-hook.md`「このフックの改善」と、それを使う `closing-hook.md` `integrate-hook.md` `setup-hook.md`）の改善案も、同じ列で記録する（`kind=improvement`）。承認制の流れ（提案 → ユーザーの承認・却下・修正 → `improvements.md`）が、質問の流れと同じ形のため。
+改善フック（kit の `stock-hook.md`「このフックの改善」と、それを使う `wrap-hook.md` `integrate-hook.md` `init-hook.md`）の改善案も、同じ列で記録する（`kind=improvement`）。承認制の流れ（提案 → ユーザーの承認・却下・修正 → `improvements.md`）が、質問の流れと同じ形のため。
 
 - 1案 = 1行。`answered` は承認・却下のどちらかがあったか。`adopted` は採用。`fix` は、ユーザーが案を直して採用したか。
 - `improvements.md` の既存の66件は、`import` で取り込んだ（状態列だけから。取り込みは一度きり。以後は `live`）。

@@ -6,15 +6,9 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 
 ## 共通ルール
 
-共通ルールの置き場は `$HOME\works\resources\workflow-kit`（WSL: `/mnt/c/Users/<Windows のユーザー名>/works/resources/workflow-kit`）。次の時機に、該当のファイルを読む。
+共通ルールの置き場は `$HOME\works\resources\workflow-kit`（WSL: `/mnt/c/Users/<Windows のユーザー名>/works/resources/workflow-kit`）。ユーザーが合言葉（手順書を呼ぶ短い言葉。日本語の別名つき）を言ったら、そこの `hooks.md` の表に従って手順書を読み、実行する（言われたときだけ）。`docs-rules.md` は、作業を始める前と、`docs/` を更新するときに読む。
 
-- `docs-rules.md`: 作業を始める前と、`docs/` を更新するときに読む。`docs/` の運用。作業の終わりに `docs/log.md` と `docs/decisions.md` を更新する。
-- `wrap-hook.md`: ユーザーが「wrap」（別名「終了処理して」）と言ったときに読み、実行する（言われたときだけ）。作業の終わりの `docs/` 更新・棚卸し・ナレッジ化・コミットを、順に行う。
-- `stock-hook.md`: ユーザーが「stock」（別名「ナレッジ化して」）と言ったときに読み、実行する（言われたときだけ）。書き込みは `exmem/inbox/` の新規ファイルだけ（例外は `stock-hook.md`）。
-- `integrate-hook.md`: ユーザーが「integrate」（別名「inboxを整理して」）と言ったときに読み、実行する（言われたときだけ。exmem 側の作業）。
-- `init-hook.md`: ユーザーが「init」（別名「workflowを導入して」）と言ったときに読み、実行する（言われたときだけ。このワークスペース配下の作業ディレクトリへの導入の入口）。
-
-上のファイルが読めない場合（`resources/` を clone していない PC など）は、記憶で代用せず、ユーザーに伝えて止まる。
+読めない場合（`resources/` を clone していない PC など）は、記憶で代用せず、ユーザーに伝えて止まる。
 
 ## 読む順番
 
@@ -43,9 +37,8 @@ Obsidian の Vault のトップ。この PC だけのローカルなリポジト
 - ユーザーが `again`（または「前にも言った」）と書いたら、同じターンで `events.csv` に `kind=again` の行を足す（`question` に再度言ったことの要旨。`answerable` は、その情報が既に知識・`AGENTS.md`・`docs/` にあったら 1、無かったら 0）。そのうえで、前提を `AGENTS.md` か知識（`stock`）に昇格する案を出す（承認制）。`wrap` では、「今日の遠回りは、なし・少し・大きく のどれか」を1問だけ聞き、`sessions.csv` の `detour` に書く。
 - 終了処理（「終了処理して」）の `docs/` 更新の中で、スレッド・セッションの指標を足す（試験運用。定義は `docs/metrics/README.md` の「スレッドとセッションの指標」。用途はユーザー本人の自己改善だけ）。手順: ① `pwsh -NoProfile -File docs/metrics/extract-threads.ps1` で `threads.csv` を更新 ② `-Current -Cwd <Claude を開いた作業ディレクトリ（シェルのカレントではない）>` で今のスレッド ID を取り、`sessions.csv` に1行足す（`outcome` `prompt_complete`、根拠 `prompt_evidence`、`review` `mechanism` `note` `start_mode`（`bare` か `briefed`。最初の依頼の形から判定する）、`knowledge_used`（このセッションで読んだ exmem の知識のうち、判断・成果物に反映した件数）、`knowledge_miss`（探した・読んだが、無い・古い・ずれていた件数。1件ごとに `gap` の行にもする。定義は `docs/metrics/README.md` の「再利用率の指標」）。「並行の可能性」の警告が出たら、選んだ会話が今のものか（最初のプロンプトの内容や時刻）を確かめ、確かめられなければユーザーに聞く。根拠はユーザーの発言の要旨を残し、忖度しない。機密・個人情報を書かない） ③ `-Report` で無駄の合図を見て、報告に1〜2行書く。
 
-- 「start」（別名「作業を始めて」）と言われたら、kit の `start-hook.md`（開始インタビュー。試験運用）に従う。進行中の Project が無い、または新しい Project を始めるときは、先に `open-hook.md` で Project を作る（`open` は `start` を呼ぶ）。Project を閉じる（`close`）ときは、`close-hook.md`。手順書の正本は kit（2026-10-08 に `docs/drafts/` から移した）。実務で出た漏れ・補正は、ここの `docs/metrics/events.csv` に記録し、承認されたら kit を直す。`docs/drafts/` の3つは、実測の経緯の記録として残す（PARA の試行の経緯は `docs/log.md`、判断は `docs/decisions.md`）。
-
-- 「review」（別名「見直して」）と言われたら、kit の `review-hook.md` に従う（試験運用。週1回を目途。チェック機能の集約先）。`wrap` の報告が、前回から7日以上たっていれば勧める。記録は `docs/metrics/reviews.csv` と `docs/metrics/rule-hits.csv`。
+- `start` `open` `close`（試験運用）: 進行中の Project が無い、または新しい Project を始めるときは、先に `open` で Project を作る。実務で出た漏れ・補正は、ここの `docs/metrics/events.csv` に記録し、承認されたら kit を直す。`docs/drafts/` の3つ（project-open / project-close / session-start-interview）は、実測の経緯の記録として残す（PARA の試行の経緯は `docs/log-history.md`、判断は `docs/decisions.md`）。
+- `review`（試験運用）: 週1回を目途。`wrap` の報告が、前回から7日以上たっていれば勧める。記録は `docs/metrics/reviews.csv` と `docs/metrics/rule-hits.csv`。
 - `wrap` の改善案は、線引きで扱う（2026-10-08 ユーザーの決定。試験運用。正本は kit の `wrap-hook.md` の「自動採用の範囲」）。運用の補助は、承認なしに追加・削除してコミットする（`review` が要・不要を判断する）。安全規則（push・機密・破壊的操作・身元・決定の原則・書き込み先・承認の規則）と手順の本体は、承認制のまま。
 
 ## 規模の凍結（2026-10-08〜判定日 2026-11-08。ユーザーの決定。試験運用）

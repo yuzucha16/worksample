@@ -5,7 +5,7 @@
 ## Next Actions（2026-10-08 時点）
 
 1. **目的の置き直しと規模の凍結（判定日 2026-11-08）**: 週1・15分の `review`（見るのは `again` と `gap` の事例、`extract-threads.ps1 -Report` の常時読み込みの字数）。
-2. **構造の見直し（L1 の推奨案 F。`docs/drafts/review-l1-structure-result.md`）**: 済み: ステップ0（タグ）、1（旧 clone を `C:\Users\ck\_archive` へ退避）、`contexts/` の2件の削除。次: 2（このログの分割。1週間試し、手戻りが増えたら戻す）、3（呼び出し表を `hooks.md` の1か所に。旧名ファイルの削除）、4（手順書の場所を PC ごとの指示に1か所化。Codex が読むので作業側 AGENTS に1行のフォールバックを残す）、5（作業側 AGENTS を縮める）、6〜10（契約、手順書を薄く、知識側、`contexts/` の方針、周辺物）。各ステップは単独で戻せる。
+2. **構造の見直し（L1 の推奨案 F。`docs/drafts/review-l1-structure-result.md`）**: 済み（2026-10-08）: ステップ0（タグ）、1（旧 clone を `C:\Users\ck\_archive` へ退避）、2（このログの分割。1週間試し、手戻りが増えたら戻す）、3（呼び出し表を `hooks.md` の1か所に。旧名ファイルの削除）、`contexts/` の2件の削除。常時読み込みは 79,804 → 16,967 字。次: 4（手順書の場所を PC ごとの指示に1か所化。Codex が読むので作業側 AGENTS に1行のフォールバックを残す）、5（作業側 AGENTS を縮める）、6〜10（契約、手順書を薄く、知識側、`contexts/` の方針、周辺物）。各ステップは単独で戻せる。
 3. **権限移譲の試験運用（2026-10-22 に継続・修正・撤回を判断）**: `review` を3〜4日おきに。台帳は拡張しない。`summarize.ps1` で自動採用の行を分ける。台帳に記録が無い旧い統合は、従来の方式で確定する。
 4. **PARA の試行**: 3回目の Project（候補は `areas/learning/README.md`）。kit への昇格は安定してから。
 5. **保留**: 旧 `C:\vault` と GitHub の旧 `notes` の削除、`claude --resume` の確認、WSL の `WORKS_DIR` の実機確認（詳細は `log-history.md` の Next Actions）。
