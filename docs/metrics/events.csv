@@ -169,3 +169,6 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q09,延長の手順を足すか,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q10,紛失時の連絡手段（夜間・休日）,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q11,用語が事務員さんに通じるか,adhoc,choice,1,1,0,1,0,0,live,user
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,approval,2026-10-07-s3-q12,v2 をゲート承認とするか（markdown から html へ進む）,adhoc,choice,1,1,0,0,0,0,live,
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,gap,2026-10-07-s3-g01,ゲート承認の判断基準（チェックリスト）が事前に定められておらず、承認の判断が難しいと指摘された,adhoc,free,1,1,0,1,0,,live,ai
+2026-10-07,2026-10-07-s3,office-admin,write-pc-loan-procedure,文書作成,improvement,2026-10-07-s3-i01,文書作成の開始インタビューに「ゲート承認の判断基準（合格の条件）を、ゲートの前に決める」を足す。完了条件のチェックリストを、ゲートの合否の項目に直して、レビュー版に付ける,hook,choice,,,,,,,live,
