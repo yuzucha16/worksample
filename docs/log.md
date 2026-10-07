@@ -63,6 +63,13 @@ exmem:
 
 ## Log
 
+### 2026-10-06（Vault のトップの rename `notes` → `works` が exmem と workflow-kit に与える影響を点検した。セッション `2026-10-06-s9`。終了処理は 2026-10-07）
+
+- ユーザーの依頼で、rename（当時は `C:\vault\works`）が exmem と workflow-kit に悪影響・デグレを起こさないかを点検した（旧名の grep、スクリプト、git の状態、追跡外ファイルの確認）。結論: 機能面のデグレは無い。`workflow-kit/tools/check-inbox.ps1` と `find-knowledge.ps1` は `$PSScriptRoot` からの相対参照で、実行して動作を確認した。workflow-kit の旧パスは `README.md` と `improvements.md` の履歴の行だけ。`resources/` の remote は `workbase` のまま、作業ツリーは clean。`.claude/settings.local.json` は追跡外で、旧パスの許可項目が残るが害は無い（確認: 2026-10-06、根拠: `Grep`、スクリプトの実行、`git status`）。
+- 現在形のまま残っていた旧パス・旧名を、ユーザーの承認で直した（`workbase` の `4ee2d40`、6 ファイル。`claude-code-storage.md`、`context.md`、`workflow-kit.md`、`ai-development-workflow.md`、`app-config-placement.md`、`obsidian-vault.md`）。方針は既存の決定（現在形は新名、日付つきの履歴は書き換えない。`docs/decisions.md` と exmem の `obsidian-vault.md`）。承認の前に、ユーザーから「時制で揃えると過去に決めた」と補足された（質問する前に、既存の決定を確認すべきだった。`docs/metrics/events.csv` の `2026-10-06-s9-q01`）。
+- 同日の夕方に、Vault を `$HOME\works` へ移す別のセッションがあり、この修正で書いた `C:\vault\works` の現在形の記述は、`0e75bed` で `$HOME\works` に直された（確認: 2026-10-07、根拠: `git grep` で、残る `C:\vault\works` が日付つきの履歴だけであること）。
+- 「ナレッジ化して」は実行しなかった。再利用できる知識（旧名の時制の方針、rename の影響の点検の観点）は、既存のナレッジ `obsidian-vault.md` と既存のメモに入っている。
+
 ### 2026-10-06（Vault を `C:\vault\works` から `$HOME\works` へ移した。固定パスを直した。kit 版 `2026-10-06.23`）
 
 - `migrate-works.ps1 -Execute` で移行を実行した。新しい `C:\Users\ck\works` で、Obsidian が動くこと（ユーザーの確認）、Claude Code が動くこと（`CLAUDE.md`・`AGENTS.md`・メモリを読めた、git の root と remote が `worksample`、`resources/` と `.obsidian` のジャンクションが生きている。確認: 起動したセッションで）を確認した。判断の根拠は、Next Actions の旧項目（Vault を `$HOME\works` に、ghq の root を `$HOME\works\repos` にし、`C:\vault` の親を畳む。ユーザーの決定）。
