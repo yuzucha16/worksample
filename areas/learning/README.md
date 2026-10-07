@@ -18,12 +18,11 @@ updated: 2026-10-06
 
 ## 進行中の Project
 
-なし。
+- [[projects/learn-c-pool-allocator-m0/README|learn-c-pool-allocator-m0]]（C。Cortex-M0 対応。静的な切り替え。2026-10-07 開始、見直し 2026-10-20）
 
 ## 次の Project の候補（持ち越し。未決）
 
 - スレッド・割り込みの安全性（`learn-c-pool-allocator` の範囲外。呼び出し側の排他の設計）。
-- Cortex-M0 への対応（F1: 2進の筆算。試作で 378 バイト、未定義シンボルなしを確認済み。`archives/learn-c-pool-allocator/docs/design.md` の判断 F）。
 - 検査の限界の解消（間接呼び出し経由の再帰、ファイルスコープの `static`、複数ファイルの `src/` での未定義シンボルの検査）。
 
 ## 完了した Project

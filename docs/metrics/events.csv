@@ -145,3 +145,7 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-06,2026-10-06-s9,-,-,移行,approval,2026-10-06-s9-q01,現在形の旧パス・旧名の修正をまとめて行うか（時制の方針は既存の決定）,adhoc,choice,1,1,0,1,1,0,live,ai
 2026-10-06,2026-10-06-s9,-,-,移行,approval,2026-10-06-s9-q02,終了処理を実行するか（docs の記述が実態とずれているため勧めた）,adhoc,choice,1,1,0,0,0,0,live,
 2026-10-07,2026-10-06-s9,-,-,移行,improvement,2026-10-06-s9-i01,closing-hook.md 手順 2: 変更したリポジトリ（workbase など）に docs/ が無く、親のワークスペースに docs/ があるとき、更新対象が決まらない。親の docs/ を対象にする、と足す,hook,choice,1,1,0,0,0,,live,
+2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q01,今日の作業対象の Project（候補3件から）,template,choice,1,1,0,0,0,,live,
+2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q02,完了条件の種類,template,choice,1,1,0,0,0,,live,
+2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q03,見直し日,template,choice,1,1,0,0,0,,live,
+2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q04,ほかに前提はありますか（宣言済みの前提への直し）,template,free,1,1,0,1,0,,live,user
