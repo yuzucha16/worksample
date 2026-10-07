@@ -79,6 +79,8 @@ exmem:
 
 ### 2026-10-08（第三者レビューを受けて、台帳方式を直した。セッション `2026-10-08-s1`）
 
+- 終了処理（`wrap`。試験運用の初回）: ① 棚卸し: `works` は FAIL 0、WARN 0（`未仕分け` 0、`転記待ち` 2、`転記済` 43）。② ナレッジ化: `exmem/inbox/2026-10-08-hook-authority-delegation-ledger.md`（Principles 7、Decisions 4、Facts 6、Gotchas 3。点検は FAIL 0、WARN 0。コミットしていない）。権限移譲の項目は `転記待ち（…、本文ハッシュ f0556ecb）` にした（ハッシュ付きの最初の項目）。③ 改善: 自動採用の規則 `R-20261008-1` を1件足した（kit 版 `2026-10-08.5`、`4d9e474`。並行セッションの未コミットの編集が、コミットに混ざるのを防ぐ。このセッションの混入の実例から）。承認を求める案は無い。④ 指標: `threads.csv` を更新（65件）、`sessions.csv` に `2026-10-08-s1` を足した。⑤ push: `works` は許可リストなので、条件を確認して push する。`workbase`（kit `4d9e474`、`98fa69c`）は対象外なので、ユーザーが push する。
+
 - ユーザーの相談（`wrap` の改善案の承認、push、転記の往復を、エージェントに移したい）に、影響分析を出した。結論は一律でなく線引き。ユーザーが、①安全規則は承認制のまま ②push は `works` のみ ③転記は台帳方式、を決め、見直しのフックを `review` とし、チェック機能をここに集約する方針を示した（判断は `docs/decisions.md` の先頭の項目）。
 - 実装: kit 版 `2026-10-08.3`（`resources/` の `6307c31`）。新設 `review-hook.md`、`wrap-hook.md` に「自動採用の範囲」「自動採用の規則」の節と push の手順、`docs-rules.md` の「push」（許可リストと5条件）、`integrate-hook.md` の台帳、`exmem/integrated.md`。`works`: `AGENTS.md`（許可リスト、`review`）、`docs/metrics/reviews.csv` `rule-hits.csv`、`events.csv`（`2026-10-08-s1-q01` `q02`）。
 - 試験の状態: 自動採用の規則は 0 件、台帳は空、`review` は未実行。`works` の push は、このコミットが最初の実測。
