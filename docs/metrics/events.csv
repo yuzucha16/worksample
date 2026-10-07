@@ -149,3 +149,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q02,完了条件の種類,template,choice,1,1,0,0,0,,live,
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q03,見直し日,template,choice,1,1,0,0,0,,live,
 2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,interview,2026-10-07-s2-q04,ほかに前提はありますか（宣言済みの前提への直し）,template,free,1,1,0,1,0,,live,user
+2026-10-07,2026-10-07-s2,learning,learn-c-pool-allocator-m0,開発,approval,2026-10-07-s2-q05,完了条件の文面（README）の承認,adhoc,choice,1,1,0,0,0,,live,

@@ -6,7 +6,6 @@
 
 - 前の Project の `src/` `tests/` `Makefile` `tools/` をこの Project に持ってくる方法を決める（README の Open Questions）。
 - Cortex-M0 向けの除算の置き換えと、静的な切り替えの方式を、フットプリント優先で比べ、判断をユーザーに諮る。
-- 完了条件の文面を、ユーザーに確認する。
 
 ## Open Questions
 
