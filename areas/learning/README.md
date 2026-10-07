@@ -18,13 +18,15 @@ updated: 2026-10-06
 
 ## 進行中の Project
 
-- [[projects/learn-c-pool-allocator-m0/README|learn-c-pool-allocator-m0]]（C。Cortex-M0 対応。静的な切り替え。2026-10-07 開始、見直し 2026-10-20）
+なし。
 
 ## 次の Project の候補（持ち越し。未決）
 
 - スレッド・割り込みの安全性（`learn-c-pool-allocator` の範囲外。呼び出し側の排他の設計）。
 - 検査の限界の解消（間接呼び出し経由の再帰、ファイルスコープの `static`、複数ファイルの `src/` での未定義シンボルの検査）。
+- 速度の確認の実機化（M0 の実機または QEMU で、`pool_free` などのサイクルを測る。いまは命令シミュレータの値）、32 ビットのホスト実行（`gcc -m32` の導入）、シミュレータと変異テストのスクリプトのリポジトリ化（`archives/learn-c-pool-allocator-m0/docs/log.md` の持ち越し）。
 
 ## 完了した Project
 
+- [[archives/learn-c-pool-allocator-m0/README|learn-c-pool-allocator-m0]]（C。Cortex-M0 / M0+ 対応と速度のチューニング。2026-10-07 に達成。M0 で `.text` 352 バイト、M3 / M4 で 280 バイト。`pool_free` は乗算 32 サイクルで 563 → 103 サイクル）
 - [[archives/learn-c-pool-allocator/README|learn-c-pool-allocator]]（C。組込み向けの固定長メモリプール。2026-10-06 に達成。Cortex-M3 / M4 で `.text` 288 バイト、`.data` 0）
