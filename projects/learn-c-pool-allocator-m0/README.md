@@ -21,9 +21,14 @@ updated: 2026-10-07
 - 動くことを確認してから、チューニング要素（速度の最適化）を行う。最初の設計の根拠にしない。
 - 引き継ぐ前提: 組込み領域、安全性 > 起動速度、`archives/learn-c-pool-allocator/docs/coding-rules.md` の制約と機械検査。
 
+## 結果（2026-10-07。完了条件の確認はユーザー待ち）
+
+- `make check` が通る（終了コード 0。ホスト試験は ASan・UBSan つき、除算なしの経路も含む）。フットプリント（`-Os`、freestanding、バイト）: Cortex-M0 / M0+ は `.text` 360、M3 / M4 は 288（変更前とバイト単位で同一）。`.data` と `.bss` はすべて 0。
+
 ## 成果物
 
-未定（設計の判断が承認されたら書く。前の Project の `src/` `tests/` `Makefile` `tools/` を土台にする）。
+- `src/`（`pool.h` `pool.c`。除算を使わない経路は `POOL_SOFT_DIV`）、`tests/`、`Makefile`（`make check`、`make test-soft`、`make size-arm`）、`tools/`、`.clang-format`: 前の Project から持ち込み、M0 対応を足した。
+- `docs/`: 経緯（`log.md`）、判断（`decisions.md`）、設計（`design.md`。判断 F は前の Project の記録）、ルール（`coding-rules.md`）。
 
 ## 範囲外
 
@@ -31,6 +36,4 @@ updated: 2026-10-07
 
 ## Open Questions
 
-- 切り替えの方式（`__ARM_FEATURE_IDIV` での自動切り替え、ビルドオプションでの明示、など）。
-- M0 向けの除算の置き換え方（2進の筆算、除算を使わない設計への変更、など。フットプリント優先で比べる）。
-- 前の Project の `src/` を、コピーして始めるか、参照するか。
+なし（切り替えの方式、除算の置き換え方、持ち込み方は決定済み。`docs/decisions.md`）。

@@ -1,0 +1,12 @@
+# コードリーディングのコストを下げるための整形（docs/coding-rules.md）。clang-format 18 で確認する。
+Language: Cpp          # clang-format は C を Cpp として扱う
+BasedOnStyle: LLVM
+IndentWidth: 2
+UseTab: Never
+ColumnLimit: 80
+PointerAlignment: Right
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+InsertNewlineAtEOF: true
+LineEnding: LF
