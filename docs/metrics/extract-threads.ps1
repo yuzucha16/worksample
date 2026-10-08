@@ -219,8 +219,8 @@ if ($Report) {
   "遠回りの自己申告（sessions.csv の detour）: $(if ($dt) { $dt -join '、' } else { '記録なし' })"
   # 常時読み込み（コスト側。開始時に読む指示の字数。増やさない）
   $root = Join-Path $PSScriptRoot '../..'
-  # 2026-10-08 のログ分割で、decisions.md は開始時に読まない（ベースラインの 79,804 字は decisions.md 13,569 字を含む）
-  $startFiles = 'AGENTS.md', 'resources/AGENTS.md', 'docs/log.md', 'resources/workflow-kit/docs-rules.md'
+  # 2026-10-08 のログ分割で decisions.md を、AGENTS の縮小で docs-rules.md を、開始時の読み込みから外した（ベースラインの 79,804 字は、この 2 つの 22,407 字を含む）
+  $startFiles = 'AGENTS.md', 'resources/AGENTS.md', 'docs/log.md'
   $sizes = foreach ($p in $startFiles) { $f = Join-Path $root $p; [pscustomobject]@{ p = $p; n = if (Test-Path $f) { [IO.File]::ReadAllText($f).Length } else { 0 } } }
   "== 常時読み込み（開始時に読む指示の字数）: 合計 $(($sizes | Measure-Object n -Sum).Sum) 字（$(($sizes | ForEach-Object { "$($_.p)=$($_.n)" }) -join '、')）"
   "== 無駄の候補（判定ではなく合図。中身を見て判断する）"

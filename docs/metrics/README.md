@@ -75,6 +75,25 @@ AI がユーザーに聞く質問と、AI が出す提案（承認の確認、�
 - **自走時間を伸ばす目的の注意**: 単独で目標にしない。品質（`fix` `gap` `reversed` `outcome`）と対で見る。`work_type` を分けて比べる。
 - 制約: 履歴に compact の記録が見当たらない（未観測）ので、コンテキスト量は `ctx_max_tokens` で代用する。Claude Code は古い履歴を消すことがあるので、定期的に `extract-threads.ps1` を回す（終了処理で回す）。
 
+## エージェントの記録手順（`AGENTS.md` から移した。2026-10-08）
+
+kit の手順書は、記録を次の名前で呼ぶ（保存先と列は、このディレクトリの `AGENTS.md` が定める。契約は kit の `hooks.md`）。
+
+| 記録名 | 保存先 | 内容 |
+|---|---|---|
+| `events` | `docs/metrics/events.csv` | 質問・承認の確認・改善案・再伝達（`again`）・漏れ（`gap`） |
+| `sessions` | `docs/metrics/sessions.csv` | セッションごとの1行 |
+| `reviews` | `docs/metrics/reviews.csv` | `review` 1回につき1行 |
+| `rule-hits` | `docs/metrics/rule-hits.csv` | 自動採用の規則が働いた記録（`wrap` が足す） |
+
+**events の記録**: ユーザーへの質問（聞き取り）、AI の提案への承認の確認、改善フックの改善案は、1件1行で記録する（記録するのはエージェント。定義と列は上の「列」、集計は `summarize.ps1`）。回答を受けた同じターンで行を足し、`wrap`（終了処理）で `reversed` を確定する（採用率は集計しない。2026-10-08 廃止）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
+
+**again**: ユーザーが `again`（または「前にも言った」）と書いたら、同じターンで `kind=again` の行を足す（`question` に再度言ったことの要旨。`answerable` は、その情報が既に知識・`AGENTS.md`・`docs/` にあったら 1、無かったら 0）。そのうえで、前提を `AGENTS.md` か知識（`stock`）に昇格する案を出す（承認制）。
+
+**wrap のとき**: 「今日の遠回りは、なし・少し・大きく のどれか」を1問だけ聞き、`sessions` の `detour` に書く。`docs/` 更新の中で、スレッド・セッションの指標を足す（試験運用。用途はユーザー本人の自己改善だけ）。手順: ① `pwsh -NoProfile -File docs/metrics/extract-threads.ps1` で `threads.csv` を更新 ② `-Current -Cwd <Claude を開いた作業ディレクトリ（シェルのカレントではない）>` で今のスレッド ID を取り、`sessions` に1行足す（`outcome` `prompt_complete`、根拠 `prompt_evidence`、`review` `mechanism` `note` `start_mode`（`bare` か `briefed`。最初の依頼の形から判定する）、`knowledge_used`（読んだ exmem の知識のうち、判断・成果物に反映した件数）、`knowledge_miss`（探した・読んだが、無い・古い・ずれていた件数。1件ごとに `gap` の行にもする）、`detour`）。「並行の可能性」の警告が出たら、選んだ会話が今のものか（最初のプロンプトの内容や時刻）を確かめ、確かめられなければユーザーに聞く。根拠はユーザーの発言の要旨を残し、忖度しない。機密・個人情報を書かない ③ `-Report` で無駄の合図を見て、報告に1〜2行書く。
+
+**試験運用中のフック**: `start` `open` `close` で実務に出た漏れ・補正は `events` に記録し、承認されたら kit を直す。`docs/drafts/` の3つ（project-open / project-close / session-start-interview）は、実測の経緯の記録として残す（PARA の試行の経緯は `docs/log-history.md`、判断は `docs/decisions.md`）。`review` は週1回を目途で、`wrap` の報告が前回から7日以上たっていれば勧める。
+
 ## 目的と指標（2026-10-08 に、第三者レビューを受けて置き直し。ユーザーが承認。試験運用）
 
 主目的は、ユーザーの負担（再伝達・不要な往復・手戻り）を減らすこと。再利用率・参照率は目的でなく、診断用の補助。AI に目標値として示さない。
