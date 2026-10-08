@@ -196,3 +196,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q07,L1: 台帳は 10-22 の試験判断まで拡張だけ止める,adhoc,choice,1,1,0,0,0,,live,
 2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q08,contexts の業務適用 2 件を削除する（共有側に業務の文脈を置かない方針）,adhoc,choice,1,1,0,0,0,,live,
 2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q09,公開されうる前提で書く（公開の予定は未決定）,adhoc,choice,1,1,0,0,0,,live,
+2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q10,L1 ステップ 5〜9 を続ける（読み落とし点検と CRLF は 2026-10-15 頃にまとめて実施）,adhoc,choice,1,1,0,0,0,,live,
