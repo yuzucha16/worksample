@@ -85,6 +85,8 @@ kit の手順書は、記録を次の名前で呼ぶ（保存先と列は、こ�
 | `sessions` | `docs/metrics/sessions.csv` | セッションごとの1行 |
 | `reviews` | `docs/metrics/reviews.csv` | `review` 1回につき1行 |
 
+**reviews の列**（kit の `review-hook.md` から移した。2026-10-08。kit は足す値だけを定め、列名と並びはここが定める）: `date,review_id,again,detour_big,detour_little,load_chars,action,note`。`again` = 期間内の件数、`detour_big` `detour_little` = 終了時の1問の「大きく」「少し」の件数、`load_chars` = 開始時の読み込み字数、`action` = 直した・畳んだものの1行（無ければ `none`）。
+
 **events の記録**（2026-10-08 に簡素化）: 足すのは、`again`、`gap`、開始時の質問（`interview`）の行だけ。回答を受けた同じターンで足し、`wrap` で `reversed` を確定する。承認の確認（`approval`）と改善案（`improvement`）の行は足さない（過去の行は残す）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
 
 **again**: ユーザーが `again`（または「前にも言った」）と書いたら、同じターンで `kind=again` の行を足す（`question` に再度言ったことの要旨。`answerable` は、その情報が既に知識・`AGENTS.md`・`docs/` にあったら 1、無かったら 0）。そのうえで、前提を `AGENTS.md` か知識（`stock`）に昇格する案を出す（承認制）。
