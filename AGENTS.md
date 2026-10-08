@@ -19,6 +19,7 @@
 
 1. `docs/log.md`（現在状態だけ。4KB 目安）
 2. `resources/AGENTS.md`（Vault 全体の規約）
+3. `docs/log.md` の「期日」に、今日以前（または3日以内）の項目があれば、**最初の返答で知らせ、判断を求める**（判断はユーザーが決める）。
 
 `docs/decisions.md` と `docs/log-history.md` は開始時に読まない。何かを決める・変える前に、`decisions.md` を検索して、既存の決定と矛盾しないか確かめる。kit の手順が「`log.md` の Log に書く」と言うときは、`docs/log-history.md` の `## Log` の先頭に追記する（試験運用。1週間後に kit の `docs-rules.md` へ昇格するか判断）。
 
@@ -34,8 +35,8 @@
 ## このワークスペース固有のルール
 
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は設定ファイル（`*.json`）を編集しない（上書きされて消える）。`workspace.json` は端末ごとの状態なのでコミットしない。詳細は `exmem/knowledge/obsidian-vault.md`。
-- 記録: 質問・承認の確認・改善案は `docs/metrics/events.csv` に、同じターンで1行足す。ユーザーが `again`（または「前にも言った」）と書いたら `kind=again` の行を足し、前提を昇格する案を出す。`wrap` では「今日の遠回りは、なし・少し・大きく」を1問聞く。手順・列・保存先は `docs/metrics/README.md` の「エージェントの記録手順」。
-- `wrap` の改善案は、運用の補助だけ、承認なしに追加・削除してコミットしてよい（2026-10-08 ユーザーの決定。試験運用。範囲は kit の `wrap-hook.md` の「自動採用の範囲」）。安全規則と手順の本体は承認制。`start` `open` `close` `review` は試験運用（扱いは同じ節）。
+- 記録: `docs/metrics/events.csv` に足すのは、`again`、`gap`、開始時の質問（`interview`）だけ（承認の確認 `approval` と改善案の行は、2026-10-08 から足さない）。ユーザーが `again`（または「前にも言った」）と書いたら `kind=again` の行を足し、前提を昇格する案を出す。`wrap` では「今日の遠回りは、なし・少し・大きく」を1問聞く。手順・列・保存先は `docs/metrics/README.md` の「エージェントの記録手順」。
+- 自動採用（`wrap` の改善案を、承認なしに規則の節へ追加・削除する仕組み）は、2026-11-08 まで停止する（2026-10-08 ユーザーの決定。規則を生む流量を絞るため）。再開するかは、11-08 の判定で決める。安全規則と手順の本体は承認制。`start` `open` `close` `review` は試験運用（扱いは同じ節）。
 
 ## 規模の凍結（2026-10-08〜判定日 2026-11-08。ユーザーの決定。試験運用）
 
@@ -49,7 +50,7 @@
 |---|---|---|
 | `works`（remote: `yuzucha16/worksample`。非公開） | `main` | このリポジトリ |
 
-`resources/`（`workbase`）、dotfiles、ほかのリポジトリは対象外（公開範囲が決まってから、ユーザーが広げる）。`workbase` を push するときは、ユーザーが行う。
+`resources/`（`workbase`）、dotfiles、ほかのリポジトリは対象外（公開範囲が決まってから、ユーザーが広げる）。`workbase` を push するときは、ユーザーが行う。クラウドのセッションからも、この許可リストのリポジトリには、同じ条件で push してよい（2026-10-08 ユーザー）。
 
 ## コミット
 

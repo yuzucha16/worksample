@@ -59,7 +59,7 @@ AI がユーザーに聞く質問と、AI が出す提案（承認の確認、�
 - 1案 = 1行。`answered` は承認・却下のどちらかがあったか。`adopted` は採用。`fix` は、ユーザーが案を直して採用したか。
 - `improvements.md` の既存の66件は、`import` で取り込んだ（状態列だけから。取り込みは一度きり。以後は `live`）。
 - **自動採用の行（2026-10-08 から。試験運用）**: `wrap` の「自動採用の規則」は、承認を取らないので、`answered=0`、`adopted=1`、`basis` に `live;auto` と書く。承認の指標（回答率、採用率、`fix`）には含めず、集計では分けて読む（`summarize.ps1` は、まだ分けていない。`basis` に `auto` を含む行を除いて読む）。`reversed` は、`review` が削除・復活したときに確定する（削除 = 1）。
-- 見直しの指標は、`reviews.csv`（1回の `review` につき1行。列と読み方は kit の `review-hook.md`）と `rule-hits.csv`（自動採用の規則が働いた記録。`wrap` が足す）。**削除率は単独で見ず、再発率と規則の総量（`rules_chars`）と組で見る**。
+- 見直しの指標は、`reviews.csv`（1回の `review` につき1行。列は kit の `review-hook.md`。2026-10-08 に、自動採用の規則の指標から、`again` と遠回りの件数に置き換えた。`rule-hits.csv` は廃止）。
 - 取り込みで分かったこと（2026-10-06）: 採用率が約98%で、判別力が低い（却下は撤回を除いて0件）。承認が形式になっていないか、提案が事前に絞られているかは、このデータからは分からない。**採用率より、`fix`（直されたか）と `reversed`（後で覆ったか）を `live` で取る方が、改善案の質を測れる**。
 
 ## スレッドとセッションの指標（AI 活用・workflow の効果。2026-10-06 に追加）
@@ -84,13 +84,12 @@ kit の手順書は、記録を次の名前で呼ぶ（保存先と列は、こ�
 | `events` | `docs/metrics/events.csv` | 質問・承認の確認・改善案・再伝達（`again`）・漏れ（`gap`） |
 | `sessions` | `docs/metrics/sessions.csv` | セッションごとの1行 |
 | `reviews` | `docs/metrics/reviews.csv` | `review` 1回につき1行 |
-| `rule-hits` | `docs/metrics/rule-hits.csv` | 自動採用の規則が働いた記録（`wrap` が足す） |
 
-**events の記録**: ユーザーへの質問（聞き取り）、AI の提案への承認の確認、改善フックの改善案は、1件1行で記録する（記録するのはエージェント。定義と列は上の「列」、集計は `summarize.ps1`）。回答を受けた同じターンで行を足し、`wrap`（終了処理）で `reversed` を確定する（採用率は集計しない。2026-10-08 廃止）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
+**events の記録**（2026-10-08 に簡素化）: 足すのは、`again`、`gap`、開始時の質問（`interview`）の行だけ。回答を受けた同じターンで足し、`wrap` で `reversed` を確定する。承認の確認（`approval`）と改善案（`improvement`）の行は足さない（過去の行は残す）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
 
 **again**: ユーザーが `again`（または「前にも言った」）と書いたら、同じターンで `kind=again` の行を足す（`question` に再度言ったことの要旨。`answerable` は、その情報が既に知識・`AGENTS.md`・`docs/` にあったら 1、無かったら 0）。そのうえで、前提を `AGENTS.md` か知識（`stock`）に昇格する案を出す（承認制）。
 
-**wrap のとき**: 「今日の遠回りは、なし・少し・大きく のどれか」を1問だけ聞き、`sessions` の `detour` に書く。`docs/` 更新の中で、スレッド・セッションの指標を足す（試験運用。用途はユーザー本人の自己改善だけ）。手順: ① `pwsh -NoProfile -File docs/metrics/extract-threads.ps1` で `threads.csv` を更新 ② `-Current -Cwd <Claude を開いた作業ディレクトリ（シェルのカレントではない）>` で今のスレッド ID を取り、`sessions` に1行足す（`outcome` `prompt_complete`、根拠 `prompt_evidence`、`review` `mechanism` `note` `start_mode`（`bare` か `briefed`。最初の依頼の形から判定する）、`knowledge_used`（読んだ exmem の知識のうち、判断・成果物に反映した件数）、`knowledge_miss`（探した・読んだが、無い・古い・ずれていた件数。1件ごとに `gap` の行にもする）、`detour`）。「並行の可能性」の警告が出たら、選んだ会話が今のものか（最初のプロンプトの内容や時刻）を確かめ、確かめられなければユーザーに聞く。根拠はユーザーの発言の要旨を残し、忖度しない。機密・個人情報を書かない ③ `-Report` で無駄の合図を見て、報告に1〜2行書く。
+**wrap のとき**: 「今日の遠回りは、なし・少し・大きく のどれか」を1問だけ聞き、`sessions` の `detour` に書く。`sessions` に足す行は `session` `date` `thread_id` `detour` `note` だけ（ほかの列は空でよい。過去の行は残す）。`thread_id` は `pwsh -NoProfile -File docs/metrics/extract-threads.ps1 -Current -Cwd <Claude を開いた作業ディレクトリ>` で取る（「並行の可能性」の警告が出たら、選んだ会話が今のものかを確かめ、確かめられなければユーザーに聞く）。会話履歴からの自動抽出（`threads.csv`）は、`review` の月1回の診断で `-Report` を見るときに更新する。機密・個人情報を書かない。
 
 **試験運用中のフック**: `start` `open` `close` で実務に出た漏れ・補正は `events` に記録し、承認されたら kit を直す。`docs/drafts/` の3つ（project-open / project-close / session-start-interview）は、実測の経緯の記録として残す（PARA の試行の経緯は `docs/log-history.md`、判断は `docs/decisions.md`）。`review` は週1回を目途で、`wrap` の報告が前回から7日以上たっていれば勧める。
 

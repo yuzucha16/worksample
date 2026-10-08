@@ -1,1 +1,1 @@
-date,review_id,rules_total,rules_kept,rules_deleted,rules_restored,rules_held,delete_rate,recur_rate,rules_chars,ledger_confirmed,ledger_returned,ledger_exception,pending_over14d,note
+date,review_id,again,detour_big,detour_little,load_chars,action,note
