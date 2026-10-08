@@ -22,6 +22,7 @@
 .EXAMPLE
   pwsh -NoProfile -File docs/metrics/extract-threads.ps1
   pwsh -NoProfile -File docs/metrics/extract-threads.ps1 -Report
+  pwsh -NoProfile -File docs/metrics/extract-threads.ps1 -Snapshot -Label after-xxx   # 読み込み量の基準点を load.csv に追記
 #>
 [CmdletBinding(PositionalBinding = $false)]
 param(
@@ -34,7 +35,12 @@ param(
   [string]$Cwd = '',
   [int]$CurrentWindowMin = 30,
   [switch]$Current,
-  [switch]$Report
+  [switch]$Report,
+  [switch]$Snapshot,
+  [string]$Label = '',
+  [string]$WorkRef = 'HEAD',
+  [string]$ResRef = 'HEAD',
+  [string]$SnapshotDate = ''
 )
 
 # threads.csv の列。履歴が消えた会話の古い行は、新しい列が空になる（空 = 不明。0 ではない）
@@ -158,6 +164,40 @@ function Read-Thread($file) {
   }
 }
 
+if ($Snapshot) {
+  # 読み込み量の基準点を docs/metrics/load.csv に1行ずつ足す（コミット済みの内容を git show で測る。比較用。定義は README.md の「負荷の基準点」）
+  if (-not $Label) { Write-Error '-Label（この時点の名前）が要る'; return }
+  $root = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
+  $res = Join-Path $root 'resources'
+  function Get-Len($repo, $ref, [string[]]$paths) {
+    $sum = 0
+    foreach ($x in $paths) { $o = git -C $repo show "${ref}:${x}" 2>$null; if ($LASTEXITCODE -eq 0) { $sum += (($o -join "`n").Length) } }
+    $sum
+  }
+  $kitFiles = @(git -C $res ls-tree -r --name-only $ResRef -- workflow-kit | Where-Object { $_ -match '\.(md|ps1|template)$' })
+  $kitChars = 0; foreach ($f in $kitFiles) { $kitChars += (Get-Len $res $ResRef @($f)) }
+  $kit = 'workflow-kit'
+  $vals = [ordered]@{
+    start_load          = (Get-Len $root $WorkRef @('AGENTS.md', 'docs/log.md')) + (Get-Len $res $ResRef @('AGENTS.md'))
+    wrap_read           = Get-Len $res $ResRef @("$kit/docs-rules.md", "$kit/wrap-hook.md")
+    stock_read          = Get-Len $res $ResRef @("$kit/stock-hook.md")
+    integrate_read      = Get-Len $res $ResRef @("$kit/integrate-hook.md", 'exmem/AGENTS.md')
+    review_read         = Get-Len $res $ResRef @("$kit/review-hook.md")
+    exmem_agents        = Get-Len $res $ResRef @('exmem/AGENTS.md')
+    kit_total_chars     = $kitChars
+    kit_files           = $kitFiles.Count
+    kit_scripts         = @($kitFiles | Where-Object { $_ -match '\.ps1$' }).Count
+    decisions_chars     = Get-Len $root $WorkRef @('docs/decisions.md')
+  }
+  $date = if ($SnapshotDate) { $SnapshotDate } else { Get-Date -Format 'yyyy-MM-dd' }
+  $csv = Join-Path $PSScriptRoot 'load.csv'
+  if (-not (Test-Path $csv)) { [System.IO.File]::WriteAllText($csv, "date,label,work_ref,res_ref,metric,value`n", [System.Text.UTF8Encoding]::new($false)) }
+  $lines = foreach ($k in $vals.Keys) { "$date,$Label,$WorkRef,$ResRef,$k,$($vals[$k])" }
+  [System.IO.File]::AppendAllText($csv, (($lines -join "`n") + "`n"), [System.Text.UTF8Encoding]::new($false))
+  $vals.GetEnumerator() | ForEach-Object { '{0,-16} {1}' -f $_.Key, $_.Value }
+  "→ $csv に ${Label} を追記"
+  return
+}
 if ($Current) {
   $recent = @(Get-ThreadFiles | Sort-Object LastWriteTime -Descending)
   $pick = $null
