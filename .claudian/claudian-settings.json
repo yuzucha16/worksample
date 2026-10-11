@@ -10,7 +10,7 @@
   "excludedTags": [],
   "mediaFolder": "",
   "systemPrompt": "",
-  "sharedEnvironmentVariables": "CLAUDE_CODE_USE_BEDROCK=1\nAWS_REGION=ap-northeast-1\nAWS_PROFILE=n1-trial\nANTHROPIC_BEDROCK_REGION_PREFIX=apac\nANTHROPIC_DEFAULT_OPUS_MODEL=global.anthropic.claude-opus-5-5\nANTHROPIC_DEFAULT_SONNET_MODEL=global.anthropic.claude-sonnet-5-5\nANTHROPIC_DEFAULT_HAIKU_MODEL=global.anthropic.claude-haiku-5-5",
+  "sharedEnvironmentVariables": "",
   "envSnippets": [
     {
       "id": "snippet-1791721500632",
