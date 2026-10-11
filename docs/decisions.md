@@ -14,6 +14,15 @@
 
 ## Decisions
 
+### 【この件】Claudian は OAuth を既定にし、Bedrock はスニペットで明示的に選ぶ。API キーは Claudian では使わない。Bedrock の値は `settings-bedrock.json` を正とし、スニペットは人間が貼る派生物にする（2026-10-11。ユーザーの決定）
+
+- 背景: 環境変数（`CLAUDE_CODE_USE_BEDROCK`、`ANTHROPIC_API_KEY`）は OAuth より優先される。`sharedEnvironmentVariables` に Bedrock を入れると、Claudian が常に Bedrock になる。
+- 決めたこと: ① `.claudian/claudian-settings.json` の `sharedEnvironmentVariables` は空にする（既定は OAuth = `.credentials.json`）。② Bedrock は `envSnippets` のスニペットをロードして使う（スニペットの値はサンプル。変更時の転記は人間が行う）。③ API キーは、複雑になるため Claudian では使わない（dotfiles の `claude-api` と `apiKeyHelper` で足りる）。④ Bedrock の値の正は dotfiles の `claude-bedrock-setup` が作る `settings-bedrock.json`。同時に出る `settings-bedrock.txt`（`KEY=VALUE`）を、スニペットへ貼る。
+- 根拠: 認証の優先順位は固定で、設定で OAuth を上げられない（dotfiles の `windows/claude/README.md`）。複数 PC のうち、この PC は OAuth と API キー、別 PC は OAuth と Bedrock を使う。
+- 却下案: スニペットでの API キー（キーを設定ファイルに書くと、公開予定のリポジトリに載る恐れ。環境変数のままだと `apiKeyHelper` と OAuth を潰す）。`CLAUDE_CONFIG_DIR` で認証ごとに設定を分ける案（Claudian 経由で効くかが未確認で、複雑）。
+- 確認済み（2026-10-11）: `.claudian/sessions/` は端末ごとの履歴なので `.gitignore` に追加した。`.credentials.json` は 1 アカウント分で、別アカウントでログインし直すと上書きされる（記憶にもとづく説明。Claude Code の公式ドキュメントでは未確認）。Claudian が `CLAUDE_CONFIG_DIR` を渡せるか、スニペットへ複数行を貼れるか、は未確認。
+- コミット: `4c1f7de`、`b7ab911`（works）、dotfiles の `c66909c`。
+
 ### 【汎用】kit 自身の作業の「ナレッジ化して」は、一般化できる進め方と判断の型だけを残す（2026-10-08。ユーザーの決定）
 
 - 背景: 章立て統一のメモは、大半が `decisions.md`・手順書・`git log` と二重だった（AI の指摘に、ユーザーが同意）。残る価値は、論点の抽出、選択肢の列挙、判断条件と材料の集め方、揃え方や点検の原則のような、他の作業でも使える型。
