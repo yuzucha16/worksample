@@ -203,3 +203,4 @@ date,session,area,project,work_type,kind,q_id,question,source,format,answered,ad
 2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q14,approval の記録を止める（gap・again・終了時の1問は続ける）,adhoc,choice,1,1,0,0,0,,live,
 2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q15,判定日を 2026-11-08 に一本化する（10-15 の点検は残す）,adhoc,choice,1,1,0,0,0,,live,
 2026-10-08,2026-10-08-s3,-,-,方式検討,approval,2026-10-08-s3-q16,クラウドから作業側へ push してよい（回答）,adhoc,choice,1,1,0,0,0,,live,
+2026-10-10,2026-10-10-s1,-,-,dotfiles,again,2026-10-10-s1-q1,各 bat は最後に pause して終わる（前にも言った）,adhoc,free,1,1,0,0,0,,live,user
