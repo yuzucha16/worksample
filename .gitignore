@@ -12,8 +12,8 @@
 # Claude Code のローカル専用の許可設定（端末ごと・個人用）
 **/.claude/settings.local.json
 
-# Claudian の会話履歴のメタ情報（端末ごと）
-/.claudian/sessions/
+# Claudian: 設定は dotfiles の symlink（実体は dotfiles が持つ）。会話履歴（sessions）は端末ごとで追跡しない
+/.claudian/
 
 ### Windows
 Thumbs.db
