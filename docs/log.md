@@ -21,5 +21,6 @@
 ## Open Questions
 
 - Claudian（2026-10-11）: Bedrock を使う別 PC で、dotfiles の `settings-bedrock.txt` を Bedrock のスニペットへ貼り、複数行が保存されて接続できるか確認する。このスニペットの値は手書きのサンプルで、`settings-bedrock.json` が正（`docs/decisions.md` の先頭の項目）。
+- Claudian の設定（2026-10-12）: `claudian-settings.json` は dotfiles の symlink（Windows は `30_link.bat`）。別 PC では dotfiles を pull して `30_link.bat` を実行する（実ファイルがあると `[ERR]`。退避してから）。ネイティブ Linux は未対応。
 - `workbase` の公開: 予定はあるが未決定。公開されうる前提で書く（ユーザー、2026-10-08）。非公開の remote は GitHub。クラウドから作業側へ push してよい（ユーザー、2026-10-08）。
 - 公開前に直すもの: 既存の知識に、ユーザー名を含むパスが 5 行ある（期日の 10-15 ⑤）。

@@ -22,7 +22,7 @@
 - 却下案: スニペットでの API キー（キーを設定ファイルに書くと、公開予定のリポジトリに載る恐れ。環境変数のままだと `apiKeyHelper` と OAuth を潰す）。`CLAUDE_CONFIG_DIR` で認証ごとに設定を分ける案（Claudian 経由で効くかが未確認で、複雑）。
 - 確認済み（2026-10-11）: `.claudian/sessions/` は端末ごとの履歴なので `.gitignore` に追加した。`.credentials.json` は 1 アカウント分で、別アカウントでログインし直すと上書きされる（記憶にもとづく説明。Claude Code の公式ドキュメントでは未確認）。Claudian が `CLAUDE_CONFIG_DIR` を渡せるか、スニペットへ複数行を貼れるか、は未確認。
 - コミット: `4c1f7de`、`b7ab911`（works）、dotfiles の `c66909c`。
-- 置き場の変更（2026-10-12。ユーザーの決定）: `claudian-settings.json` だけを dotfiles（`windows/obsidian/claudian-settings.json`、公開リポジトリ）へ移し、`links.map` でファイルの symlink を張る。`.claudian/` ごとではない（`sessions/` を dotfiles の作業ツリーに置かないため）。works では `.claudian/` を丸ごと除外した。公開前の確認はユーザーが行った（`userName` は空、`AWS_PROFILE=n1-trial` は書き換え前提の仮の名前）。dotfiles のコミットは `44d66a2`。未確認: Claudian の保存が symlink を保つか（`adapter.write` の全体上書きまでは確認。Obsidian が rename で保存するかは実機で見る）。
+- 置き場の変更（2026-10-12。ユーザーの決定）: `claudian-settings.json` だけを dotfiles（`windows/obsidian/claudian-settings.json`、公開リポジトリ）へ移し、`links.map` でファイルの symlink を張る。`.claudian/` ごとではない（`sessions/` を dotfiles の作業ツリーに置かないため）。works では `.claudian/` を丸ごと除外した。公開前の確認はユーザーが行った（`userName` は空、`AWS_PROFILE=n1-trial` は書き換え前提の仮の名前）。dotfiles のコミットは `44d66a2`。確認済み（2026-10-12、ユーザーの実機）: Claudian の保存後も symlink のままで、dotfiles 側に変更が出た。`environmentHash` の差分は一度だけで、再起動後は出ない（原因は推測。`docs/log-history.md` の 2026-10-12）。未対応: ネイティブ Linux の `30_link.sh` は `.obsidian` 専用で、この symlink を張らない。
 
 ### 【汎用】kit 自身の作業の「ナレッジ化して」は、一般化できる進め方と判断の型だけを残す（2026-10-08。ユーザーの決定）
 

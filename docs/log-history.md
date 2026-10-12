@@ -79,6 +79,13 @@ exmem:
 
 ## Log
 
+### 2026-10-12（Claudian の設定ファイルを dotfiles へ移し、symlink にした）
+
+- ユーザーの依頼（`.claudian` を dotfiles へ。`sessions` は追跡しない）から、影響範囲とリスクを洗い出した。ユーザーが、公開リポジトリ前提であること、`userName`（`ee`）の削除、`n1-trial` が書き換え前提の仮の名前であることを確認し、`claudian-settings.json` だけを移す案を選んだ（`.claudian/` ごとではない）。
+- dotfiles に `windows/obsidian/claudian-settings.json`、`links.map` の1行、README の1行を足した（dotfiles `44d66a2`）。`30_link.bat` で `.claudian\claudian-settings.json` をファイルの symlink にした。`works` は追跡を外し、`.gitignore` を `/.claudian/` にした（`f1a269b`）。判断は `docs/decisions.md` の先頭の項目の末尾。
+- 確認済み（ユーザーの実機）: Obsidian と Claudian の起動後も symlink のまま保たれ、dotfiles 側に変更が出た（`environmentHash`。ユーザーが `c7d3084` でコミット）。再起動後は差分が出なくなった。原因は推測（`4c1f7de` で入れた Bedrock 変数の指紋が、`b7ab911` で変数を空にした後も残り、起動時に空の環境の指紋へ一度だけ更新された）。指紋の再計算での照合はしていない。
+- 手戻り（ユーザーの申告）: 最初の洗い出しがディレクトリのリンクを前提にしていて、ファイル単位の選択肢をユーザーが出して、やり直した。
+
 ### 2026-10-11（Claudian の認証を、OAuth を既定・Bedrock をスニペットに整理した）
 
 - ユーザーの依頼（Claudian に Bedrock の接続変数を入れた差分の点検）から始め、公開してよい内容かを確認した。認証情報は含まれず（`AWS_PROFILE=n1-trial` はプロファイル名のみ）、`.claudian/sessions/` は端末ごとの履歴なので `.gitignore` に追加した（`4c1f7de`）。
