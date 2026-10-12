@@ -24,3 +24,5 @@ Thumbs.db
 ~$*
 # 個人のグローバル ignore（out/ など）が ai/out/（成果物）を無視しないように打ち消す
 !**/ai/out/
+# 部屋の起動のたびに Vault から写す派生物（README の写し）。追跡しない
+**/ai/ctx/

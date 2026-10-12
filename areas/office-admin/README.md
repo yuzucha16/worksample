@@ -3,7 +3,7 @@ status: active
 boundary: internal
 review: 2026-10-21
 created: 2026-10-07
-updated: 2026-10-07
+updated: 2026-10-12
 ---
 
 # office-admin（庶務・事務の手順）
@@ -18,7 +18,15 @@ updated: 2026-10-07
 
 ## 進行中の Project
 
-- [[projects/write-pc-loan-procedure/README|write-pc-loan-procedure]]（PC 貸し出し表の管理の手順書ひな形。2026-10-07 開始）
+なし。
+
+## 完了した Project
+
+- [[archives/write-pc-loan-procedure/README|write-pc-loan-procedure]]（PC 貸し出し表の管理の手順書ひな形。2026-10-07 開始、2026-10-12 完了。未記入の欄は運用で埋める項目として、`ai/docs/inbox.md` に渡した）
+
+## 部屋との連携
+
+- Project の close と回収で渡された【案件】は、`ai/docs/inbox.md` に溜まる。Area の AI が、次に Area の部屋を開いたとき（`start`）に読んで取り込む。
 
 ## 次の Project の候補（持ち越し。未決）
 

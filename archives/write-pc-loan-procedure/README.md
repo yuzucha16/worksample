@@ -1,9 +1,10 @@
 ---
-status: active
+status: done
 area: office-admin
-review: 2026-10-21
 created: 2026-10-07
-updated: 2026-10-07
+updated: 2026-10-12
+closed: 2026-10-12
+reap_after: 2026-10-26
 ---
 
 # write-pc-loan-procedure
@@ -47,6 +48,10 @@ updated: 2026-10-07
 - `ai/docs/draft-v2.md`: レビュー用 markdown。ユーザーがゲート承認した（2026-10-07）。
 - `ai/out/pc-loan-procedure.html`: 最終成果物（html）。黄色の欄が未記入。
 
+## 完了条件の結果（2026-10-12、close）
+
+テスト版として、ユーザーの指示で、未記入の欄をすべて「完了扱い」にして閉じた。チェックリスト8項目は `ai/out/pc-loan-procedure.html` に盛り込み済み。実際に残っている8つの欄（曜日、電話番号、メール保存先、既存の取り決めの場所、個人データの消し方、MAC アドレスの種類、MAC の手順の実機確認、共有フォルダ「A」の場所）と、ブラウザでの表示・印刷の確認は未了で、運用で埋める項目として Area `office-admin` の `ai/docs/inbox.md` に【案件】6件で渡した。AI が部屋で行った判断は `ai/out/close.md`、指示と実行の記録は `ai/records/` にある。閉じたあとは `archives/` に置いたままにする（戻さない）。
+
 ## 範囲外
 
 - 細かい図表の作成（mermaid による UML 表記は許容）。
@@ -54,5 +59,4 @@ updated: 2026-10-07
 
 ## Open Questions
 
-- 未記入の欄: 曜日、ホットラインの電話番号、メールの保存先フォルダ名、既存の取り決めの場所、個人データの消し方、Wi-Fi と有線のどちらの MAC アドレスを控えるか、MAC アドレスの手順の実機確認（OS と画面名）。運用しながら埋める。
-- 見直し日 2026-10-21 は、AI の仮置き（未承認）。
+なし（未記入の欄は、Area `office-admin` に渡した。見直し日 2026-10-21 は、AI の仮置きだったので破棄した）。
