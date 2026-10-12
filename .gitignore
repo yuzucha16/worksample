@@ -18,3 +18,9 @@
 ### Windows
 Thumbs.db
 [Dd]esktop.ini
+
+# AI 作業部屋: 原本・対応表・実データ入りの成果物は追跡しない / Excel のオーナーファイル（Windows のユーザー名が入る）
+**/_noai/
+~$*
+# 個人のグローバル ignore（out/ など）が ai/out/（成果物）を無視しないように打ち消す
+!**/ai/out/

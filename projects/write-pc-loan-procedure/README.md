@@ -44,8 +44,8 @@ updated: 2026-10-07
 
 ## 成果物
 
-- `docs/draft-v2.md`: レビュー用 markdown。ユーザーがゲート承認した（2026-10-07）。
-- `pc-loan-procedure.html`: 最終成果物（html）。黄色の欄が未記入。
+- `ai/docs/draft-v2.md`: レビュー用 markdown。ユーザーがゲート承認した（2026-10-07）。
+- `ai/out/pc-loan-procedure.html`: 最終成果物（html）。黄色の欄が未記入。
 
 ## 範囲外
 
