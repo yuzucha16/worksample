@@ -1,1 +1,2 @@
 date,review_id,again,detour_big,detour_little,load_chars,action,note
+2026-10-15,review-20261015-1,1,0,4,8432,"安全規則の確認の規則を具体化(影響範囲・前提を実装前に確認)","遠回り少し4件中3件が影響範囲/前提の未確認。again 1件(bat の pause。知識不足)。kit 総字数 72543→104194(room 等の追加。凍結の対の畳みは未)。start_load 6425→8432"
