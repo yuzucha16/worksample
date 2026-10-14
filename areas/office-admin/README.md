@@ -22,7 +22,7 @@ updated: 2026-10-12
 
 ## 完了した Project
 
-- [[archives/write-pc-loan-procedure/README|write-pc-loan-procedure]]（PC 貸し出し表の管理の手順書ひな形。2026-10-07 開始、2026-10-12 完了。未記入の欄は運用で埋める項目として、`ai/docs/inbox.md` に渡した）
+なし。（`write-pc-loan-procedure` は試験用の Project だったため、2026-10-15 に削除した。）
 
 ## 部屋との連携
 
