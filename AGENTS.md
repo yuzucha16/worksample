@@ -30,11 +30,14 @@
 | `areas/` `projects/` `archives/` | PARA。この PC のローカルの作業 | このリポジトリ |
 | `docs/` `AGENTS.md` `CLAUDE.md` | この PC の作業ログと規約 | このリポジトリ |
 | `resources/` | 共有ナレッジ（`workbase`）。このリポジトリの `.gitignore` で除外する | 別リポジトリ（git 操作は `resources/` の中で行う） |
+| `repos/` | ghq で clone した独立のリポジトリ（`dotfiles`、`zed-vba` など）。このリポジトリの `.gitignore` で除外する | 各リポジトリ（作業の前に、その `AGENTS.md` / `CLAUDE.md` を読む。git 操作はそのリポジトリの中で行う） |
 | `.obsidian/` | Obsidian の設定。dotfiles からのジャンクション。このリポジトリでは追跡しない | dotfiles |
+| `.claudian/` | Claudian プラグインの設定。依頼がなければ編集しない | なし（未追跡） |
 
 ## このワークスペース固有のルール
 
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は設定ファイル（`*.json`）を編集しない（上書きされて消える）。`workspace.json` は端末ごとの状態なのでコミットしない。詳細は `exmem/knowledge/obsidian-vault.md`。
+- Obsidian 向けの作業では、導入済みの外部スキル（`obsidian@obsidian-skills`。導入の正本は dotfiles の `manifests/claude-plugins.txt`）を使う。ノートの記法は `obsidian-markdown`、Bases は `obsidian-bases`、Canvas は `json-canvas`、Vault の操作は `obsidian-cli`、Web ページの本文抽出は `defuddle`、テンプレートからの Markdown 生成は `knap`。スキル本体は写さない（更新はプラグインが持つ）。Claude Code 以外のエージェントには届かない。
 - 記録: `docs/metrics/events.csv` に足すのは、`again`、`gap`、`goal_change`（探索型でゴールが変わったとき。2026-10-14 に追加）、開始時の質問（`interview`）だけ（承認の確認 `approval` と改善案の行は、2026-10-08 から足さない）。ユーザーが `again`（または「前にも言った」）と書いたら `kind=again` の行を足し、前提を昇格する案を出す。`wrap` では「今日の遠回りは、なし・少し・大きく」を1問聞く。手順・列・保存先は `docs/metrics/README.md` の「エージェントの記録手順」。
 - 自動採用（`wrap` の改善案を、承認なしに規則の節へ追加・削除する仕組み）は、2026-11-08 まで停止する（2026-10-08 ユーザーの決定。規則を生む流量を絞るため）。再開するかは、11-08 の判定で決める。安全規則と手順の本体は承認制。
 
