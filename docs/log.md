@@ -15,7 +15,7 @@
 3. **構造の見直し（L1 の案F）**: ステップ 0〜3、5〜9 は済み。常時読み込みは 79,804 → 6,198 字。残りはステップ 4・10 と、手順書本体の縮小の続き（期日の表）。
 3b. **フックの章立て（2026-10-08 に統一。`resources` の `e2caad2`、未 push）**: 共通4章を全8フックに揃えた。あわせて `stock` 手順 2 を、kit 自身の作業は一般化できる型だけに絞った（`f78904d`）。残りは、規模の凍結に対して畳んだものが無い点（11-08 の判定で扱う）。（`works` の remote の公開範囲は、2026-10-11 の `gh repo view` で PRIVATE と確認した。10-08 の PUBLIC との食い違いの原因は未確認。push は 10-11 に実施済み。）
 4. **PARA の試行**: 3回目の Project（候補は `areas/learning/README.md`）。kit への昇格は安定してから。
-4b. **AI 作業部屋（2026-10-14）**: ダミー Project `projects/dummy-mask`（`2dace8c`、push 済み）で、マスク・復元（Excel）、共有知の送付、`stock` を実機で確認した。結果は `resources` の `mobile-session/ai-workspace-boundary/` の各 handover の「PC での確認の結果」。残りと保留は同 `ai-room-next-steps` の TODO（`room start` の通し、部屋の AI が下書きを書く通し、マウントの可視性、項目 5 は別セッションのディレクトリ構造と合流してから）。`resources` は未 push が 9 コミット（ユーザーが push する）。
+4b. **AI 作業部屋（2026-10-14）**: ダミー Project `projects/dummy-mask`（`2dace8c`、push 済み）で、マスク・復元（Excel）、共有知の送付、`stock` を実機で確認した。結果は `resources` の `mobile-session/ai-workspace-boundary/` の各 handover の「PC での確認の結果」。残りと保留は同 `ai-room-next-steps` の TODO（`room start` の通し、部屋の AI が下書きを書く通し、マウントの可視性、項目 5 は別セッションのディレクトリ構造と合流してから）。`resources` は push 済み（ユーザー）。`exmem/inbox/` に未追跡のメモが 2 件ある（「ナレッジ化して」の出力。統合は `integrate`）。
 5. **保留**: 旧 `C:\vault` と GitHub の旧 `notes` の削除、`claude --resume` の確認、WSL の `WORKS_DIR` の実機確認（詳細は `log-history.md` の Next Actions）。
 
 ## Open Questions
