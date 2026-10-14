@@ -6,7 +6,7 @@
 
 | 期日 | 判断すること | 担当 |
 |---|---|---|
-| 2026-10-15 | ① 読み落とし点検（会話履歴から: コミット前の `git diff --cached`、`docs-rules.md` の読み込み、`decisions.md` への提案の混入、決める前の `decisions.md` の検索）② ログ分割と `docs-rules.md` の開始時読み込み廃止の昇格（手戻りが無ければ kit に反映）③ CRLF の混入元（`events.csv`、`review-hook.md`）④ 最初の `review` の実施（`again` と遠回りの事例。読み込み量は `extract-threads.ps1 -Snapshot` で `load.csv` に追記して、前後の表と比べる）⑤ 既存の知識のユーザー名入りパス 5 行（`exmem` の 3 ファイル）の修正 | エージェントが調べて報告。ユーザーは `again` の場面と体感を伝える |
+| 2026-10-15 | ① 読み落とし点検（会話履歴から: コミット前の `git diff --cached`、`docs-rules.md` の読み込み、`decisions.md` への提案の混入、決める前の `decisions.md` の検索）② ログ分割と `docs-rules.md` の開始時読み込み廃止の昇格（手戻りが無ければ kit に反映）③ CRLF の混入元（`events.csv`、`review-hook.md`）④ 最初の `review` の実施（`again` と遠回りの事例。読み込み量は `extract-threads.ps1 -Snapshot` で `load.csv` に追記して、前後の表と比べる）⑤ 既存の知識のユーザー名入りパス 5 行（`exmem` の 3 ファイル）の修正 | エージェントが調べて報告。ユーザーは `again` の場面と体感を伝える。**進捗（10-14）: ① 済み**（違反 1 件 = 10-12 の `git add -A <パス>`。実害なし。`git add -A <パス>` を許可する案をユーザーが承認し、`AGENTS.md` と kit に反映。経緯は `guides/explain/agent-safety-rules.md`）。②〜⑤ は未 |
 | 2026-11-08 | **停止期間の終わりの一括判定**（先に `-Snapshot` で読み込み量を測る）: ① 試験運用の各項目（`decisions.md` の「案Eの判定基準」。既定は畳む）② 自動採用の停止を解くか ③ 規模の凍結を解くか続けるか ④ 手順書本体の縮小の続き（`stock-hook.md` 手順 2 の例外、`docs-rules.md`）⑤ 合言葉の統合（フェーズ3）⑥ `contexts/`（クラウドから push できるので畳めるか）⑦ 手順書の場所の 1 か所化（ステップ 4）⑧ 安全の検査スクリプト（sh）と pre-push | エージェントが期日に知らせる。判断はユーザー |
 
 ## Next Actions（2026-10-08 時点）
