@@ -10,7 +10,7 @@
   行を `live` `backfill` `import` のどれかに絞る。省略すると全部。
 
 .PARAMETER Kind
-  行を `interview` `approval` `improvement` `gap` `again` のどれかに絞る。省略すると、存在する kind をすべて出す。
+  行を `interview` `approval` `improvement` `gap` `again` `goal_change` のどれかに絞る。省略すると、存在する kind をすべて出す。
 
 .EXAMPLE
   pwsh -NoProfile -File docs/metrics/summarize.ps1
@@ -20,7 +20,7 @@
 param(
   [string]$Path = (Join-Path $PSScriptRoot 'events.csv'),
   [ValidateSet('', 'live', 'backfill', 'import')][string]$Basis = '',
-  [ValidateSet('', 'interview', 'approval', 'improvement', 'gap', 'again')][string]$Kind = ''
+  [ValidateSet('', 'interview', 'approval', 'improvement', 'gap', 'again', 'goal_change')][string]$Kind = ''
 )
 
 $rows = @(Import-Csv -Path $Path -Encoding utf8)

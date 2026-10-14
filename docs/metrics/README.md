@@ -15,7 +15,7 @@ AI がユーザーに聞く質問と、AI が出す提案（承認の確認、�
 | `session` | セッション ID。`<日付>-s<連番>`（同じ日の会話ごとに増やす） |
 | `area` `project` | 所属。該当なしは `-`（`works` 全体の検討など） |
 | `work_type` | 作業の種類。自由記述から始め、安定したら語彙を固定する（文書作成: 仕様・設計・調査、開発: 設計・実装・評価 など。抽象化・継承の候補） |
-| `kind` | `interview`（聞き取り）、`approval`（AI の提案・解釈への承認の確認）、`improvement`（改善フックの改善案）、`gap`（質問が漏れていた: 聞かれなかった前提を、ユーザーが後から足した。件数だけを見る。率は意味を持たない）、`again`（ユーザーが「前にも言った」と指摘した。2026-10-08 に追加。`answerable` = 情報が既に知識・docs にあったか）。集計は別々に出す |
+| `kind` | `interview`（聞き取り）、`approval`（AI の提案・解釈への承認の確認）、`improvement`（改善フックの改善案）、`gap`（質問が漏れていた: 聞かれなかった前提を、ユーザーが後から足した。件数だけを見る。率は意味を持たない）、`again`（ユーザーが「前にも言った」と指摘した。2026-10-08 に追加。`answerable` = 情報が既に知識・docs にあったか）、`goal_change`（探索型のセッションで、作業中にゴールが変わった。2026-10-14 に追加。`question` に変更の理由と新しいゴールの要旨）。集計は別々に出す |
 | `q_id` | 識別子（質問は `<session>-q<連番>`、改善案は `<session>-i<連番>`、取り込みは `<日付>-imp<連番>`）。質問の版を変えたら別の ID にする |
 | `question` | 質問・提案の要旨（短く） |
 | `source` | 質問: `template`（手順書の定型）、`adhoc`（その場で作った）、`prompt`（ユーザーがプロンプトで渡した）。改善案: `hook`（フックの実行後の提案）、`prompt`（ユーザーの指示・指摘。AI の提案ではない） |
@@ -87,7 +87,7 @@ kit の手順書は、記録を次の名前で呼ぶ（保存先と列は、こ�
 
 **reviews の列**（kit の `review-hook.md` から移した。2026-10-08。kit は足す値だけを定め、列名と並びはここが定める）: `date,review_id,again,detour_big,detour_little,load_chars,action,note`。`again` = 期間内の件数、`detour_big` `detour_little` = 終了時の1問の「大きく」「少し」の件数、`load_chars` = 開始時の読み込み字数、`action` = 直した・畳んだものの1行（無ければ `none`）。
 
-**events の記録**（2026-10-08 に簡素化）: 足すのは、`again`、`gap`、開始時の質問（`interview`）の行だけ。回答を受けた同じターンで足し、`wrap` で `reversed` を確定する。承認の確認（`approval`）と改善案（`improvement`）の行は足さない（過去の行は残す）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
+**events の記録**（2026-10-08 に簡素化）: 足すのは、`again`、`gap`、`goal_change`（2026-10-14 に追加）、開始時の質問（`interview`）の行だけ。回答を受けた同じターンで足し、`wrap` で `reversed` を確定する。承認の確認（`approval`）と改善案（`improvement`）の行は足さない（過去の行は残す）。要旨に、機密・個人情報を書かない。補正（`fix` `supplement` `gap`）の行には、起因 `cause`（`ai` `user` `review`）を付ける。
 
 **again**: ユーザーが `again`（または「前にも言った」）と書いたら、同じターンで `kind=again` の行を足す（`question` に再度言ったことの要旨。`answerable` は、その情報が既に知識・`AGENTS.md`・`docs/` にあったら 1、無かったら 0）。そのうえで、前提を `AGENTS.md` か知識（`stock`）に昇格する案を出す（承認制）。
 
