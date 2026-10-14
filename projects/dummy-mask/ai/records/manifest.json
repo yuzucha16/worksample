@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "files": {
+    "in/dummy_customers.csv": {
+      "sha256": "8dca3c995098137dbe5dc31d34d1bd8e546537faa5c54b707447ae9e93b99145",
+      "area": "office-admin",
+      "project": "dummy-mask",
+      "added": "2026-10-14 22:23",
+      "raw_sha256": "abab00ac8c356443fa4b2f588e08ad3afa30f12c7a86e3632c608feb96caaee6",
+      "mask_sha256": "fd33ea77017c4e42a0cb7f41bb059bf8e463277b30cc31f7bffde7644d7a413a",
+      "mapping_version": 6,
+      "masked_from": "_noai/raw/dummy_customers.csv"
+    },
+    "in/dummy_sales.xlsx": {
+      "sha256": "a60a27c0ddf7dc883c91c3e930364bf095087d0d666ab9ce4abecdcfc85d079f",
+      "area": "office-admin",
+      "project": "dummy-mask",
+      "added": "2026-10-14 22:23",
+      "raw_sha256": "a935551f25de5cb86624f447eb760159d7b2abfc492f83eb40a5222cf773c115",
+      "mask_sha256": "fd33ea77017c4e42a0cb7f41bb059bf8e463277b30cc31f7bffde7644d7a413a",
+      "mapping_version": 6,
+      "masked_from": "_noai/raw/dummy_sales.xlsx"
+    }
+  },
+  "shared": {
+    "commit": "356a80ea4bdff372e6f6a8dcce7accb089d5556d",
+    "dirty": false,
+    "pushed": "2026-10-14 22:54",
+    "paths": [
+      "AGENTS.md",
+      "workflow-kit",
+      "exmem/AGENTS.md",
+      "exmem/README.md",
+      "exmem/tags.md",
+      "exmem/lessons",
+      "guides"
+    ],
+    "tar_sha256": "ed1023475f9b8ab6d98f84b20019b535d3df6e6869b7d9b5e05281bb4e46efda"
+  },
+  "stock": {
+    "2026-10-14-dummy-fresh.md": {
+      "sha256": "088a6e986cc2a66765f4e2d65b20cc8504fcd01bc09846dde4fc0be7a4895465",
+      "delivered": "2026-10-14 23:02",
+      "inbox": "2026-10-14-dummy-fresh.md",
+      "base_commit": "05c0ba1",
+      "stale": false
+    },
+    "2026-10-14-dummy-stale.md": {
+      "sha256": "7c934b6b4720bf6b05653a7e49c15dfdb37107474cb2171f5c52e0a4de0ae904",
+      "delivered": "2026-10-14 23:04",
+      "inbox": "2026-10-14-dummy-stale.md",
+      "base_commit": "4023c7b",
+      "stale": true
+    }
+  }
+}
