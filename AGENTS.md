@@ -18,7 +18,7 @@
 ## 読む順番
 
 1. `docs/log.md`（現在状態だけ。4KB 目安）
-2. `resources/AGENTS.md`（Vault 全体の規約）
+2. `resources/AGENTS.md`（Vault 全体の規約。開始時に読み込むのはここまで）
 3. `docs/log.md` の「期日」に、今日以前（または3日以内）の項目があれば、**最初の返答で知らせ、判断を求める**（判断はユーザーが決める）。
 
 `docs/decisions.md` と `docs/log-history.md` は開始時に読まない。何かを決める・変える前に、`decisions.md` を検索して、既存の決定と矛盾しないか確かめる。kit の手順が「`log.md` の Log に書く」と言うときは、`docs/log-history.md` の `## Log` の先頭に追記する（2026-10-15 に kit の `docs-rules.md` へ昇格した。ユーザーの決定）。
