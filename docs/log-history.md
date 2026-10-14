@@ -79,6 +79,20 @@ exmem:
 
 ## Log
 
+### 2026-10-14（AI 作業部屋: マスク・復元、共有知、stock を実機で確認した）
+
+- ユーザーの指示で、`resources` の `mobile-session/ai-workspace-boundary/ai-room-start-here` を入口に、roadmap の項目 1・2・4 を実機（Windows、Excel、WSL）で確認した。確認用の架空のダミー Project `projects/dummy-mask`（`2dace8c`）を作り、生成スクリプトは `resources` の `workflow-kit/room/tests/dummy_fixture.py`（`5776320`）に置いた。`room` コマンド（`mask` `restore` `start` `stock`）は、ユーザーが実行した（AI は実行しない約束）。
+- 確認した結果: マスク・復元（Excel で開く、ピボットの「すべて更新」、複数 run、cp932 の csv）は期待どおり。共有知の送付は、初回に `mkdir: cannot create directory ''` で止まった（`wsl.exe` が `sh -c` の引数を外側のシェルで解釈し直し、スクリプト内の変数が空になる）。変数を使わない形に直した（`930b8ac`）。`stock` は、運搬、`base_stale`、拒否 2 種、`check-inbox.ps1` が期待どおり。結果は各 handover の「PC での確認の結果」（`8a181b2` `e0caa01` `b84429b`）。
+- 実装を 1 件足した: `room start` が、部屋の `~/.claude/CLAUDE.md` に `~/shared/ROOM.md` への案内を目印つきで置く（`356a80e`。ユーザーが方式 A を選択）。`~/CLAUDE.md` ではなく `~/.claude/CLAUDE.md` なのは、作業ディレクトリが `/mnt/room/<Project>` で `~` の外にあるため。
+- ユーザーの決定（項目 5）: 対応表のバックアップは `archives/` の `_noai/` を Windows 側のバックアップに任せる、会話履歴は写さず期限（close から 14 日）で消すだけ、決定の項目のラベルは【汎用】【案件】【この件】の 3 種類（`docs-rules.md` に【案件】を足した。`4dfedcd`）。項目 5 は、別セッションのディレクトリ構造と合流するため保留（`a52b813`）。判断は `docs/decisions.md` の先頭の項目。
+- dotfiles（`b621cd1` `452067b`）: Zed の WSL 接続と Terminal の WSL プロファイルを入れたが、部屋を作るたびに `settings.json` に差分が出るため、Terminal の WSL 動的プロファイル（`Microsoft.WSL`）を無効にして `Ubuntu-24.04` だけ固定し、部屋へは PowerShell の `room-sh <Area>` で入る形に直した（ユーザーが開き直して確認）。
+- 「ナレッジ化して」で、`resources` の `exmem/inbox/` に 2 件のメモを作った（未追跡）: `2026-10-14-wsl-room-operational-pitfalls.md`、`2026-10-14-xlsx-masking-roundtrip-verification.md`。
+- `works`（`worksample`）の公開範囲が PUBLIC だった（`gh repo view`）。ユーザーは一時的に公開で、外に出てよいものだけと述べた。push の許可リストの前提（非公開）との食い違いは、`log.md` の Open Questions に残した。
+- 終了時の1問: 遠回りは「なし」（事前にステップをまとめていたため。ユーザーが忘れていて思い出す意味での手戻りはあった）。
+
+### 2026-10-15（期日の一括確認 ①〜⑤ の完了。`log.md` の期日の表から移した）
+| 2026-10-15 | ① 読み落とし点検（会話履歴から: コミット前の `git diff --cached`、`docs-rules.md` の読み込み、`decisions.md` への提案の混入、決める前の `decisions.md` の検索）② ログ分割と `docs-rules.md` の開始時読み込み廃止の昇格（手戻りが無ければ kit に反映）③ CRLF の混入元（`events.csv`、`review-hook.md`）④ 最初の `review` の実施（`again` と遠回りの事例。読み込み量は `extract-threads.ps1 -Snapshot` で `load.csv` に追記して、前後の表と比べる）⑤ 既存の知識のユーザー名入りパス 5 行（`exmem` の 3 ファイル）の修正 | エージェントが調べて報告。ユーザーは `again` の場面と体感を伝える。**進捗（10-14）: ① 済み**（違反 1 件 = 10-12 の `git add -A <パス>`。実害なし。`git add -A <パス>` を許可する案をユーザーが承認し、`AGENTS.md` と kit に反映。経緯は `guides/explain/agent-safety-rules.md`）。② のうち `docs-rules` は、廃止を続け、読む場面を強める（安全規則に「コミット・push の前に未読なら読む」を明記。ユーザー決定）。ログ分割は kit の `docs-rules.md` と `open-hook.md` に昇格済み（ユーザー決定。個人的にも分けたい）。③ 済み（CRLF の混入元: 行の追記で「既存の改行に合わせる」書き方が CRLF を増やし続けていた。行末 CR 6 行を LF にし、追記は常に LF と README に明記。`review-hook.md` は 10-08 に直済みで現在 LF）。④ 済み（最初の `review`。`reviews.csv` に記録。直したもの: 確認の規則の具体化。`load.csv` に `review1-20261015` を追記: 開始時の読み込み 6,425→8,432 字、kit 総字数 72,543→104,194 字）。⑤ 済み（`exmem` の 4 ファイル・10 行のユーザー名入りパスをプレースホルダーに置換。`resources` の `2d3e3ce`。過去のコミットの履歴には旧い文字列が残る＝公開前に履歴の扱いを決める）。**10-15 の期日は ①〜⑤ すべて完了** |
+
 ### 2026-10-12（Claudian の設定ファイルを dotfiles へ移し、symlink にした）
 
 - ユーザーの依頼（`.claudian` を dotfiles へ。`sessions` は追跡しない）から、影響範囲とリスクを洗い出した。ユーザーが、公開リポジトリ前提であること、`userName`（`ee`）の削除、`n1-trial` が書き換え前提の仮の名前であることを確認し、`claudian-settings.json` だけを移す案を選んだ（`.claudian/` ごとではない）。

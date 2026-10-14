@@ -6,7 +6,6 @@
 
 | 期日 | 判断すること | 担当 |
 |---|---|---|
-| 2026-10-15 | ① 読み落とし点検（会話履歴から: コミット前の `git diff --cached`、`docs-rules.md` の読み込み、`decisions.md` への提案の混入、決める前の `decisions.md` の検索）② ログ分割と `docs-rules.md` の開始時読み込み廃止の昇格（手戻りが無ければ kit に反映）③ CRLF の混入元（`events.csv`、`review-hook.md`）④ 最初の `review` の実施（`again` と遠回りの事例。読み込み量は `extract-threads.ps1 -Snapshot` で `load.csv` に追記して、前後の表と比べる）⑤ 既存の知識のユーザー名入りパス 5 行（`exmem` の 3 ファイル）の修正 | エージェントが調べて報告。ユーザーは `again` の場面と体感を伝える。**進捗（10-14）: ① 済み**（違反 1 件 = 10-12 の `git add -A <パス>`。実害なし。`git add -A <パス>` を許可する案をユーザーが承認し、`AGENTS.md` と kit に反映。経緯は `guides/explain/agent-safety-rules.md`）。② のうち `docs-rules` は、廃止を続け、読む場面を強める（安全規則に「コミット・push の前に未読なら読む」を明記。ユーザー決定）。ログ分割は kit の `docs-rules.md` と `open-hook.md` に昇格済み（ユーザー決定。個人的にも分けたい）。③ 済み（CRLF の混入元: 行の追記で「既存の改行に合わせる」書き方が CRLF を増やし続けていた。行末 CR 6 行を LF にし、追記は常に LF と README に明記。`review-hook.md` は 10-08 に直済みで現在 LF）。④ 済み（最初の `review`。`reviews.csv` に記録。直したもの: 確認の規則の具体化。`load.csv` に `review1-20261015` を追記: 開始時の読み込み 6,425→8,432 字、kit 総字数 72,543→104,194 字）。⑤ 済み（`exmem` の 4 ファイル・10 行のユーザー名入りパスをプレースホルダーに置換。`resources` の `2d3e3ce`。過去のコミットの履歴には旧い文字列が残る＝公開前に履歴の扱いを決める）。**10-15 の期日は ①〜⑤ すべて完了** |
 | 2026-11-08 | **停止期間の終わりの一括判定**（先に `-Snapshot` で読み込み量を測る）: ① 試験運用の各項目（`decisions.md` の「案Eの判定基準」。既定は畳む）② 自動採用の停止を解くか ③ 規模の凍結を解くか続けるか ④ 手順書本体の縮小の続き（`stock-hook.md` 手順 2 の例外、`docs-rules.md`）⑤ 合言葉の統合（フェーズ3）⑥ `contexts/`（クラウドから push できるので畳めるか）⑦ 手順書の場所の 1 か所化（ステップ 4）⑧ 安全の検査スクリプト（sh）と pre-push | エージェントが期日に知らせる。判断はユーザー |
 
 ## Next Actions（2026-10-08 時点）
@@ -16,11 +15,13 @@
 3. **構造の見直し（L1 の案F）**: ステップ 0〜3、5〜9 は済み。常時読み込みは 79,804 → 6,198 字。残りはステップ 4・10 と、手順書本体の縮小の続き（期日の表）。
 3b. **フックの章立て（2026-10-08 に統一。`resources` の `e2caad2`、未 push）**: 共通4章を全8フックに揃えた。あわせて `stock` 手順 2 を、kit 自身の作業は一般化できる型だけに絞った（`f78904d`）。残りは、規模の凍結に対して畳んだものが無い点（11-08 の判定で扱う）。（`works` の remote の公開範囲は、2026-10-11 の `gh repo view` で PRIVATE と確認した。10-08 の PUBLIC との食い違いの原因は未確認。push は 10-11 に実施済み。）
 4. **PARA の試行**: 3回目の Project（候補は `areas/learning/README.md`）。kit への昇格は安定してから。
+4b. **AI 作業部屋（2026-10-14）**: ダミー Project `projects/dummy-mask`（`2dace8c`、push 済み）で、マスク・復元（Excel）、共有知の送付、`stock` を実機で確認した。結果は `resources` の `mobile-session/ai-workspace-boundary/` の各 handover の「PC での確認の結果」。残りと保留は同 `ai-room-next-steps` の TODO（`room start` の通し、部屋の AI が下書きを書く通し、マウントの可視性、項目 5 は別セッションのディレクトリ構造と合流してから）。`resources` は未 push が 9 コミット（ユーザーが push する）。
 5. **保留**: 旧 `C:\vault` と GitHub の旧 `notes` の削除、`claude --resume` の確認、WSL の `WORKS_DIR` の実機確認（詳細は `log-history.md` の Next Actions）。
 
 ## Open Questions
 
 - Claudian（2026-10-11）: Bedrock を使う別 PC で、dotfiles の `settings-bedrock.txt` を Bedrock のスニペットへ貼り、複数行が保存されて接続できるか確認する。このスニペットの値は手書きのサンプルで、`settings-bedrock.json` が正（`docs/decisions.md` の先頭の項目）。
 - Claudian の設定（2026-10-12）: `claudian-settings.json` は dotfiles の symlink（Windows は `30_link.bat`）。別 PC では dotfiles を pull して `30_link.bat` を実行する（実ファイルがあると `[ERR]`。退避してから）。ネイティブ Linux は未対応。
+- `works`（`worksample`）の公開範囲（2026-10-14）: `gh repo view` が PUBLIC を返した。ユーザーは「一時的に公開しているが、外に出てよいものだけなので大丈夫」と述べた。`AGENTS.md` の push の許可リストは「非公開」が前提で、条件 1 を満たさない。許可リストの備考を直すか、PRIVATE に戻すかを決める（10-08 の PUBLIC と 10-11 の PRIVATE の食い違いの原因も未確認）。
 - `workbase` の公開: 予定はあるが未決定。公開されうる前提で書く（ユーザー、2026-10-08）。非公開の remote は GitHub。クラウドから作業側へ push してよい（ユーザー、2026-10-08）。
 - 公開前に決めるもの: ユーザー名を含むパスは、xmem の現行ファイルからは除いた（10-15）。git 履歴には残っているので、公開するときに履歴の書き換え（git filter-repo など）か、新しい履歴で公開するかを決める。

@@ -14,6 +14,13 @@
 
 ## Decisions
 
+### 【この件】AI 作業部屋の項目 5（部屋の運用）の決定と、決定の項目のラベルの 3 種類化（2026-10-14。ユーザーの決定）
+
+- 決めたこと: ① 対応表（`_noai/map/mapping.json`）のバックアップは、`room close` で `archives/` へ移る `_noai/` ごと、Windows 側のバックアップに任せる。② 部屋の会話履歴は、写さず、close から 14 日の期限で消すだけにする（復元が要るときは `exmem` や `docs/` の記録でする）。③ 決定の項目のラベルは、【汎用】【案件】【この件】の 3 種類にする（`docs-rules.md` に【案件】を足した）。④ 項目 5（`room init`、reap、`room intake`）は、別セッションで議論しているディレクトリ構造と合流してから進める（保留）。
+- 根拠: ① `_noai/` は追跡外で、失うと復元できない。移動先を変えずに、既存のバックアップに乗せるのが最小。② 会話履歴には、人が貼った実データの語が混ざりうる。写さなければ起きない。③ `room-context.md` と `room.py` が【案件】を使っており、`docs-rules.md` だけが 2 種類で食い違っていた。④ 構造が変わると、`init` と reap の前提が変わる。
+- 却下案: ① 対応表を Vault の外に置く、暗号化する（運用しながら決める）。② 会話履歴を `ai/records/sessions/` に写す（語の検索つきの案。写さないので不要）。③ 2 種類にそろえて【案件】を廃止する（`room` の Area への転記の仕組みを作り直す）。
+- 確認済み（2026-10-14）: ① は `archives/` の `_noai/` が追跡外であること（`.gitignore` の `**/_noai/`）を確認した。バックアップの実際の対象は、PC のバックアップ機能に依存するので未確認。
+- 詳細: `resources` の `mobile-session/ai-workspace-boundary/ai-room-ops-handover.md`（`a52b813`）、`docs-rules.md`（`4dfedcd`）。
 ### 【この件】Claudian は OAuth を既定にし、Bedrock はスニペットで明示的に選ぶ。API キーは Claudian では使わない。Bedrock の値は `settings-bedrock.json` を正とし、スニペットは人間が貼る派生物にする（2026-10-11。ユーザーの決定）
 
 - 背景: 環境変数（`CLAUDE_CODE_USE_BEDROCK`、`ANTHROPIC_API_KEY`）は OAuth より優先される。`sharedEnvironmentVariables` に Bedrock を入れると、Claudian が常に Bedrock になる。
