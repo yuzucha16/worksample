@@ -81,7 +81,7 @@ exmem:
 
 ### 2026-10-16（resources の下位の単位の形を揃えた。WSL の `WORKS_DIR` は渡らない）
 
-- `resources/` の `guides/` `topics/` `workflow-kit/` を、`exmem/` に揃えた（`README.md`、`AGENTS.md`、`CLAUDE.md` = `@AGENTS.md`）。`guides/CLAUDE.md`(7.7KB の本文)を `AGENTS.md` に改名し、`guides/README.md` と `topics/README.md` を新設、`workflow-kit/CLAUDE.md` を追加した。索引(`guides-index.md` `topics-index.md`)は残した。`README.md` への統合は、参照が約 12 か所あることと、ファイル名の一意の規則(`README.md` は複数ある)から見送った(ユーザーの決定)。resources `b6a9505`、push 済み。`resources/README.md` の `handson/` の行(削除済み)も除いた。`exmem/` と `workflow-kit/` の README を、索引と本文に分けるかは未決(提案のみ)。
+- `resources/` の `guides/` `topics/` `workflow-kit/` を、`exmem/` に揃えた（`README.md`、`AGENTS.md`、`CLAUDE.md` = `@AGENTS.md`）。`guides/CLAUDE.md`(7.7KB の本文)を `AGENTS.md` に改名し、`guides/README.md` と `topics/README.md` を新設、`workflow-kit/CLAUDE.md` を追加した。索引(`guides-index.md` `topics-index.md`)は残した。`README.md` への統合は、参照が約 12 か所あることと、ファイル名の一意の規則(`README.md` は複数ある)から見送った(ユーザーの決定)。resources `b6a9505`、push 済み。`resources/README.md` の `handson/` の行(削除済み)も除いた。`exmem/` の README の索引分離は、ユーザーが決定し、Next Actions に入れた。`workflow-kit/` は `hooks.md` が索引なので、分けない(ユーザーの決定)。
 - WSL(Ubuntu-24.04、WSL 3.0.3.0)で、`WSLENV=CERTS_DIR/p;WORKS_DIR/p` は設定されているのに、`WORKS_DIR` と `CERTS_DIR` が渡らない。ユーザーの PowerShell でも再現し、`wsl --shutdown` でも直らず、試験用の変数でも渡らなかった。原因は未特定。回避は、WSL 側で `wslpath` から決める案(提案)。
 
 ### 2026-10-16（`worksample` を PUBLIC に変更。Next Actions を 3 件にまとめた）
