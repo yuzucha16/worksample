@@ -14,7 +14,7 @@ works、resources（workbase）、dotfiles の運用を揃えるための基準�
 | 直下の `docs/log.md` | ○ | ○ | ○ |
 | 読む順番 | 3段（README、log、検索のみ） | 同左 | 同左 |
 | 「〜の続き」の扱い | kit の `docs-rules.md` を参照する1行 | 同左 | 同左 |
-| 期日の確認の規則 | ○（`log.md` に期日の節あり） | ○（節なし） | ○（節なし） |
+| 期日の確認の規則 | ○（`log.md` に期日の節あり） | ○（節あり。2026-10-16） | ○（節あり。2026-10-16） |
 | 下位の単位 | `projects/` `areas/` `archives/` | `exmem/` `workflow-kit/` `guides/` `topics/`（各 `README.md` `AGENTS.md` `CLAUDE.md`(`@AGENTS.md`)。索引は `guides-index.md` `topics-index.md`。`exmem/` は README が索引を兼ねる） | なし |
 | `.claude/` | `settings.json`（deny）を追跡 | `settings.local.json` だけ追跡しない | 同左 |
 | `settings.local.json` を追跡しない | ○ | ○ | ○ |
@@ -30,9 +30,9 @@ works、resources（workbase）、dotfiles の運用を揃えるための基準�
 | 2 | 読む順番の形が3通り | 解消 | 高 | 低 |
 | 3 | 「〜の続き」の規則が `topics/AGENTS.md` にしかない | 解消（kit に1か所） | 高 | 低 |
 | 4 | `guides` と `handson` が `CLAUDE.md` だけ | 解消（2026-10-16。`handson` は削除済み。`guides` は `AGENTS.md` に改名し、`README.md` を足した。`topics` に `README.md`、`workflow-kit` に `CLAUDE.md` を足した。resources `b6a9505`） | 低 | 低 |
-| 5 | 期日の節が works にしかない | 残す（必要になったとき足す） | 低 | 低 |
+| 5 | 期日の節が works にしかない | 解消（2026-10-16。resources と dotfiles に節を足し、定例の書式を kit の `docs-rules.md` に入れた） | 低 | 低 |
 | 6 | `.claude/` の扱いの違い、works に deny がない | 解消。deny の実機確認は済み（`Read` は拒否、PowerShell の `Get-Content` は通る） | 中 | 中 |
 | 7 | works の `AGENTS.md` と雛形のずれ | 解消 | 低 | 低 |
 | 8 | 公開リポジトリの git 履歴にユーザー名を含むパスが残っている | 未着手（書き換えは force push が要り、禁止） | 中 | 高 |
 
-正は kit（`workflow-kit`）。ただし、works が先に進んだ点（期日の節）は、必要になったときに kit へ戻す。
+正は kit（`workflow-kit`）。

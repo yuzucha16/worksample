@@ -79,6 +79,10 @@ exmem:
 
 ## Log
 
+### 2026-10-16（定例の導入。期日の節を 3 リポジトリに揃えた）
+
+- 週1の `review` が Next Actions に常駐して 0 にならない問題を、「定例」の種別で解いた。works の `docs/log.md` の期日の表に種別の列を足し、`review` を定例（次回 2026-10-22）として移した。resources と dotfiles の `docs/log.md` にも期日の節を足した（dotfiles は colored-tags の判断 10-22 頃を Next Actions から移した。resources は項目なし）。書式は kit の `docs-rules.md` に入れた。`alignment-baseline.md` の行 5 を解消。判断の根拠は `decisions.md` の「周期のある項目は「定例」と呼び…」。
+
 ### 2026-10-16（Open Questions の消化と workbase の履歴の書き換え）
 
 - `log.md` の Open Questions 4 件を閉じた。公開範囲は確認済み、Claudian の Bedrock 確認と symlink の別 PC 対応はユーザーが完了。
