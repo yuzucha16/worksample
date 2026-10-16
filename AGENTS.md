@@ -17,22 +17,15 @@
 
 ## 読む順番
 
-1. `docs/log.md`（現在状態だけ。4KB 目安）
-2. `resources/AGENTS.md`（Vault 全体の規約。開始時に読み込むのはここまで）
-3. `docs/log.md` の「期日」に、今日以前（または3日以内）の項目があれば、**最初の返答で知らせ、判断を求める**（判断はユーザーが決める）。
+1. `README.md`（窓口。構成と管理。Vault 全体の規約は `resources/AGENTS.md`。`resources/` の作業のときに読む）
+2. `docs/log.md`（開始時に読むのはここまで。「期日」の節があれば、今日以前または3日以内の項目を、**最初の返答で知らせて判断を求める**。判断はユーザーが決める）
+3. `docs/decisions.md` と `docs/log-history.md` は開始時に読まない。何かを決める・変える前に、`decisions.md` を検索して、既存の決定と矛盾しないか確かめる。経緯が要るときは `log-history.md` を検索する。
 
-`docs/decisions.md` と `docs/log-history.md` は開始時に読まない。何かを決める・変える前に、`decisions.md` を検索して、既存の決定と矛盾しないか確かめる。kit の手順が「`log.md` の Log に書く」と言うときは、`docs/log-history.md` の `## Log` の先頭に追記する（2026-10-15 に kit の `docs-rules.md` へ昇格した。ユーザーの決定）。
+下位の単位（`resources/` の中、`repos/` の各リポジトリ、`projects/` `areas/`）の「<名前> の続き」は、kit の `docs-rules.md` の「上の階層で起動して…」に従う。kit の手順が「`log.md` の Log に書く」と言うときは、`docs/log-history.md` の `## Log` の先頭に追記する（2026-10-15 に kit の `docs-rules.md` へ昇格した。ユーザーの決定）。
 
 ## 構成と管理
 
-| パス | 内容 | 管理 |
-|---|---|---|
-| `areas/` `projects/` `archives/` | PARA。この PC のローカルの作業 | このリポジトリ |
-| `docs/` `AGENTS.md` `CLAUDE.md` | この PC の作業ログと規約 | このリポジトリ |
-| `resources/` | 共有ナレッジ（`workbase`）。このリポジトリの `.gitignore` で除外する | 別リポジトリ（git 操作は `resources/` の中で行う） |
-| `repos/` | ghq で clone した独立のリポジトリ（`dotfiles`、`zed-vba` など）。このリポジトリの `.gitignore` で除外する | 各リポジトリ（作業の前に、その `AGENTS.md` / `CLAUDE.md` を読む。git 操作はそのリポジトリの中で行う） |
-| `.obsidian/` | Obsidian の設定。dotfiles からのジャンクション。このリポジトリでは追跡しない | dotfiles |
-| `.claudian/` | Claudian プラグインの設定。依頼がなければ編集しない | なし（未追跡） |
+構成の表は `README.md`。`resources/` と `repos/` の各リポジトリは別の git リポジトリで、git 操作はそれぞれの中で行い、作業の前にその `AGENTS.md` を読む。
 
 ## このワークスペース固有のルール
 
