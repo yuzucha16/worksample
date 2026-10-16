@@ -14,6 +14,12 @@
 
 ## Decisions
 
+### 【この件】resources の下位の単位は `README.md` `AGENTS.md` `CLAUDE.md`(`@AGENTS.md`)の形に揃え、索引は別ファイルに置く。`worksample` は PUBLIC（2026-10-16。ユーザーの決定）
+- 決めたこと: ① `guides/` `topics/` `workflow-kit/` を `exmem/` に揃えた（`guides/CLAUDE.md` は `AGENTS.md` に改名。resources `b6a9505`）。② 索引（`guides-index.md` `topics-index.md`）は README に統合せず残す。③ `exmem/README.md` の「知識の索引」は `exmem-index.md` に分ける（Next Actions 4）。④ `workflow-kit/` は `hooks.md` が索引なので分けない。⑤ ユーザーが `worksample` を PUBLIC にした。機密・個人情報は書かない前提で、エージェントが push してよい。
+- 根拠: 常時読み込みを増やさない。`docs-rules.md` の「上段は表引き、詳細は下段」。
+- 却下案: `guides/CLAUDE.md` を `resources/AGENTS.md` へマージ（4.4KB → 約 12KB。全作業で `guides/` 専用の規則を読む）。索引を README に統合（参照が約 12 か所あり、`README.md` は一意でなく `[[README]]` が曖昧になる）。
+- 確認済み（2026-10-16）: `gh repo view` で 3 リポジトリとも PUBLIC。
+
 ### 【この件】リポジトリ間の整合は、`docs/alignment-baseline.md` を基準に、`review` の入力 8 が差分を見る（2026-10-16。ユーザーの決定）
 - 決めたこと: 現状の表とギャップの表を works の `docs/alignment-baseline.md` に置く（この PC の運用が入るので、公開リポジトリには置かない）。`review` の入力 8 は、各行を今の状態と比べ、違う行だけを見直しにする。見直しの後は基準を更新する。
 - 根拠: 表を毎回作るだけでは比較がなく、中途半端だった（ユーザーの指摘）。却下案: `docs/log-history.md` に表を貼る（構造が崩れる）。
