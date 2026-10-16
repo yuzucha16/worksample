@@ -13,7 +13,6 @@
 1. **週1回・15分の `review`**（初回は 10-15 に実施済み。2 回目を 10-22 ごろまでに）: 入力は `again` の件数、終了時の1問、読み込み字数（`extract-threads.ps1 -Report`）。あわせて確かめる: ① `start` のモード（確定型・探索型）の試用結果（根拠は exmem の `lessons/session-goal-modes.md`）② 入力 8 の比較が、`alignment-baseline.md` の差分を意図どおり拾うか。
 2. **ユーザーの作業**: PARA の 3回目の Project（候補は `areas/learning/README.md`）、AI 作業部屋の通し（`resources` の `ai-room-next-steps` の TODO）、`claude --resume` の確認、WSL への `WORKS_DIR` の受け渡し(2026-10-16 の確認: Ubuntu-24.04 で `WSLENV` は設定されているが、`WORKS_DIR` と `CERTS_DIR` は渡っていない。原因は未特定)。
 3. **11-08 の一括判定**(期日の表): 案E の残り、構造の見直しのステップ 4・10、`pre-push` と git 周りの見直し(deny のパターンがコミットメッセージ中の禁止語にも一致する点を含む)。
-4. **`exmem/README.md` の索引分離**(2026-10-16。ユーザーの決定): 「知識の索引」(約 60 行)を `exmem-index.md` に分ける。先に `[[exmem]]` などの参照と `knowledge.base` を確認する。`workflow-kit/` は `hooks.md` が索引なので分けない(ユーザーの決定)。
 
 ## Open Questions
 
