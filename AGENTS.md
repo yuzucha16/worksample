@@ -39,6 +39,7 @@
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は設定ファイル（`*.json`）を編集しない（上書きされて消える）。`workspace.json` は端末ごとの状態なのでコミットしない。詳細は `exmem/knowledge/obsidian-vault.md`。
 - Obsidian 向けの作業では、導入済みの外部スキル（`obsidian@obsidian-skills`。導入の正本は dotfiles の `manifests/claude-plugins.txt`）を使う。ノートの記法は `obsidian-markdown`、Bases は `obsidian-bases`、Canvas は `json-canvas`、Vault の操作は `obsidian-cli`、Web ページの本文抽出は `defuddle`、テンプレートからの Markdown 生成は `knap`。スキル本体は写さない（更新はプラグインが持つ）。Claude Code 以外のエージェントには届かない。
 - 記録: `docs/metrics/events.csv` に足すのは、`goal_change`（探索型でゴールが変わったとき。2026-10-14 に追加）、開始時の質問（`interview`）だけ（`again` と `gap` は 2026-10-16 に廃止。kit の `139091c` に合わせた。承認の確認 `approval` と改善案の行は、2026-10-08 から足さない）。`wrap` では「今日の遠回りは、なし・少し・大きく」を1問聞く。手順・列・保存先は `docs/metrics/README.md` の「エージェントの記録手順」。
+- リポジトリ間の整合の基準: `docs/alignment-baseline.md`（`review` の入力 8 が、各行を今の状態と比べる。2026-10-16 ユーザーの決定）。
 
 ## 規模の凍結（2026-10-08〜判定日 2026-11-08。ユーザーの決定。試験運用）
 
