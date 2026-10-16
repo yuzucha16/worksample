@@ -16,7 +16,5 @@
 
 ## Open Questions
 
-- Claudian（2026-10-11）: Bedrock の別 PC で、dotfiles の `settings-bedrock.txt` を貼り、複数行が保存されて接続できるか確認する（正は `settings-bedrock.json`。`decisions.md` の先頭）。
-- Claudian の設定（2026-10-12）: `claudian-settings.json` は dotfiles の symlink。別 PC では pull して `30_link.bat` を実行する（実ファイルは退避）。ネイティブ Linux は未対応。
-- 公開範囲（2026-10-16）: `worksample` を含む 3 リポジトリがすべて PUBLIC（`worksample` はユーザーが PUBLIC に変更した。`gh repo view` で確認）。エージェントが push してよい。機密・個人情報は書かない前提。`AGENTS.md` と `README.md` の「非公開 `worksample`」の記述は直した（2026-10-16）。
-- **公開リポジトリの git 履歴に、ユーザー名を含むパスが残っている**（`worksample` も対象になった。現行ファイルからは除いた。10-15)。履歴の書き換え（force push が要り、現在は禁止）で消すか残すかは未決。
+- 公開リポジトリの履歴の扱い（2026-10-16）: `workbase` は書き換え済み（個人・組織を特定する文言を除去。経緯は `log-history.md`）。残したのは `ee` `ck` `yy`（プレースホルダー）と author の `yuzucha16`。`works` と dotfiles は未書き換え（dotfiles の `yy` のパスと第三者プラグインの作者メールは残す決定）。
+- バックアップ `C:\Users\ee\backup\workbase-backup.git`（旧履歴。機密を含む）を、確認後に削除する。
