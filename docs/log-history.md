@@ -79,6 +79,13 @@ exmem:
 
 ## Log
 
+### 2026-10-16（3 リポジトリの cwd の扱いを揃えた）
+
+- 3 リポジトリ（works、resources、dotfiles）の cwd の規則を調べ、ギャップを解消した。kit の `docs-rules.md` に「上の階層で起動して『〜の続き』と言われたら」を足し、`hooks.md` の「起動する場所」はそこへのポインタに畳んだ。3 つの `AGENTS.md` の「読む順番」を同じ 3 段にした。works の README（空だった）に構成の表を移し、resources に `README.md` と `docs/` を新設した。ワークスペースの雛形も揃えた。コミット: resources `905ed7a` `ae755d5` `fa36282`、dotfiles `4c37d3b` `c225226` `24de490`、works `77cff6a` `3172e23` `a94faee`。判断は `decisions.md` の先頭の項。
+- `.claude/` の扱いを確かめた（公式ドキュメント）: 設定の配列は合算され、deny は allow に勝つ。プロジェクト設定は親から継承されない。Bash の deny は境界ではない。works に `.claude/settings.json`（deny）を置き、dotfiles の `.gitignore` を `settings.local.json` だけにした。deny の実機確認は未実施（セッションを開き直して行う）。
+- `gh` が通り、公開範囲を確認した: `worksample` は PRIVATE、`workbase` と `dotfiles` は PUBLIC。ユーザーが、公開のまま、エージェントが push してよいと決めた。kit の push の条件 1 を変え、3 つの `AGENTS.md` の許可リストを揃えた。
+- 遠回りの答え: なし。
+
 ### 2026-10-16（下流から works への依存の洗い出しと整理）
 
 - ユーザーの問い（トップの works が下流を知っているか、下流が works を知っているか）から、resources と dotfiles の全体を検索して、works への依存を洗い出した。種類は 3 つ: ① 配置パスの直書き、② works の PARA 構造を前提にした kit の機能（許容）、③ works を名指しした説明。③ だけを直し、判断は `docs/decisions.md` の先頭の項。

@@ -17,14 +17,15 @@
 4. **PARA の試行**: 3回目の Project（候補は `areas/learning/README.md`）。kit への昇格は安定してから。
 4b. **AI 作業部屋（2026-10-14）**: ダミー Project `projects/dummy-mask`（`2dace8c`、push 済み）で、マスク・復元（Excel）、共有知の送付、`stock` を実機で確認した。結果は `resources` の `mobile-session/ai-workspace-boundary/` の各 handover の「PC での確認の結果」。残りと保留は同 `ai-room-next-steps` の TODO（`room start` の通し、部屋の AI が下書きを書く通し、マウントの可視性、項目 5 は別セッションのディレクトリ構造と合流してから）。`resources` は push 済み（ユーザー）。`exmem/inbox/` に未追跡のメモが 2 件ある（「ナレッジ化して」の出力。統合は `integrate`）。
 4c. **3 リポジトリの規則の統一（2026-10-16）**: フェーズ1〜3 は済み（kit の `review` の入力 8 に、今後の点検を入れた）。フェーズ4は deny 設定だけ済み（2026-10-16。dotfiles `home/.claude/settings.json` に 38 件。ユーザーの決定。凍結の対として 3 つの `AGENTS.md` の禁止コマンドの列挙を kit への参照に畳んだ）。`pre-push` は 11-08 の判定（⑧）へ。git 周りは後日まとめて見直す（ユーザー）。review の入力 8 の初回は実施済み（残るギャップ: works の `docs/log.md` が 4KB 目安超過、works の README がほぼ空）。push は 3 リポジトリとも済み（works `d992612`、resources `4bff9ce`、dotfiles `63e3ef2` が `origin/main` に含まれる。2026-10-16 確認）。deny のパターンは、コミットメッセージ中の禁止語にも一致する（絞り直しは git の見直しで）。
-4d. **この PC の works を worksample の clone に切り替えた（2026-10-16）**: 済み（詳細は `log-history.md`）。残り: `.claude/settings.json`（`projects/` 等の deny）と「AI 作業部屋」の節を入れるか（未決。個人開発用と合わないため見送り中）。バックアップのブランチ `init-local` は不要になったら削除する。
-4e. **下流から works への依存の整理（2026-10-16。済み）**: 方針は `decisions.md` の先頭の項。未 push: works の `f654654`（`gh` 未認証で公開範囲を確認できず、`gh auth login` 後に push）、resources `6d8f427` `b50bab2`、dotfiles `3ed784e` `2ef40d4`（ユーザー）。任意の残り: dotfiles の `profile.ps1`（`dof` `room`）の `$WORKS_DIR` 化。`3172e23`（`.claude/settings.json` と `AGENTS.md` の部屋の節）は別セッションのコミットで、4d の「入れるか」の判断と関係するか確認する。
+4d. **この PC の works を worksample の clone に切り替えた（2026-10-16。済み）**: 詳細は `log-history.md`。バックアップのブランチ `init-local` は不要になったら削除する。
+4e. **下流から works への依存の整理（2026-10-16。済み）**: 方針は `decisions.md` の項。任意の残り: dotfiles の `profile.ps1`（`dof` `room`）の `$WORKS_DIR` 化。
+4f. **3 リポジトリの cwd を揃えた（2026-10-16。済み）**: 起動はトップの 3 つだけ、下位は「〜の続き」。works の `.claude/settings.json`（deny）を置いた。残り: **セッションを開き直して deny が効くか確かめる**（`areas/` のファイルを Read させて拒否されること。PowerShell は止まらない）。確認できたら kit の `init-workspace.md` の「実機での効き方は未検証」を更新する。`guides/` は後回し（cwd を増やさない）。`handson/` は削除予定。公開リポジトリへの push を許可した（`decisions.md`）。
 5. **保留**: 旧 `C:\vault` と GitHub の旧 `notes` の削除、`claude --resume` の確認、WSL の `WORKS_DIR` の実機確認（詳細は `log-history.md` の Next Actions）。
 
 ## Open Questions
 
 - Claudian（2026-10-11）: Bedrock を使う別 PC で、dotfiles の `settings-bedrock.txt` を Bedrock のスニペットへ貼り、複数行が保存されて接続できるか確認する。このスニペットの値は手書きのサンプルで、`settings-bedrock.json` が正（`docs/decisions.md` の先頭の項目）。
 - Claudian の設定（2026-10-12）: `claudian-settings.json` は dotfiles の symlink（Windows は `30_link.bat`）。別 PC では dotfiles を pull して `30_link.bat` を実行する（実ファイルがあると `[ERR]`。退避してから）。ネイティブ Linux は未対応。
-- `works`（`worksample`）の公開範囲（2026-10-14）: `gh repo view` が PUBLIC を返した。ユーザーは「一時的に公開しているが、外に出てよいものだけなので大丈夫」と述べた。`AGENTS.md` の push の許可リストは「非公開」が前提で、条件 1 を満たさない。許可リストの備考を直すか、PRIVATE に戻すかを決める（10-08 の PUBLIC と 10-11 の PRIVATE の食い違いの原因も未確認）。
-- `workbase` の公開: 予定はあるが未決定。公開されうる前提で書く（ユーザー、2026-10-08）。非公開の remote は GitHub。クラウドから作業側へ push してよい（ユーザー、2026-10-08）。
-- 公開前に決めるもの: ユーザー名を含むパスは、xmem の現行ファイルからは除いた（10-15）。git 履歴には残っているので、公開するときに履歴の書き換え（git filter-repo など）か、新しい履歴で公開するかを決める。
+- 公開範囲（2026-10-16 に `gh repo view` で確認）: `worksample` は PRIVATE、`workbase` と `dotfiles` は PUBLIC。公開のまま、エージェントが push してよい（ユーザーの決定）。10-08 の PUBLIC と 10-11 の PRIVATE の食い違いの原因は未確認。
+- `workbase` は公開済み。公開前提で書く。クラウドから作業側へ push してよい（ユーザー、2026-10-08）。
+- **公開リポジトリの git 履歴に、ユーザー名を含むパスが残っている**（`workbase` は公開済み）。ユーザー名を含むパスは、xmem の現行ファイルからは除いた（10-15）。git 履歴には残っているので、履歴の書き換え（git filter-repo など。force push が要り、現在は禁止）で消すか、残すかを決める（未決）。

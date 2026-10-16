@@ -14,6 +14,11 @@
 
 ## Decisions
 
+### 【汎用】cwd はリポジトリのトップの 3 つだけ。works の deny を置く。公開リポジトリへの push を許可する（2026-10-16。ユーザーの決定）
+- 決めたこと: (1) 起動する単位は works、resources、dotfiles のトップだけ。下位は「<名前> の続き」（kit の `docs-rules.md` に 1 か所で定義）。3 つの「読む順番」は同じ 3 段（README、`docs/log.md`、検索のみ）。(2) works に `.claude/settings.json`（`projects/` `areas/` `archives/` の Read/Edit の deny。雛形どおり）と、`AGENTS.md` の「AI 作業部屋」の節を置く。`settings.local.json` は全リポジトリで追跡しない（dotfiles の `.gitignore` を揃えた）。(3) `workbase` と dotfiles は公開（PUBLIC。`gh repo view` で確認）。公開のまま、エージェントが `main` に push してよい。kit の push の条件 1 を「公開範囲を確認して報告。公開なら条件 4 の検索を広げる」に変えた。3 つの許可リストに載せた。
+- 根拠: ユーザーが承認した。AI 作業の領域は WSL の部屋へ切り出してあり、この PC は部屋が未使用（動作確認中）なので、deny の実害はない。deny は安全網で、PowerShell からの読みは止まらない。プロジェクト設定は親から子へ継承されない（公式と issue の報告）ので、deny は works のトップで起動したときだけ効く。
+- 詳細は resources の `docs/decisions.md`。deny の効き方の実機確認は、セッションを開き直して行う（未確認）。
+
 ### 【汎用】3 リポジトリの依存は上流（works）から下流（resources、dotfiles）の向きだけにし、下流から works を名指しする説明を無くす。ただし過度な解消はしない（2026-10-16。ユーザーの決定）
 
 - 決めたこと: ① 依存の向きは works → resources / dotfiles。works が下流を知っているのは設計どおりで、下流は works を知らない状態にする。② 共有側（resources）が works をリポジトリとして名指しする説明は、「ワークスペースのルート」に言い換える。works 固有の運用記録（違反事例と Project 名を含む `agent-safety-rules.md`）は `docs/explain/` へ移した。③ 例外・許容: dotfiles が `.obsidian` を works へリンクすること、kit の `init` フックと `room` が works の PARA 構造を前提にすること、配置パス（`$HOME\works\resources\...`）の直書き、日付つきの履歴（旧名は `hooks.md` の読み替え規則に従い書き換えない）。④ エージェントが読む文面（`AGENTS.md` など）のパスは、環境変数にせず直書きのままにする。`$WORKS_DIR` はスクリプトの中で使う。
