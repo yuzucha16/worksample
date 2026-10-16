@@ -79,6 +79,10 @@ exmem:
 
 ## Log
 
+### 2026-10-16（3 リポジトリの規則を揃えた。works の `AGENTS.md` から古い記述を外した）
+
+- works・resources・dotfiles の規則を揃える作業（フェーズ1〜3）。一律に kit を正とはせず、明らかなずれはユーザーに確認した。works の変更: `AGENTS.md` から `again` と `gap` の記録、自動採用の停止の項を削除した（`142c226`。判断は `decisions.md` の 2026-10-16）。kit・dotfiles 側の変更は、`resources` の `topics/kit-growth/docs/log-history.md` と dotfiles の `docs/log-history.md` に記録した。遠回りの答え: なし。
+
 ### 2026-10-14（AI 作業部屋: マスク・復元、共有知、stock を実機で確認した）
 
 - ユーザーの指示で、`resources` の `mobile-session/ai-workspace-boundary/ai-room-start-here` を入口に、roadmap の項目 1・2・4 を実機（Windows、Excel、WSL）で確認した。確認用の架空のダミー Project `projects/dummy-mask`（`2dace8c`）を作り、生成スクリプトは `resources` の `workflow-kit/room/tests/dummy_fixture.py`（`5776320`）に置いた。`room` コマンド（`mask` `restore` `start` `stock`）は、ユーザーが実行した（AI は実行しない約束）。
