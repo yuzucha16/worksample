@@ -14,6 +14,14 @@
 
 ## Decisions
 
+### 【汎用】3 リポジトリの依存は上流（works）から下流（resources、dotfiles）の向きだけにし、下流から works を名指しする説明を無くす。ただし過度な解消はしない（2026-10-16。ユーザーの決定）
+
+- 決めたこと: ① 依存の向きは works → resources / dotfiles。works が下流を知っているのは設計どおりで、下流は works を知らない状態にする。② 共有側（resources）が works をリポジトリとして名指しする説明は、「ワークスペースのルート」に言い換える。works 固有の運用記録（違反事例と Project 名を含む `agent-safety-rules.md`）は `docs/explain/` へ移した。③ 例外・許容: dotfiles が `.obsidian` を works へリンクすること、kit の `init` フックと `room` が works の PARA 構造を前提にすること、配置パス（`$HOME\works\resources\...`）の直書き、日付つきの履歴（旧名は `hooks.md` の読み替え規則に従い書き換えない）。④ エージェントが読む文面（`AGENTS.md` など）のパスは、環境変数にせず直書きのままにする。`$WORKS_DIR` はスクリプトの中で使う。
+- 根拠: 共有側に works の事情を書くと、単独 clone や他の PC で意味が通らず、安全規則（ローカルの情報を共有に書かない）に触れる。④ は、環境変数がエージェントのシェルで展開される保証が無いため。一方で、kit の知識を集約することが目的なので、過度な依存解消は不要（ユーザー）。
+- 却下案: ① `ai-room-why.md` ほか設計・引継ぎ 5 本を丸ごと works へ移す（被参照が `room.py`、`guides-index` など十数件で、内容も一般的な設計。該当行だけ言い換えた）。② `AGENTS.md` のパスを `$WORKS_DIR` にする（上の ④）。
+- 確認済み（2026-10-16）: 洗い出しは `resources` と dotfiles の全体を検索して行った。直したのは resources の 13 ファイル（移動による削除 1 を含む）と dotfiles の 4 ファイル。未対応: `room.py` の既定値 `~/works`（挙動は変えていない）、dotfiles の `profile.ps1` の `dof` `room` と `10_dirs.sh` の直書き（`$WORKS_DIR` 化は未実施。WSL の `~/works` は WSL 自身の作業用で別物）。
+- コミット: resources `6d8f427` `b50bab2`、dotfiles `3ed784e` `2ef40d4`、works `f654654`。
+
 ### 【この件】`again` と `gap` の記録を廃止し、自動採用の停止の項を `AGENTS.md` から削除した（2026-10-16。ユーザーの決定）
 
 - 決めたこと: `AGENTS.md` の記録の規則から `again` と `gap` を外した（`goal_change` と `interview` は残す。`wrap` の遠回りの 1 問も残す）。「自動採用は 11-08 まで停止」の項を削除した。kit の `139091c`（`again` と `gap` の廃止）と、kit が 10-15 に自動採用を畳んだことに合わせた。

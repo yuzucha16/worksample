@@ -79,6 +79,13 @@ exmem:
 
 ## Log
 
+### 2026-10-16（下流から works への依存の洗い出しと整理）
+
+- ユーザーの問い（トップの works が下流を知っているか、下流が works を知っているか）から、resources と dotfiles の全体を検索して、works への依存を洗い出した。種類は 3 つ: ① 配置パスの直書き、② works の PARA 構造を前提にした kit の機能（許容）、③ works を名指しした説明。③ だけを直し、判断は `docs/decisions.md` の先頭の項。
+- 直したもの: resources の窓口・手順書・コード（ヘルプ文）の言及、設計・引継ぎ 5 本の「Vault のトップ」→「ワークスペースのルート」、`agent-safety-rules.md` を `docs/explain/` へ移動。dotfiles の旧名（`knowledge/` `contexts/` `cheatsheets/` `knowledge-hook.md` `notes` `NOTES_DIR`）の現在形の参照。コミット: resources `6d8f427` `b50bab2`、dotfiles `3ed784e` `2ef40d4`、works `f654654`。
+- 未 push: works の 2 件（`3172e23` は別セッションのコミット）は、`gh` が未認証で公開範囲を確認できず（条件 1）、push しなかった。resources と dotfiles は許可リスト外でユーザーが push する。
+- 遠回りの答え: なし。
+
 ### 2026-10-16（フェーズ4: deny 設定、review の入力 8 の初回）
 
 - 入力 8 の初回: 3 リポジトリの現状の表とギャップを出した（works の `docs/log.md` が 6.2KB で超過、works の README がほぼ空、dotfiles の README と log が目安をわずかに超過）。
