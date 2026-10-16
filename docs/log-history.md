@@ -79,6 +79,11 @@ exmem:
 
 ## Log
 
+### 2026-10-16（works の push、部屋の deny 設定の決定、`profile.ps1` の `$WORKS_DIR` 化）
+
+- `gh auth login` 後に works を push した（`77cff6a..a94faee`。`worksample` は PRIVATE、fast-forward、機密語なしを確認）。dotfiles の `profile.ps1` の `dof` `room` を `$env:WORKS_DIR` 基準にして push した（`56ca811`。公開リポジトリのため、メールアドレスとユーザー名入りのパスも検索して、なしを確認）。ユーザーが問題なしと確認した。
+- 別セッションのコミット `3172e23`（`.claude/settings.json` の deny と `AGENTS.md` の部屋の節）は、4d の「入れるか」の未決に当たる。ユーザーが入れると決めた。判断は `decisions.md` の項（works `93ed862`）。`93ed862` には、別セッションがステージしていた `log.md` の 4f の更新が混ざった（内容は無害）。
+
 ### 2026-10-16（リポジトリ間の整合を、基準との比較で `review` に載せた）
 
 - `review` の入力 8 は、現状とギャップの表を毎回作るだけで、比べる基準がなかった。ユーザーの指摘（中途半端）を受け、`docs/alignment-baseline.md` に基準（現状の表とギャップの表）を置き、入力 8 を「各行を今の状態と比べ、違う行だけを見直しに挙げる」に書き換えた。保存先は works の `AGENTS.md` に 1 行。凍結への対応は、旧入力 8 の列の定義を置き換えて、手順を増やさなかった。コミット: resources `8c0e56e`、works `df8b5c5`。判断は `decisions.md` の先頭の項。
