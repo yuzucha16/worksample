@@ -79,6 +79,13 @@ exmem:
 
 ## Log
 
+### 2026-10-16（フェーズ4: deny 設定、review の入力 8 の初回）
+
+- 入力 8 の初回: 3 リポジトリの現状の表とギャップを出した（works の `docs/log.md` が 6.2KB で超過、works の README がほぼ空、dotfiles の README と log が目安をわずかに超過）。
+- ユーザーの決定: フェーズ4は deny 設定だけ（`pre-push` は 11-08 の判定 ⑧ へ。git 周りは後日まとめて見直す）。凍結の対として、3 つの `AGENTS.md` の禁止コマンドの列挙を kit の `docs-rules.md` への参照に畳む。
+- 実施: dotfiles `63e3ef2`（`home/.claude/settings.json` に deny 38 件）、resources `4bff9ce`、works `d992612`。push は済み。
+- 事実: deny のパターン（`git *--no-verify*` など）は、コミットメッセージ中の禁止語にも一致し、コミットが止まった。メッセージから語を除いて通した。
+
 ### 2026-10-16（この PC の works を worksample の clone に切り替えた）
 
 - 経緯: この PC の works は「workflow を導入して」（init 項目 5）で作った remote なしのローカルリポジトリだった。ユーザーは、works を「会社用=ローカル、個人開発用=GitHub の `worksample`」のどちらかにする想定で、この PC を個人用（worksample）にしたいと依頼した。
