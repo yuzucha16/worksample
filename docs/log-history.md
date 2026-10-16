@@ -79,6 +79,11 @@ exmem:
 
 ## Log
 
+### 2026-10-16（`worksample` を PUBLIC に変更。Next Actions を 3 件にまとめた）
+
+- ユーザーが `worksample` を PUBLIC にした（`gh repo view` で確認）。10-08 と 10-11 の食い違いの原因は不明のまま。`log.md` の公開範囲の記述と `alignment-baseline.md`(公開範囲、`handson` は削除済み)を更新した。`AGENTS.md` と `README.md` の「非公開 `worksample`」は未更新で、ユーザーの確認後に直す。公開になったため、履歴にユーザー名入りのパスがある問題の対象に `worksample` も入る(Open Questions)。
+- `review` の初回は 10-15 に実施済み(`reviews.csv` が正。10-14 ではない)。Next Actions は、ユーザーの目標(3 件以内)に合わせて、`review`・ユーザーの作業・11-08 の判定の 3 件にまとめた。WSL の `WORKS_DIR` は、この PC に WSL のディストリビューションが無く、確認できなかった。
+
 ### 2026-10-16（`log.md` の整理、`init-local` ブランチの削除）
 
 - `docs/log.md` を 8,007 → 3,478 バイトに縮めた（4KB 目安に収めた）。済みの項目（3b、4d、4e、4f、4g）を外し、詳細は下の同日の各項目に残っている。未完了の記述は 4c（pre-push と git の見直し、README の行の更新）、2（`review`。4g の比較の確認を足した）、4b、5 に畳んだ。確認で済みと分かったもの: `C:\vault` は存在しない、`repos/` に `handson` は無い、`resources` は `origin/main` と同期済み、`exmem/inbox/` は README のみ。GitHub の旧 `notes` の削除は、ユーザーが実施した。

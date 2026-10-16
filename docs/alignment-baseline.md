@@ -18,7 +18,7 @@ works、resources（workbase）、dotfiles の運用を揃えるための基準�
 | 下位の単位 | `projects/` `areas/` `archives/` | `topics/` `exmem/`（`AGENTS.md` あり）、`guides/` `handson/`（`CLAUDE.md` のみ） | なし |
 | `.claude/` | `settings.json`（deny）を追跡 | `settings.local.json` だけ追跡しない | 同左 |
 | `settings.local.json` を追跡しない | ○ | ○ | ○ |
-| 公開範囲 | PRIVATE | PUBLIC | PUBLIC |
+| 公開範囲 | PUBLIC（2026-10-16 にユーザーが変更） | PUBLIC | PUBLIC |
 | push の許可リスト | `main` を許可 | `main` を許可 | `main` を許可 |
 | `main` と `origin/main` | 同じ | 同じ | 同じ |
 
@@ -29,7 +29,7 @@ works、resources（workbase）、dotfiles の運用を揃えるための基準�
 | 1 | resources に `docs/log.md` がない | 解消 | 中 | 低 |
 | 2 | 読む順番の形が3通り | 解消 | 高 | 低 |
 | 3 | 「〜の続き」の規則が `topics/AGENTS.md` にしかない | 解消（kit に1か所） | 高 | 低 |
-| 4 | `guides` と `handson` が `CLAUDE.md` だけ | 残す（guides は後回し、handson は削除予定） | 低 | 低 |
+| 4 | `guides` と `handson` が `CLAUDE.md` だけ | 残す（guides は後回し。handson は削除済み） | 低 | 低 |
 | 5 | 期日の節が works にしかない | 残す（必要になったとき足す） | 低 | 低 |
 | 6 | `.claude/` の扱いの違い、works に deny がない | 解消。deny の実機確認は済み（`Read` は拒否、PowerShell の `Get-Content` は通る） | 中 | 中 |
 | 7 | works の `AGENTS.md` と雛形のずれ | 解消 | 低 | 低 |
