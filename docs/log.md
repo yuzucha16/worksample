@@ -16,6 +16,4 @@
 
 ## Open Questions
 
-- 公開リポジトリの履歴（2026-10-16）: 3 リポジトリとも書き換え済み（個人・組織を特定する文言の除去と、author のメールの noreply 化。経緯は `log-history.md`）。残したのは `ee` `ck` `yy`（プレースホルダー）と第三者プラグインの作者表記。
-- 他の PC: `.gitconfig_local` の `user.email` を noreply に直し、3 つの clone を `reset --hard origin/main` で合わせる。
-- バックアップ `C:\Users\ee\backup\`（旧履歴。機密を含む）を、確認後に削除する。
+なし。公開リポジトリの履歴の書き換え（個人・組織を特定する文言の除去と、author のメールの noreply 化）は、2026-10-16 に済み。author の紐付けとバックアップの削除も、ユーザーが確認・実施した。他の PC での復旧手順は `log-history.md`。

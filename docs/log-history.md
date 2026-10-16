@@ -86,7 +86,7 @@ exmem:
 - `resources`（`workbase`）の履歴から、文言 A（`ee` に置換）、B（`user@example.com` に置換）、C（同）、D を含む行（削除）、E（別の語に置換）を消した。`git filter-repo --replace-text` で全 256 コミット・8 ブランチを書き換え、force push した（ユーザーの許可は、このセッションのみ。force push と `reset --hard` は deny で止まったので、ユーザーが実行した）。この PC の `resources/` は `reset --hard origin/main` で合わせ、A〜E は 0 件。
 - 2 回目の書き換え（ユーザーの決定）: 履歴の author / committer のメール（F）を、GitHub の noreply（`<id>+yuzucha16@users.noreply.github.com`）に置き換えた。`git filter-repo --mailmap` を `works`（158 コミット。未 push の 2 コミットを含む）、`workbase`（256）、dotfiles（205）に適用し、`works` では本文中の F も置換した。force push はユーザーが実行し、3 リポジトリの手元の clone を `reset --hard origin/main` で合わせた（author が noreply に統一されたことを確認）。手元の `~/.gitconfig_local`（追跡外）の `user.email` も noreply にした。他の PC は、`.gitconfig_local` を直し、clone を同じ手順で合わせる。
 - 残したもの: `ee` `ck` `yy`（プレースホルダー）、dotfiles の `/home/yy/...`、取り込んだ Obsidian プラグインの作者表記（`rpganesshkumar`。第三者の公開情報。2026-10-09 の `be570a8` で取り込んだ「Excel to Markdown Table」）。
-- 元の履歴のバックアップ: `C:\Users\ee\backup\` の `*-backup*.git`（機密を含むコピー。確認が済んだら削除する）。
+- GitHub 上で author が `yuzucha16` に紐付くことを、ユーザーが確認した。元の履歴のバックアップ（`C:\Users\ee\backup\`）は、ユーザーが削除した。`works` は PC ごとのローカルのリポジトリなので、他の PC で合わせるのは `resources/` と dotfiles だけ。
 - 別 PC の復旧: 各 clone（`works` `resources/` dotfiles）で `git fetch origin && git reset --hard origin/main && git remote prune origin`（未 push のコミットがないことを確認してから。ローカルの `claude/*` ブランチは作り直す）。
 
 ### 2026-10-16（exmem の索引分離）
