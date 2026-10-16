@@ -1,6 +1,6 @@
 # works
 
-個人用 PC の作業場（Obsidian の Vault のトップ）。PARA でこの PC のローカルの作業（個人開発など）を管理し、共有ナレッジ（`resources/`）を参照する。この PC だけのローカルなリポジトリ（remote: 非公開 `worksample`）。規約は `AGENTS.md`。
+個人用 PC の作業場（Obsidian の Vault のトップ）。PARA でこの PC のローカルの作業（個人開発など）を管理し、共有ナレッジ（`resources/`）を参照する。この PC だけのローカルなリポジトリ（remote: `worksample`。公開）。規約は `AGENTS.md`。
 
 ## 構成と管理
 

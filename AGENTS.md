@@ -1,6 +1,6 @@
 # AGENTS.md
 
-個人用 PC の作業場。PARA でこの PC のローカルの作業（個人開発など）を管理し、共有ナレッジ（`resources/`）を参照する。Obsidian の Vault のトップで、この PC だけのローカルなリポジトリ（remote: 非公開 `worksample`）。共有ナレッジは `resources/`（別リポジトリ `workbase` の clone）で、Vault 全体の規約は `resources/AGENTS.md`。
+個人用 PC の作業場。PARA でこの PC のローカルの作業（個人開発など）を管理し、共有ナレッジ（`resources/`）を参照する。Obsidian の Vault のトップで、この PC だけのローカルなリポジトリ（remote: `worksample`。公開。2026-10-16 にユーザーが公開にした）。共有ナレッジは `resources/`（別リポジトリ `workbase` の clone）で、Vault 全体の規約は `resources/AGENTS.md`。
 
 ## 安全規則（先頭に置く。縮小・整理の対象外。変えるときはユーザーの承認）
 
@@ -51,7 +51,7 @@
 
 | リポジトリ | ブランチ | 備考 |
 |---|---|---|
-| `works`（remote: `yuzucha16/worksample`。非公開） | `main` | このリポジトリ |
+| `works`（remote: `yuzucha16/worksample`。公開） | `main` | このリポジトリ |
 | `resources/`（remote: `yuzucha16/workbase`。公開） | `main` | 2026-10-16 ユーザーの決定。公開のまま |
 | dotfiles（remote: `yuzucha16/dotfiles`。公開） | `main` | 同上 |
 
