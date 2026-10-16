@@ -79,6 +79,11 @@ exmem:
 
 ## Log
 
+### 2026-10-16（review の点検の対象に 3 リポジトリを指定した）
+
+- `review` を works 直下で 1 回行う運用に合わせ、`docs/alignment-baseline.md` に「点検の対象」（works、resources、dotfiles。すべて PUBLIC）の表を足した。`review` の入力 3（未統合メモ）、入力 4（トピック）、入力 6（機密）が、この一覧のリポジトリすべてを見る（kit `302fccb` `9b19540`。ユーザーの決定）。works からの起動で resources の `exmem/` と `topics/` が点検されない問題を解消した。works のコミットは `16618f1` `75349f2`。
+- 各フックの cwd の期待を `hook-matrix.md`（kit）に記録し、`review` の点検に含めた（kit `53c3771`）。次回の `review` が最初の比較になる。
+
 ### 2026-10-16（定例の導入。期日の節を 3 リポジトリに揃えた）
 
 - 週1の `review` が Next Actions に常駐して 0 にならない問題を、「定例」の種別で解いた。works の `docs/log.md` の期日の表に種別の列を足し、`review` を定例（次回 2026-10-22）として移した。resources と dotfiles の `docs/log.md` にも期日の節を足した（dotfiles は colored-tags の判断 10-22 頃を Next Actions から移した。resources は項目なし）。書式は kit の `docs-rules.md` に入れた。`alignment-baseline.md` の行 5 を解消。判断の根拠は `decisions.md` の「周期のある項目は「定例」と呼び…」。
