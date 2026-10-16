@@ -79,6 +79,11 @@ exmem:
 
 ## Log
 
+### 2026-10-16（`log.md` の整理、`init-local` ブランチの削除）
+
+- `docs/log.md` を 8,007 → 3,478 バイトに縮めた（4KB 目安に収めた）。済みの項目（3b、4d、4e、4f、4g）を外し、詳細は下の同日の各項目に残っている。未完了の記述は 4c（pre-push と git の見直し、README の行の更新）、2（`review`。4g の比較の確認を足した）、4b、5 に畳んだ。確認で済みと分かったもの: `C:\vault` は存在しない、`repos/` に `handson` は無い、`resources` は `origin/main` と同期済み、`exmem/inbox/` は README のみ。GitHub の旧 `notes` の削除は、ユーザーが実施した。
+- バックアップの `init-local`（`fa2bafc`、`main` と履歴が別の 3 コミット）を `git branch -D` で削除した（ユーザーの依頼）。clone への切替は 4d で済んでおり、`main` は影響を受けない。
+
 ### 2026-10-16（works の push、部屋の deny 設定の決定、`profile.ps1` の `$WORKS_DIR` 化）
 
 - `gh auth login` 後に works を push した（`77cff6a..a94faee`。`worksample` は PRIVATE、fast-forward、機密語なしを確認）。dotfiles の `profile.ps1` の `dof` `room` を `$env:WORKS_DIR` 基準にして push した（`56ca811`。公開リポジトリのため、メールアドレスとユーザー名入りのパスも検索して、なしを確認）。ユーザーが問題なしと確認した。
