@@ -22,6 +22,16 @@ works、resources（workbase）、dotfiles の運用を揃えるための基準�
 | push の許可リスト | `main` を許可 | `main` を許可 | `main` を許可 |
 | `main` と `origin/main` | 同じ | 同じ | 同じ |
 
+## 点検の対象
+
+`review` の入力 6（機密の点検）が、works から起動しても検索するリポジトリ（2026-10-16 ユーザーの決定）。`git -C <パス>` で検索する。
+
+| リポジトリ | パス | 公開範囲 |
+|---|---|---|
+| works | `.` | PUBLIC |
+| resources（workbase） | `resources` | PUBLIC |
+| dotfiles | `repos/github.com/yuzucha16/dotfiles` | PUBLIC |
+
 ## ギャップ
 
 | # | 内容 | 状態 | 影響 | リスク |
