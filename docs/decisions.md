@@ -14,6 +14,12 @@
 
 ## Decisions
 
+### 【この件】works に `.claude/settings.json`（`projects/` `areas/` `archives/` の Read/Edit を deny）と `AGENTS.md` の「AI 作業部屋」の節を入れる（2026-10-16。ユーザーの決定）
+
+- 決めたこと: 別セッションのコミット `3172e23` の内容を採用する。Vault 側の AI は `projects/` `areas/` `archives/` を読まない・編集しない。これらの中の作業は AI 作業部屋（専用の WSL）で行う。
+- 根拠: 以前は「個人開発用と合わない」として見送り中（log.md 4d）だったが、ユーザーが入れると決めた。deny は安全網で、境界の保証ではない（works のトップで起動したときだけ効く）。
+- 経緯: `3172e23` は別セッションで作られ、決定の記録が無かった。このセッションでユーザーに確認し、決定として記録した。
+
 ### 【汎用】cwd はリポジトリのトップの 3 つだけ。works の deny を置く。公開リポジトリへの push を許可する（2026-10-16。ユーザーの決定）
 - 決めたこと: (1) 起動する単位は works、resources、dotfiles のトップだけ。下位は「<名前> の続き」（kit の `docs-rules.md` に 1 か所で定義）。3 つの「読む順番」は同じ 3 段（README、`docs/log.md`、検索のみ）。(2) works に `.claude/settings.json`（`projects/` `areas/` `archives/` の Read/Edit の deny。雛形どおり）と、`AGENTS.md` の「AI 作業部屋」の節を置く。`settings.local.json` は全リポジトリで追跡しない（dotfiles の `.gitignore` を揃えた）。(3) `workbase` と dotfiles は公開（PUBLIC。`gh repo view` で確認）。公開のまま、エージェントが `main` に push してよい。kit の push の条件 1 を「公開範囲を確認して報告。公開なら条件 4 の検索を広げる」に変えた。3 つの許可リストに載せた。
 - 根拠: ユーザーが承認した。AI 作業の領域は WSL の部屋へ切り出してあり、この PC は部屋が未使用（動作確認中）なので、deny の実害はない。deny は安全網で、PowerShell からの読みは止まらない。プロジェクト設定は親から子へ継承されない（公式と issue の報告）ので、deny は works のトップで起動したときだけ効く。
