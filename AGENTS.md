@@ -27,6 +27,13 @@
 
 構成の表は `README.md`。`resources/` と `repos/` の各リポジトリは別の git リポジトリで、git 操作はそれぞれの中で行い、作業の前にその `AGENTS.md` を読む。
 
+## AI 作業部屋（`projects/` `areas/` `archives/` を扱うとき）
+
+- この 3 つの中の作業は、AI 作業部屋（専用の WSL ディストリビューション）の中で行う。Vault 側の AI（この `AGENTS.md` を読む AI）は、`projects/` `areas/` `archives/` を読まない・編集しない。`.claude/settings.json` で `Read` と `Edit` を deny している（雛形: `resources/workflow-kit/templates/workspace/claude-settings.template.json`。安全網であって境界の保証ではない。効くのは、このリポジトリのトップで起動したときだけ）。
+- `room`（`resources/workflow-kit/room/`）は人が端末で実行する。AI は実行しない。
+- 部屋の使い方と読み替えは `resources/workflow-kit/room/README.md` と `resources/workflow-kit/room-context.md`。
+- `.claude/` は、プロジェクト固有の規則が要るリポジトリだけ `settings.json` を置いて追跡する（works のみ）。`settings.local.json` は、どのリポジトリでも追跡しない（2026-10-16 ユーザーの決定。実害が出たら個別に直す）。
+
 ## このワークスペース固有のルール
 
 - `.obsidian/` の実体は dotfiles（`windows\obsidian\.obsidian`）。変更のコミットは dotfiles で行う（接頭辞 `[obsidian]`）。Obsidian が起動中は設定ファイル（`*.json`）を編集しない（上書きされて消える）。`workspace.json` は端末ごとの状態なのでコミットしない。詳細は `exmem/knowledge/obsidian-vault.md`。
