@@ -16,5 +16,6 @@
 
 ## Open Questions
 
-- 公開リポジトリの履歴の扱い（2026-10-16）: `workbase` は書き換え済み（個人・組織を特定する文言を除去。経緯は `log-history.md`）。残したのは `ee` `ck` `yy`（プレースホルダー）と author の `yuzucha16`。`works` と dotfiles は未書き換え（dotfiles の `yy` のパスと第三者プラグインの作者メールは残す決定）。
-- バックアップ `C:\Users\ee\backup\workbase-backup.git`（旧履歴。機密を含む）を、確認後に削除する。
+- 公開リポジトリの履歴（2026-10-16）: 3 リポジトリとも書き換え済み（個人・組織を特定する文言の除去と、author のメールの noreply 化。経緯は `log-history.md`）。残したのは `ee` `ck` `yy`（プレースホルダー）と第三者プラグインの作者表記。
+- 他の PC: `.gitconfig_local` の `user.email` を noreply に直し、3 つの clone を `reset --hard origin/main` で合わせる。
+- バックアップ `C:\Users\ee\backup\`（旧履歴。機密を含む）を、確認後に削除する。
