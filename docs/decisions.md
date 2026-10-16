@@ -14,6 +14,11 @@
 
 ## Decisions
 
+### 【この件】公開リポジトリ 3 つの履歴を書き換え、個人・組織を特定する文言を除き、author のメールを GitHub の noreply にする（2026-10-16。ユーザーの決定）
+- 決めたこと: ① `ee` `ck` `yy` はプレースホルダーとして履歴に残す（`ai` は部屋の専用ユーザー）。② 職場のアカウント名・職場のメール・社名・社内ネットワークの行・本名のメールは、`resources`（`workbase`）の履歴から除く。③ author / committer のメールは、3 リポジトリ（`works` `workbase` dotfiles）とも `<id>+yuzucha16@users.noreply.github.com` に置き換える。手元の `~/.gitconfig_local` も同じ値にする。④ 第三者プラグインの作者表記（dotfiles）は残す。⑤ force push は、このセッションのみ許可（deny が止めたので、ユーザーが実行した）。
+- 根拠: 公開リポジトリの履歴は、現行ファイルから消しても残る。noreply にすると、GitHub 上の紐付け（`yuzucha16`）を保ったまま、実メールを隠せる（ユーザーが紐付きを確認した）。却下案: 履歴をそのまま残す（職場の識別情報が公開される）。
+- 手順: バックアップのミラーを作り、`git filter-repo`（`--replace-text`、`--mailmap`）で書き換え、`--force` で全ブランチを push し、各 clone を `reset --hard origin/main` で合わせる。`works` は PC ごとのローカルなので、他の PC で合わせるのは `resources/` と dotfiles。詳細は `log-history.md`。
+
 ### 【この件】resources の下位の単位は `README.md` `AGENTS.md` `CLAUDE.md`(`@AGENTS.md`)の形に揃え、索引は別ファイルに置く。`worksample` は PUBLIC（2026-10-16。ユーザーの決定）
 - 決めたこと: ① `guides/` `topics/` `workflow-kit/` を `exmem/` に揃えた（`guides/CLAUDE.md` は `AGENTS.md` に改名。resources `b6a9505`）。② 索引（`guides-index.md` `topics-index.md`）は README に統合せず残す。③ `exmem/README.md` の「知識の索引」は `exmem-index.md` に分ける（Next Actions 4）。④ `workflow-kit/` は `hooks.md` が索引なので分けない。⑤ ユーザーが `worksample` を PUBLIC にした。機密・個人情報は書かない前提で、エージェントが push してよい。
 - 根拠: 常時読み込みを増やさない。`docs-rules.md` の「上段は表引き、詳細は下段」。
