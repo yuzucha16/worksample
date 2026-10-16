@@ -79,6 +79,14 @@ exmem:
 
 ## Log
 
+### 2026-10-16（この PC の works を worksample の clone に切り替えた）
+
+- 経緯: この PC の works は「workflow を導入して」（init 項目 5）で作った remote なしのローカルリポジトリだった。ユーザーは、works を「会社用=ローカル、個人開発用=GitHub の `worksample`」のどちらかにする想定で、この PC を個人用（worksample）にしたいと依頼した。
+- 実施: `origin` に `https://github.com/yuzucha16/worksample` を足し、`main` を `origin/main` に `reset --hard` で揃えた（ユーザーが事前に承認）。init 時の 3 コミットは、バックアップのブランチ `init-local` に残した。`.git/hooks/pre-push`（remote を足さない方針の安全網）は削除した。
+- init からの差分の反映: `AGENTS.md` に `repos/` と `.claudian/` の行、obsidian-skills の記述を足した（`4e46685`。`origin/main` に含まれる）。`CLAUDE.md` は worksample に同じ（`@AGENTS.md` の 1 行）ものがあった。
+- 反映しなかったもの: `.claude/settings.json`（`projects/` 等の Read/Edit の deny）と `AGENTS.md` の「AI 作業部屋」の節。worksample は個人開発用で、`projects/` を AI が扱う前提と合わないため（ユーザーに報告済み。入れるかは未決）。
+- push: ユーザーの許可（「push してよい。業務・個人用も大丈夫」）はあったが、`gh` が未ログインで、`AGENTS.md` の許可リストの条件 1（非公開の確認）を満たせず、その時点では止めた。認証なしで clone できたため、公開リポジトリの可能性が高い（Open Questions の公開範囲の項）。
+
 ### 2026-10-16（3 リポジトリの規則を揃えた。works の `AGENTS.md` から古い記述を外した）
 
 - works・resources・dotfiles の規則を揃える作業（フェーズ1〜3）。一律に kit を正とはせず、明らかなずれはユーザーに確認した。works の変更: `AGENTS.md` から `again` と `gap` の記録、自動採用の停止の項を削除した（`142c226`。判断は `decisions.md` の 2026-10-16）。kit・dotfiles 側の変更は、`resources` の `topics/kit-growth/docs/log-history.md` と dotfiles の `docs/log-history.md` に記録した。遠回りの答え: なし。
