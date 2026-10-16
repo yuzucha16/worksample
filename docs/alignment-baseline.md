@@ -31,7 +31,7 @@ works、resources（workbase）、dotfiles の運用を揃えるための基準�
 | 3 | 「〜の続き」の規則が `topics/AGENTS.md` にしかない | 解消（kit に1か所） | 高 | 低 |
 | 4 | `guides` と `handson` が `CLAUDE.md` だけ | 残す（guides は後回し、handson は削除予定） | 低 | 低 |
 | 5 | 期日の節が works にしかない | 残す（必要になったとき足す） | 低 | 低 |
-| 6 | `.claude/` の扱いの違い、works に deny がない | 解消。**deny の効き方は未確認**（セッションを開き直して確認） | 中 | 中 |
+| 6 | `.claude/` の扱いの違い、works に deny がない | 解消。deny の実機確認は済み（`Read` は拒否、PowerShell の `Get-Content` は通る） | 中 | 中 |
 | 7 | works の `AGENTS.md` と雛形のずれ | 解消 | 低 | 低 |
 | 8 | 公開リポジトリの git 履歴にユーザー名を含むパスが残っている | 未着手（書き換えは force push が要り、禁止） | 中 | 高 |
 

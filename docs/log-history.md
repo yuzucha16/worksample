@@ -79,6 +79,12 @@ exmem:
 
 ## Log
 
+### 2026-10-16（リポジトリ間の整合を、基準との比較で `review` に載せた）
+
+- `review` の入力 8 は、現状とギャップの表を毎回作るだけで、比べる基準がなかった。ユーザーの指摘（中途半端）を受け、`docs/alignment-baseline.md` に基準（現状の表とギャップの表）を置き、入力 8 を「各行を今の状態と比べ、違う行だけを見直しに挙げる」に書き換えた。保存先は works の `AGENTS.md` に 1 行。凍結への対応は、旧入力 8 の列の定義を置き換えて、手順を増やさなかった。コミット: resources `8c0e56e`、works `df8b5c5`。判断は `decisions.md` の先頭の項。
+- 基準の #6（deny の効き方）は、別セッションの実機確認（`Read` は拒否、PowerShell は通る）を受けて、基準を更新した。
+- 実際の `review` では未実行。
+
 ### 2026-10-16（3 リポジトリの cwd の扱いを揃えた）
 
 - 3 リポジトリ（works、resources、dotfiles）の cwd の規則を調べ、ギャップを解消した。kit の `docs-rules.md` に「上の階層で起動して『〜の続き』と言われたら」を足し、`hooks.md` の「起動する場所」はそこへのポインタに畳んだ。3 つの `AGENTS.md` の「読む順番」を同じ 3 段にした。works の README（空だった）に構成の表を移し、resources に `README.md` と `docs/` を新設した。ワークスペースの雛形も揃えた。コミット: resources `905ed7a` `ae755d5` `fa36282`、dotfiles `4c37d3b` `c225226` `24de490`、works `77cff6a` `3172e23` `a94faee`。判断は `decisions.md` の先頭の項。

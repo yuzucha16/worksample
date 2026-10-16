@@ -20,6 +20,7 @@
 4d. **この PC の works を worksample の clone に切り替えた（2026-10-16。済み）**: 詳細は `log-history.md`。バックアップのブランチ `init-local` は不要になったら削除する。
 4e. **下流から works への依存の整理（2026-10-16。済み）**: 方針は `decisions.md` の項。任意の残り: dotfiles の `profile.ps1`（`dof` `room`）の `$WORKS_DIR` 化。
 4f. **3 リポジトリの cwd を揃えた（2026-10-16。済み）**: 起動はトップの 3 つだけ、下位は「〜の続き」。works の `.claude/settings.json`（deny）を置いた。deny の実機確認は済み（2026-10-16。`areas/` の `Read` は拒否、PowerShell の `Get-Content` は通る。kit の `init-workspace.md` を更新した）。`guides/` は後回し（cwd を増やさない）。`handson/` は削除予定。公開リポジトリへの push を許可した（`decisions.md`）。
+4g. **リポジトリ間の整合の基準（2026-10-16。済み）**: `docs/alignment-baseline.md` に、現状とギャップの表を置いた。`review` の入力 8 が、各行を今の状態と比べて、違う行だけを見直しに挙げる（kit の `review-hook.md`）。**次回の `review` で、比較が意図どおり差分を拾うか確かめる**（未実施）。見直しの後は基準を更新する。
 5. **保留**: 旧 `C:\vault` と GitHub の旧 `notes` の削除、`claude --resume` の確認、WSL の `WORKS_DIR` の実機確認（詳細は `log-history.md` の Next Actions）。
 
 ## Open Questions

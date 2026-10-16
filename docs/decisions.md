@@ -14,6 +14,10 @@
 
 ## Decisions
 
+### 【この件】リポジトリ間の整合は、`docs/alignment-baseline.md` を基準に、`review` の入力 8 が差分を見る（2026-10-16。ユーザーの決定）
+- 決めたこと: 現状の表とギャップの表を works の `docs/alignment-baseline.md` に置く（この PC の運用が入るので、公開リポジトリには置かない）。`review` の入力 8 は、各行を今の状態と比べ、違う行だけを見直しにする。見直しの後は基準を更新する。
+- 根拠: 表を毎回作るだけでは比較がなく、中途半端だった（ユーザーの指摘）。却下案: `docs/log-history.md` に表を貼る（構造が崩れる）。
+
 ### 【この件】works に `.claude/settings.json`（`projects/` `areas/` `archives/` の Read/Edit を deny）と `AGENTS.md` の「AI 作業部屋」の節を入れる（2026-10-16。ユーザーの決定）
 
 - 決めたこと: 別セッションのコミット `3172e23` の内容を採用する。Vault 側の AI は `projects/` `areas/` `archives/` を読まない・編集しない。これらの中の作業は AI 作業部屋（専用の WSL）で行う。
