@@ -79,6 +79,10 @@ exmem:
 
 ## Log
 
+### 2026-10-16（exmem の索引分離）
+
+- Next Actions 4 を実施した（ユーザーの指示）。`exmem/README.md` の「知識の索引」を `exmem/exmem-index.md`（`type: index`）に分けた。参照を直した: `exmem/AGENTS.md`、`lessons/session-handoff.md`、`lessons/reference-doc-types.md`、kit の `integrate-hook.md`、`room.py`（`SHARE_PATHS` に追加。作業部屋の共有写しに索引を入れるため）。`[[exmem]]` の参照は無し。`knowledge.base` は `type` で絞るので変更不要。`areas/` `projects/` `archives/` 側の参照は未確認。resources のコミット `d4b2971` `ebb3994`。
+
 ### 2026-10-16（resources の下位の単位の形を揃えた。WSL の `WORKS_DIR` は渡らない）
 
 - `resources/` の `guides/` `topics/` `workflow-kit/` を、`exmem/` に揃えた（`README.md`、`AGENTS.md`、`CLAUDE.md` = `@AGENTS.md`）。`guides/CLAUDE.md`(7.7KB の本文)を `AGENTS.md` に改名し、`guides/README.md` と `topics/README.md` を新設、`workflow-kit/CLAUDE.md` を追加した。索引(`guides-index.md` `topics-index.md`)は残した。`README.md` への統合は、参照が約 12 か所あることと、ファイル名の一意の規則(`README.md` は複数ある)から見送った(ユーザーの決定)。resources `b6a9505`、push 済み。`resources/README.md` の `handson/` の行(削除済み)も除いた。`exmem/` の README の索引分離は、ユーザーが決定し、Next Actions に入れた。`workflow-kit/` は `hooks.md` が索引なので、分けない(ユーザーの決定)。
