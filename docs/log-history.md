@@ -81,7 +81,7 @@ exmem:
 
 ### 2026-10-18（review 消化: Next Actions 3 件を完了にした）
 
-- `review 消化` で、Next Actions 1 の「PARA の 3回目の Project」「AI 作業部屋の通し」「`claude --resume` の確認」を、ユーザーが完了と判断した。根拠: 10-18 の pilot 系のコミット（`3261bf6` `5103116` `d21081c`）、`resources` の作業部屋の README を実機で確認したコミット（`77d50fb`）。`ai-room-next-steps` の TODO は `topics/ai-workspace-boundary/` へ移っている。残りの「WSL への `WORKS_DIR` の受け渡し」は、同日に着手した。
+- `review 消化` で、Next Actions 1 の「PARA の 3回目の Project」「AI 作業部屋の通し」「`claude --resume` の確認」を、ユーザーが完了と判断した。根拠: 10-18 の pilot 系のコミット（`3261bf6` `5103116` `d21081c`）、`resources` の作業部屋の README を実機で確認したコミット（`77d50fb`）。`ai-room-next-steps` の TODO は `topics/ai-workspace-boundary/` へ移っている。残りの「WSL への `WORKS_DIR` の受け渡し」は、同日に原因（`WSLENV` の区切りが `;`。正しくは `:`）を特定して直し、この PC で渡ることを確認した（dotfiles `b0af76d`、workbase `fe7f816`。判断は dotfiles の `decisions.md`）。他の PC は `10_env.bat` の再実行で直る（未確認）。
 
 ### 2026-10-16（review の点検の対象に 3 リポジトリを指定した）
 
