@@ -25,7 +25,7 @@
 
 ## 構成と管理
 
-構成の表は `README.md`。`resources/` と `repos/` の各リポジトリは別の git リポジトリで、git 操作はそれぞれの中で行い、作業の前にその `AGENTS.md` を読む。
+構成の表は `README.md`。`resources/` と `repos/` の各リポジトリは別の git リポジトリで、git 操作はそれぞれの中で行い、作業の前にその `AGENTS.md` を読む。`resources_p/` は PC ローカルの resources（この PC だけの情報の置き場。追跡しない。Vault 側の AI は読み書きしてよく、`areas/` などのような deny はしない）。
 
 ## AI 作業部屋（`projects/` `areas/` `archives/` を扱うとき）
 
@@ -33,6 +33,7 @@
 - `room`（`resources/workflow-kit/room/`）は人が端末で実行する。AI は実行しない。
 - 部屋の使い方と読み替えは `resources/workflow-kit/room/README.md` と `resources/workflow-kit/room-context.md`。
 - `.claude/` は、プロジェクト固有の規則が要るリポジトリだけ `settings.json` を置いて追跡する（works のみ）。`settings.local.json` は、どのリポジトリでも追跡しない（2026-10-16 ユーザーの決定。実害が出たら個別に直す）。
+- `.gitignore` に `**/_noai/`（AI に見せない領域。追跡しない）と `!**/ai/out/` を入れる（雛形: `gitignore.template`）。
 
 ## このワークスペース固有のルール
 
@@ -40,6 +41,7 @@
 - Obsidian 向けの作業では、導入済みの外部スキル（`obsidian@obsidian-skills`。導入の正本は dotfiles の `manifests/claude-plugins.txt`）を使う。ノートの記法は `obsidian-markdown`、Bases は `obsidian-bases`、Canvas は `json-canvas`、Vault の操作は `obsidian-cli`、Web ページの本文抽出は `defuddle`、テンプレートからの Markdown 生成は `knap`。スキル本体は写さない（更新はプラグインが持つ）。Claude Code 以外のエージェントには届かない。
 - 記録: `docs/metrics/events.csv` に足すのは、`goal_change`（探索型でゴールが変わったとき。2026-10-14 に追加）、開始時の質問（`interview`）だけ（`again` と `gap` は 2026-10-16 に廃止。kit の `139091c` に合わせた。承認の確認 `approval` と改善案の行は、2026-10-08 から足さない）。`wrap` では「今日の遠回りは、なし・少し・大きく」を1問聞く。手順・列・保存先は `docs/metrics/README.md` の「エージェントの記録手順」。
 - リポジトリ間の整合の基準: `docs/alignment-baseline.md`（`review` の入力 8 が、各行を今の状態と比べる。2026-10-16 ユーザーの決定）。
+- `git add -f` で、ignore 済みのファイルを追加しない。
 
 ## 規模の凍結（2026-10-08〜判定日 2026-11-08。ユーザーの決定。試験運用）
 
