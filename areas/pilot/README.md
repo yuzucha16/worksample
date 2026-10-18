@@ -1,0 +1,1 @@
+boundary: internal   # 例: internal（顧客データなし）、顧客を表す名前など
