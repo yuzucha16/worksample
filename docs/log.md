@@ -11,7 +11,7 @@
 
 ## Next Actions（2026-10-16 時点）
 
-1. **ユーザーの作業**: PARA の 3回目の Project（候補は `areas/learning/README.md`）、AI 作業部屋の通し（`resources` の `ai-room-next-steps` の TODO）、`claude --resume` の確認、WSL への `WORKS_DIR` の受け渡し(2026-10-16 の確認: Ubuntu-24.04 で `WSLENV` は設定されているが、`WORKS_DIR` と `CERTS_DIR` は渡っていない。原因は未特定)。
+1. **ユーザーの作業**: WSL への `WORKS_DIR` の受け渡し(2026-10-16 の確認: Ubuntu-24.04 で `WSLENV` は設定されているが、`WORKS_DIR` と `CERTS_DIR` は渡っていない。原因は未特定)。
 2. **11-08 の一括判定**(期日の表): 案E の残り、構造の見直しのステップ 4・10、`pre-push` と git 周りの見直し(deny のパターンがコミットメッセージ中の禁止語にも一致する点を含む)。
 
 ## Open Questions

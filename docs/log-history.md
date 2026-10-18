@@ -79,6 +79,10 @@ exmem:
 
 ## Log
 
+### 2026-10-18（review 消化: Next Actions 3 件を完了にした）
+
+- `review 消化` で、Next Actions 1 の「PARA の 3回目の Project」「AI 作業部屋の通し」「`claude --resume` の確認」を、ユーザーが完了と判断した。根拠: 10-18 の pilot 系のコミット（`3261bf6` `5103116` `d21081c`）、`resources` の作業部屋の README を実機で確認したコミット（`77d50fb`）。`ai-room-next-steps` の TODO は `topics/ai-workspace-boundary/` へ移っている。残りの「WSL への `WORKS_DIR` の受け渡し」は、同日に着手した。
+
 ### 2026-10-16（review の点検の対象に 3 リポジトリを指定した）
 
 - `review` を works 直下で 1 回行う運用に合わせ、`docs/alignment-baseline.md` に「点検の対象」（works、resources、dotfiles。すべて PUBLIC）の表を足した。`review` の入力 3（未統合メモ）、入力 4（トピック）、入力 6（機密）が、この一覧のリポジトリすべてを見る（kit `302fccb` `9b19540`。ユーザーの決定）。works からの起動で resources の `exmem/` と `topics/` が点検されない問題を解消した。works のコミットは `16618f1` `75349f2`。
