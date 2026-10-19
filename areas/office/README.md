@@ -9,4 +9,9 @@ updated: 2026-10-19
 
 ## 進行中の Project
 
-- [[projects/minutes/README|minutes]]（2026-10-19 開始）
+なし。
+
+
+## 完了した Project
+
+- [[archives/minutes/README|minutes]]（2026-10-19 開始、2026-10-19 完了）

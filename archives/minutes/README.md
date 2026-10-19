@@ -1,11 +1,13 @@
 ---
-status: active
+status: done
 area: office
 type: doc
 data: none
-review: 仮置き（未承認）
 created: 2026-10-19
 updated: 2026-10-19
+closed: 2026-10-19
+reap_after: 2026-11-02
+reaped: 2026-10-19
 ---
 
 # minutes
