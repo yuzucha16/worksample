@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "files": {},
+  "shared": {
+    "commit": "a64718ef4d9f49204199269608ab502655ef2196",
+    "dirty": false,
+    "pushed": "2026-10-19 21:30",
+    "paths": [
+      "AGENTS.md",
+      "workflow-kit",
+      "exmem/AGENTS.md",
+      "exmem/README.md",
+      "exmem/exmem-index.md",
+      "exmem/tags.md",
+      "exmem/lessons",
+      "guides"
+    ],
+    "tar_sha256": "e4ddf3735f0ad5d778d31401f5c0b91785d288db08a6b550e9857eb01a84dc5a"
+  }
+}
